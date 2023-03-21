@@ -69,7 +69,8 @@ export default function Index() {
                             :
                             <div className="w-384 p-2">
                                 <p className="text-xl text-center">Yes, <span
-                                    className="font-bold">{availableUsername}</span> is available</p>
+                                    className="font-bold">{availableUsername}</span> is available
+                                </p>
                                 <div className="grid grid-cols-2 gap-4 mt-4">
                                     <div
                                         className="w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 flex justify-center items-center"
@@ -96,3 +97,10 @@ export default function Index() {
     )
 }
 
+export async function getServerSideProps(context) {
+    if (context.req.cookies.token) {
+        return { redirect: { destination: '/dashboard',  permanent: false } };
+    }
+
+    return { props: {} };
+}

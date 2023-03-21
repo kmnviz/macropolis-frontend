@@ -113,3 +113,11 @@ export default function SignUp() {
         </>
     )
 }
+
+export async function getServerSideProps(context) {
+    if (context.req.cookies.token) {
+        return { redirect: { destination: '/dashboard',  permanent: false } };
+    }
+
+    return { props: {} };
+}

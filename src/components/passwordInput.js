@@ -1,7 +1,7 @@
 import React from 'react';
 import {useRouter} from 'next/router';
 
-export default function Input({ name, label, register, validationSchema, errors }) {
+export default function Input({ name, label, register, validationSchema, errors, forgotPassword = false }) {
     const router = useRouter();
 
     return (
@@ -14,7 +14,10 @@ export default function Input({ name, label, register, validationSchema, errors 
                     >
                         {label}
                     </label>
-                    <p className="text-sm font-poppins text-blue-500 hover:cursor-pointer" onClick={() => router.push('/forgot-password')}>Forgot password</p>
+                    {
+                        forgotPassword &&
+                        <p className="text-sm font-poppins text-blue-500 hover:cursor-pointer" onClick={() => router.push('/forgot-password')}>Forgot password</p>
+                    }
                 </div>
                 <input
                     type="password"

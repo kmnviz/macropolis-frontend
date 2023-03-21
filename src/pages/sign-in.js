@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import cookieCutter from 'cookie-cutter';
+import jwt from "jsonwebtoken";
 
 export default function SignUp() {
     const router = useRouter();
@@ -30,6 +31,8 @@ export default function SignUp() {
                 });
 
                 cookieCutter.set('token', response.data.data.token);
+
+                router.push('/dashboard');
             } catch (error) {
                 console.log('Failed to sign in: ', error);
             }
@@ -67,6 +70,7 @@ export default function SignUp() {
                             label="Password"
                             register={register}
                             errors={errors}
+                            forgotPassword={true}
                             validationSchema={{
                                 required: 'Password is required',
                                 minLength: {value: 8, message: 'Password must be at least 8 characters long'},
@@ -88,6 +92,9 @@ export default function SignUp() {
 }
 
 export async function getServerSideProps(context) {
+    if (context.req.cookies.token) {
+        return { redirect: { destination: '/dashboard',  permanent: false } };
+    }
 
     if (context.query?.username && context.query?.confirmationHash) {
         try {
