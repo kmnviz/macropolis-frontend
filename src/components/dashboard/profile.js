@@ -122,18 +122,3 @@ export default function DashboardProfile({profile}) {
         </>
     );
 }
-
-export async function getServerSideProps(context) {
-    const props = {};
-
-    try {
-        const response = await axios.get(`${process.env.BACKEND_URL}/profiles/get?username=${res.user.username}`, {withCredentials: true});
-        props.profile = response.data.data.profile;
-
-        console.log('response: ', response);
-    } catch (error) {
-        console.log('Failed to fetch profile: ', error);
-    }
-
-    return {props: {}}
-}
