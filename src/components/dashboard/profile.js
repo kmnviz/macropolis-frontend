@@ -86,7 +86,7 @@ export default function DashboardProfile({profile}) {
                                 </div>
                                 {
                                     initialAvatar &&
-                                    <p className="w-24 text-sm text-center font-poppins text-blue-500 hover:cursor-pointer"
+                                    <p className="w-24 mt-2 text-sm text-center font-poppins text-blue-500 hover:cursor-pointer"
                                        onClick={() => clearInitialAvatar()}
                                     >
                                         Change

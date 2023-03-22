@@ -37,8 +37,8 @@ export default function Index() {
 
     return (
         <>
-            <div className="w-screen h-screen">
-                <div className="w-full h-full flex flex-col justify-center items-center bg-sky-100">
+            <div className="w-screen h-screen bg-sky-100">
+                <div className="w-full h-full flex flex-col justify-center items-center">
                     {
                         !availableUsername
                             ?

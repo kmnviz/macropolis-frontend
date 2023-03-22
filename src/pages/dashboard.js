@@ -3,6 +3,7 @@ import {useRouter} from 'next/router';
 import React from 'react';
 import axios from 'axios';
 import DashboardProfile from '../components/dashboard/profile';
+import DashboardPayments from '../components/dashboard/payments';
 import DashboardItems from '../components/dashboard/items';
 
 export default function Dashboard({user, profile, items}) {
@@ -10,9 +11,10 @@ export default function Dashboard({user, profile, items}) {
 
     return (
         <>
-            <div className="w-screen h-screen">
-                <div className="w-full h-full flex flex-col items-center bg-sky-100">
+            <div className="w-screen h-screen bg-sky-100">
+                <div className="w-full flex flex-col items-center">
                     <DashboardProfile profile={profile} />
+                    {/*<DashboardPayments />*/}
                     <DashboardItems user={user} items={items} />
                 </div>
             </div>
