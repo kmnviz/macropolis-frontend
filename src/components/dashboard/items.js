@@ -23,7 +23,7 @@ export default function DashboardItems({user, items}) {
                 if (audioInput) formData.append('audio', audioInput);
 
                 await axios.post(`${process.env.BACKEND_URL}/items/create`, formData, {withCredentials: true});
-                const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get?username=${user.username}`, {withCredentials: true});
+                const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${user.username}`, {withCredentials: true});
 
                 setItemsLocal(itemsResponse.data.data.items);
                 setShowForm(false);
