@@ -4,23 +4,30 @@ import {useState} from 'react';
 export default function User({username, profile, items}) {
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [selectedAudioState, setSelectedAudioState] = useState(false);
+    const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
 
     const handleAudioChange = (src) => {
         const audioElement = document.getElementById('audio');
 
         if (!selectedAudio) {
-            console.log('starts new');
+            setAudioElementCurrentTime(0);
             setSelectedAudio(src);
             audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
             audioElement.play();
             setSelectedAudioState(true);
         } else {
-            if (selectedAudioState && selectedAudio === src) {
-                console.log('pause');
-                audioElement.pause();
-                setSelectedAudioState(false);
+            if (src === selectedAudio) {
+                if (selectedAudioState) {
+                    audioElement.pause();
+                    setAudioElementCurrentTime(audioElement.currentTime)
+                    setSelectedAudioState(false);
+                } else {
+                    audioElement.currentTime = audioElementCurrentTime;
+                    audioElement.play();
+                    setSelectedAudioState(true);
+                }
             } else {
-                console.log('resume');
+                setAudioElementCurrentTime(0);
                 setSelectedAudio(src);
                 audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
                 audioElement.play();
