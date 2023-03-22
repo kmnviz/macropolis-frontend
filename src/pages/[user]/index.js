@@ -4,10 +4,16 @@ import {useState} from 'react';
 export default function User({username, profile, items}) {
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [selectedAudioState, setSelectedAudioState] = useState(false);
+    const [selectedAudioDuration, setSelectedAudioDuration] = useState(0);
     const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
 
     const handleAudioChange = (src) => {
         const audioElement = document.getElementById('audio');
+        audioElement.addEventListener('timeupdate', () => {
+            if (audioElement.currentTime >= audioElement.duration - 0.1) {
+                setSelectedAudioState(false);
+            }
+        });
 
         if (!selectedAudio) {
             setAudioElementCurrentTime(0);
@@ -15,6 +21,7 @@ export default function User({username, profile, items}) {
             audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
             audioElement.play();
             setSelectedAudioState(true);
+            setSelectedAudioDuration(audioElement.duration);
         } else {
             if (src === selectedAudio) {
                 if (selectedAudioState) {
@@ -32,6 +39,7 @@ export default function User({username, profile, items}) {
                 audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
                 audioElement.play();
                 setSelectedAudioState(true);
+                setSelectedAudioDuration(audioElement.duration);
             }
         }
     }
