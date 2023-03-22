@@ -84,7 +84,7 @@ export default function Index() {
                                         className="w-full h-10 rounded-md flex justify-center items-center group hover:cursor-pointer"
                                         onClick={() => resetForm()}
                                     >
-                                        <p className="text-white font-poppins text-blue-500 group-hover:text-blue-400">
+                                        <p className="font-poppins text-blue-500 group-hover:text-blue-400">
                                             Try another
                                         </p>
                                     </div>

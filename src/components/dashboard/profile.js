@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Input from '../input';
 import FileInput from '../fileInput';
 import axios from 'axios';
+import FormData from 'form-data';
 
 export default function DashboardProfile({profile}) {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm();
@@ -17,7 +18,6 @@ export default function DashboardProfile({profile}) {
     const submit = async (data) => {
         if (!Object.keys(errors).length) {
             try {
-                const FormData = require('form-data');
                 const formData = new FormData();
                 formData.append('name', data.name);
                 if (avatarInput) formData.append('avatar', avatarInput);
@@ -46,23 +46,25 @@ export default function DashboardProfile({profile}) {
 
     return (
         <>
-            <div className="container h-full">
-                <div className="w-full p-16">
-                    <h2 className="text-2xl font-poppins font-bold">Profile</h2>
-                    <section className="mt-12">
+            <div className="container">
+                <div className="w-full">
+                    <div className="bg-gray-100 px-8 py-4">
+                        <h2 className="text-2xl font-poppins font-bold">Profile</h2>
+                    </div>
+                    <section className="px-8 py-16">
                         <div className="grid grid-cols-3">
-                            <div className="flex justify-center flex-col">
+                            <div className="flex flex-col items-center">
                                 <div
-                                    className={`w-24 h-24 relative rounded-full border border-gray-500 duration-100 
+                                    className={`w-32 h-32 relative rounded-full border border-gray-500 duration-100 
                                     ${!initialAvatar && 'hover:cursor-pointer hover:border-blue-500'}`}
                                     onClick={() => !initialAvatar && document.getElementById('avatar').click()}
                                 >
                                     {
                                         !avatarTemp
                                             ?
-                                            <div
-                                                className="w-full h-full absolute flex justify-center items-center rounded-full z-0">
+                                            <div className="w-full h-full absolute flex flex-col justify-center items-center rounded-full z-0">
                                                 <img src="/photo.svg" className="w-8 h-8 rounder-full"/>
+                                                <p className="text-sm font-poppins">Select avatar</p>
                                             </div>
                                             :
                                             <div
@@ -90,7 +92,10 @@ export default function DashboardProfile({profile}) {
                                         Change
                                     </p>
                                 }
-                                <div className="mt-4">
+
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <div className="w-full">
                                     <Input
                                         name="name"
                                         label="Name"
