@@ -35,62 +35,95 @@ export default function Index() {
         setAvailableUsername('');
     }
 
+    const backgroundImage = 'https://images.unsplash.com/photo-1677443030437-93c9f5e08ae6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80'
+
     return (
         <>
-            <div className="w-screen h-screen bg-sky-100">
-                <div className="w-full h-full flex flex-col justify-center items-center">
-                    {
-                        !availableUsername
-                            ?
-                            <form className="w-384 p-2">
-                                <Input
-                                    name="username"
-                                    label="Username"
-                                    register={register}
-                                    errors={errors}
-                                    validationSchema={{
-                                        required: 'Username is required',
-                                        minLength: {value: 6, message: 'Username must be at least 6 characters long'},
-                                        pattern: {
-                                            value: /^[a-zA-Z0-9_]*$/i,
-                                            message: 'Username can include only alphanumeric characters and "_"'
-                                        }
-                                    }}
-                                />
-                                <div className={`w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-10
-  flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
-                                     onClick={handleSubmit(submit)}
-                                >
-                                    <p className="text-white font-poppins">
-                                        Is it available?
-                                    </p>
+            <div className="w-screen h-screen relative">
+                {/*<iframe className="absolute h-full w-full z-0" src="https://embed.lottiefiles.com/animation/78692"></iframe>*/}
+                <div className="w-full h-full flex justify-center bg-cover bg-center"
+                    style={{backgroundImage: `url(${backgroundImage})`}}
+                >
+                    <div className="container relative flex flex-col justify-center items-end">
+                        <div className="w-384">
+                            {
+                                !availableUsername &&
+                                <div>
+                                    <img src="/logo.svg" alt="logo" className="h-10"/>
                                 </div>
-                            </form>
-                            :
-                            <div className="w-384 p-2">
-                                <p className="text-xl text-center">Yes, <span
-                                    className="font-bold">{availableUsername}</span> is available
-                                </p>
-                                <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <div
-                                        className="w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 flex justify-center items-center"
-                                        onClick={() => router.push(`/sign-up?username=${availableUsername}`)}
+                            }
+                            {
+                                !availableUsername
+                                    ?
+                                    <h1 className="text-6xl mt-10 font-poppins font-bold">Make your account today</h1>
+                                    :
+                                    <h1 className="text-6xl mt-10 font-poppins font-bold">Almost there</h1>
+                            }
+                        </div>
+                        {
+                            !availableUsername
+                                ?
+                                <form className="w-384 mt-10">
+                                    <Input
+                                        name="username"
+                                        register={register}
+                                        errors={errors}
+                                        validationSchema={{
+                                            required: 'Username is required',
+                                            minLength: {
+                                                value: 6,
+                                                message: 'Username must be at least 6 characters long'
+                                            },
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9_]*$/i,
+                                                message: 'Username can include only alphanumeric characters and "_"'
+                                            }
+                                        }}
+                                    />
+                                    <div className={`w-full h-12 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-5
+  flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
+                                         onClick={handleSubmit(submit)}
                                     >
                                         <p className="text-white font-poppins">
-                                            Sign up
+                                            Claim your account
                                         </p>
                                     </div>
-                                    <div
-                                        className="w-full h-10 rounded-md flex justify-center items-center group hover:cursor-pointer"
-                                        onClick={() => resetForm()}
-                                    >
-                                        <p className="font-poppins text-blue-500 group-hover:text-blue-400">
-                                            Try another
-                                        </p>
+                                </form>
+                                :
+                                <div className="w-384 p-2">
+                                    <p className="text-xl mt-5">Your page is <span
+                                        className="font-bold">space.com/{availableUsername}</span>
+                                    </p>
+                                    <div className="mt-10">
+                                        <div
+                                            className="w-full h-12 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 flex justify-center items-center"
+                                            onClick={() => router.push(`/sign-up?username=${availableUsername}`)}
+                                        >
+                                            <p className="text-white font-poppins">
+                                                Continue
+                                            </p>
+                                        </div>
+                                        <div
+                                            className="w-full h-12 mt-2 rounded-md flex justify-center items-center group hover:cursor-pointer"
+                                            onClick={() => resetForm()}
+                                        >
+                                            <p className="font-poppins text-blue-500 group-hover:text-blue-400">
+                                                Try another
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+                        }
+                        {
+                            !availableUsername &&
+                            <div className="absolute bottom-0 w-384 flex justify-center">
+                                <div
+                                    className="w-32 h-12 flex justify-center items-center rounded-t-3xl bg-white hover:cursor-pointer">
+                                    <p className="text-black font-poppins">Read more</p>
+                                </div>
                             </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
         </>
@@ -99,8 +132,8 @@ export default function Index() {
 
 export async function getServerSideProps(context) {
     if (context.req.cookies.token) {
-        return { redirect: { destination: '/dashboard',  permanent: false } };
+        return {redirect: {destination: '/dashboard', permanent: false}};
     }
 
-    return { props: {} };
+    return {props: {}};
 }

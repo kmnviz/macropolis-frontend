@@ -1,7 +1,10 @@
 import axios from 'axios';
 import {useState} from 'react';
+import {useRouter} from 'next/router';
 
 export default function User({username, profile, items}) {
+    const router = useRouter();
+
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [selectedAudioState, setSelectedAudioState] = useState(false);
     const [selectedAudioDuration, setSelectedAudioDuration] = useState(0);
@@ -102,9 +105,11 @@ export default function User({username, profile, items}) {
                                                                             {
                                                                                 selectedAudioState && selectedAudio === item.audio_preview
                                                                                     ?
-                                                                                    <img src="/pause.svg" className="w-4 h-4"/>
+                                                                                    <img src="/pause.svg"
+                                                                                         className="w-4 h-4"/>
                                                                                     :
-                                                                                    <img src="/play.svg" className="w-4 h-4"/>
+                                                                                    <img src="/play.svg"
+                                                                                         className="w-4 h-4"/>
                                                                             }
                                                                         </>
                                                                 }
@@ -115,6 +120,7 @@ export default function User({username, profile, items}) {
                                                     }
                                                     <div className="w-8 h-8 absolute right-12 bottom-2 border border-black
                                                         rounded hover:cursor-pointer hover:border-blue-500"
+                                                         onClick={() => router.push(`/checkout?itemId=${item._id}`)}
                                                     >
                                                         <div
                                                             className="w-full h-full absolute z-10 flex justify-center items-center">

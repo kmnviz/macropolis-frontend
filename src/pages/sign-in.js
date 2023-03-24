@@ -5,7 +5,6 @@ import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import cookieCutter from 'cookie-cutter';
-import jwt from "jsonwebtoken";
 
 export default function SignUp() {
     const router = useRouter();

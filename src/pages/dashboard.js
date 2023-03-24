@@ -11,11 +11,24 @@ export default function Dashboard({user, profile, items}) {
 
     return (
         <>
-            <div className="w-screen h-screen bg-sky-100">
+            <div className="w-screen min-h-screen bg-sky-100">
                 <div className="w-full flex flex-col items-center">
-                    <DashboardProfile profile={profile} />
+                    <div className="container">
+                        <div className="grid grid-cols-4">
+                            <div className="col-span-1"></div>
+                            <div className="col-span-2">
+                                <DashboardProfile profile={profile} />
+                                <div className="mt-8"></div>
+                                <DashboardItems user={user} items={items} />
+                            </div>
+                            <div className="col-span-1"></div>
+                        </div>
+                        <div className="h-32"></div>
+                    </div>
+
                     {/*<DashboardPayments />*/}
-                    <DashboardItems user={user} items={items} />
+                    {/*<div className="mt-8"></div>*/}
+                    {/*<DashboardItems user={user} items={items} />*/}
                 </div>
             </div>
         </>
