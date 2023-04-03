@@ -12,7 +12,9 @@ module.exports = {
         },
         extend: {
             width: {
+                '320': '320px',
                 '384': '384px',
+                '576': '576px',
             },
             borderRadius: {
                 '4xl': '96px',

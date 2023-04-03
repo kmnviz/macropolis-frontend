@@ -9,7 +9,7 @@ export default function Input({ name, label, placeholder, register, validationSc
                     label &&
                     <label
                         htmlFor={name}
-                        className="text-sm font-poppins"
+                        className="text-sm font-grotesk"
                     >
                         {label}
                     </label>
@@ -19,12 +19,12 @@ export default function Input({ name, label, placeholder, register, validationSc
                     id={name}
                     name={name}
                     placeholder={placeholder}
-                    className={`block w-full mt-1 h-12 px-2 border rounded-md border-gray-500 focus:outline-none focus:border-blue-500
-                    focus:border-2 ${!errors?.[name] ? 'border-gray-500' : 'border-red-500'}`}
+                    className={`block w-full mt-1 h-16 px-2 border rounded-md border-black focus:outline-none focus:border-gray-900
+                    focus:border-2 bg-transparent font-grotesk ${!errors?.[name] ? 'border-black-500' : 'border-red-300'}`}
                     {...register(name, validationSchema)}
                 />
                 <div className={`w-full mt-1 ${!errors?.[name] ? 'hidden' : 'block'}`}>
-                    <p className="text-xs font-poppins text-red-500 mt-1">
+                    <p className="text-xs font-grotesk text-red-300 mt-1">
                         {`${errors?.[name] ? errors[name].message : ''}`}
                     </p>
                 </div>
