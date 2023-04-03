@@ -65,7 +65,8 @@ export default function SignUp() {
                 }
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
-                        <div className="h-full flex items-center px-8 hover:cursor-pointer" onClick={() => router.push('/')}>
+                        <div className="h-full flex items-center px-8 hover:cursor-pointer"
+                             onClick={() => router.push('/')}>
                             <img src="/next.svg" alt="logo" className="h-8"/>
                         </div>
                         <div className="h-full flex justify-end items-center">
@@ -78,13 +79,13 @@ export default function SignUp() {
                                 we offer?
                             </div>
                             <div
-                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black">Sign
-                                in
+                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
+                                onClick={() => router.push('/sign-in')}>Sign in
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-full flex flex-col justify-center items-center">
+                <div className="w-full h-full flex flex-col items-center mt-24">
                     {
                         !formSubmitted
                             ?
@@ -160,11 +161,12 @@ export default function SignUp() {
                             </form>
                             :
                             <div className="w-576 p-2">
-                                <p className="text-2xl font-grotesk font-bold">Confirm your email address to get
+                                <p className="text-4xl font-grotesk font-bold">Confirm your email address to get
                                     started</p>
-                                <p className="text-sm mt-2">
+                                <p className="text-lg mt-4">
                                     We have sent a confirmation request to <span
-                                    className="text-gray-900">{email}</span> to verify that email address is yours
+                                    className="text-blue-300">{email}</span> to verify that the email address belongs to
+                                    you.
                                 </p>
                             </div>
                     }

@@ -16,7 +16,7 @@ export default function Input({ name, label, register, validationSchema, errors,
                     </label>
                     {
                         forgotPassword &&
-                        <p className="text-sm font-grotesk text-blue-500 hover:cursor-pointer" onClick={() => router.push('/forgot-password')}>Forgot password</p>
+                        <p className="text-sm font-grotesk text-blue-300 hover:cursor-pointer" onClick={() => router.push('/forgot-password')}>Forgot password</p>
                     }
                 </div>
                 <input
@@ -28,7 +28,7 @@ export default function Input({ name, label, register, validationSchema, errors,
                     {...register(name, validationSchema)}
                 />
                 <div className={`w-full mt-1 ${!errors?.[name] ? 'hidden' : 'block'}`}>
-                    <p className="text-xs font-poppins text-red-500 mt-1">
+                    <p className="text-xs font-grotesk text-red-500 mt-1">
                         {`${errors?.[name] ? errors[name].message : ''}`}
                     </p>
                 </div>

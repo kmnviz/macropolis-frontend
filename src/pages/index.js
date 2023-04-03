@@ -2,11 +2,10 @@ import axios from 'axios';
 import Input from '../components/input';
 import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
+import FormData from "form-data";
 
-export default function Index() {
+export default function Index({ usernames }) {
     const router = useRouter();
-
-    const [usernames, setUsernames] = useState(['kmnviz', 'moneyphillic', 'moneymaker']);
 
     const [inputUsername, setInputUsername] = useState('');
     const [inputState, setInputState] = useState(true);
@@ -54,20 +53,6 @@ export default function Index() {
                 span.textContent = letter;
                 fakeInputElement.appendChild(span);
             }
-
-            // // On each input check if there is a value in input
-            // // If there is no value append fake input caret to fakeInputElement
-            // if (!inputElement.value.length) {
-            //     fakeInputCaret.classList.remove('right-0');
-            //     fakeInputCaret.classList.add('left-8');
-            //     fakeInputElement.appendChild(fakeInputCaret);
-            // } else {
-            //     // Else append fakeInputCaret to fakeInputSpan that is at caretPosition
-            //     const fakeInputSpan = document.getElementsByClassName('fake-input-span')[caretPosition - 1];
-            //     fakeInputCaret.classList.remove('left-8');
-            //     fakeInputCaret.classList.add('right-0');
-            //     fakeInputSpan.appendChild(fakeInputCaret);
-            // }
         });
 
         inputElement.addEventListener('blur', () => {
@@ -139,19 +124,6 @@ export default function Index() {
                 animateButton();
                 animatePageOverlay();
                 redirectToSignUp();
-
-                // try {
-                //     const response = await axios.get(`${process.env.BACKEND_URL}/users/check-username-availability?username=${inputUsername}`);
-                //     const username = response.data.data.username;
-                //
-                //     if (username) {
-                //         setButtonMessage(`${inputUsername} is busy`);
-                //     } else {
-                //         setAvailableUsername(data.username);
-                //     }
-                // } catch (error) {
-                //     console.log('Failed to check username availability: ', error);
-                // }
             } else {
                 setInputState(false);
                 setButtonMessage('required');
@@ -256,7 +228,10 @@ export default function Index() {
                         <div className="h-full flex justify-end items-center">
                             <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who we serve?</div>
                             <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What we offer?</div>
-                            <div className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black">Sign in</div>
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
+                                onClick={() => router.push('/sign-in')}>Sign in
+                            </div>
                         </div>
                     </div>
                     <div className="w-full mt-16">
@@ -302,9 +277,19 @@ export default function Index() {
 }
 
 export async function getServerSideProps(context) {
+    const props = {};
     if (context.req.cookies.token) {
         return {redirect: {destination: '/dashboard', permanent: false}};
     }
 
-    return {props: {}};
+    try {
+        const response = await axios.get(`${process.env.BACKEND_URL}/users/get-usernames`);
+        props.usernames = response.data.data.usernames;
+
+        console.log('response: ', response);
+    } catch (error) {
+        console.log('Failed to fetch usernames: ', error);
+    }
+
+    return { props };
 }

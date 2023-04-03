@@ -2,7 +2,7 @@ import axios from 'axios';
 import Input from '../components/input';
 import PasswordInput from '../components/passwordInput';
 import {useForm} from 'react-hook-form';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 
 export default function ForgotPassword() {
@@ -38,11 +38,33 @@ export default function ForgotPassword() {
     return (
         <>
             <div className="w-screen h-screen">
-                <div className="w-full h-full flex flex-col justify-center items-center bg-sky-100">
+                <div className="w-full">
+                    <div className="w-full flex justify-between h-24">
+                        <div className="h-full flex items-center px-8 hover:cursor-pointer"
+                             onClick={() => router.push('/')}>
+                            <img src="/next.svg" alt="logo" className="h-8"/>
+                        </div>
+                        <div className="h-full flex justify-end items-center">
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who
+                                we serve?
+                            </div>
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What
+                                we offer?
+                            </div>
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
+                                onClick={() => router.push('/sign-up')}>Sign up
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full h-full flex flex-col items-center mt-24">
                     {
                         !formSubmitted
                             ?
-                            <form className="w-384 p-2">
+                            <form className="w-576 p-2">
                                 {
                                     !restorePasswordHash
                                         ?
@@ -74,40 +96,45 @@ export default function ForgotPassword() {
                                             }}
                                         />
                                 }
-
-                                <div
-                                    className={`w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-10 flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
-                                    onClick={handleSubmit(submit)}
+                                <div className={`w-full h-16 rounded-md duration-100 mt-10
+                                    flex justify-center items-center 
+                                    ${Object.keys(errors).length ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
+                                    `}
+                                     onClick={handleSubmit(submit)}
                                 >
                                     {
                                         !restorePasswordHash
                                             ?
-                                            <p className="text-white font-poppins">Request password reset link</p>
+                                            <p className="black font-grotesk">Request password reset link</p>
                                             :
-                                            <p className="text-white font-poppins">Set new password</p>
+                                            <p className="black font-grotesk">Set new password</p>
                                     }
                                 </div>
                             </form>
                             :
-                            <div className="w-384 p-2">
+                            <div className="w-576 p-2">
                                 {
                                     !restorePasswordHash
                                         ?
                                         <>
-                                            <p className="text-2xl font-poppins font-bold">Check your email address</p>
-                                            <p className="text-sm mt-2">
-                                                We have sent a password reset link to <span
-                                                className="text-blue-500">{email}</span>
-                                            </p>
+                                            <div className="w-576 p-2">
+                                                <p className="text-4xl font-grotesk font-bold">Check your email address</p>
+                                                <p className="text-lg mt-4">
+                                                    We have sent a password reset link to <span
+                                                    className="text-blue-300">{email}</span>
+                                                </p>
+                                            </div>
                                         </>
                                         :
                                         <>
-                                            <p className="text-2xl font-poppins font-bold">You have successfully set
-                                                your new password</p>
-                                            <p className="text-sm mt-2">
-                                                Now you can <span className="text-blue-500 hover:cursor-pointer"
-                                                                  onClick={() => router.push('/sign-in')}>sign in</span>
-                                            </p>
+                                            <div className="w-576 p-2">
+                                                <p className="text-4xl font-grotesk font-bold">You have successfully set
+                                                    your new password</p>
+                                                <p className="text-lg mt-4">
+                                                    Now you can <span className="text-blue-300 hover:cursor-pointer"
+                                                                      onClick={() => router.push('/sign-in')}>sign in</span>
+                                                </p>
+                                            </div>
                                         </>
                                 }
                             </div>
