@@ -4,7 +4,7 @@ import PasswordInput from '../components/passwordInput';
 import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
-import cookieCutter from 'cookie-cutter';
+import Cookies from 'universal-cookie';
 
 export default function SignUp() {
     const router = useRouter();
@@ -29,7 +29,11 @@ export default function SignUp() {
                     password: data.password
                 });
 
-                cookieCutter.set('token', response.data.data.token);
+                const cookies = new Cookies();
+                cookies.set('token', response.data.data.token, {
+                    domain: process.env.DOMAIN_NAME,
+                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+                });
 
                 router.push('/dashboard');
             } catch (error) {

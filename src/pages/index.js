@@ -1,128 +1,299 @@
 import axios from 'axios';
 import Input from '../components/input';
-import {useForm} from 'react-hook-form';
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 
 export default function Index() {
     const router = useRouter();
 
-    const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
-    const [availableUsername, setAvailableUsername] = useState('');
+    const [usernames, setUsernames] = useState(['kmnviz', 'moneyphillic', 'moneymaker']);
 
-    const submit = async (data) => {
-        if (!Object.keys(errors).length) {
-            try {
-                const response = await axios.get(`${process.env.BACKEND_URL}/users/check-username-availability?username=${data.username}`);
-                const username = response.data.data.username;
+    const [inputUsername, setInputUsername] = useState('');
+    const [inputState, setInputState] = useState(true);
+    const [buttonMessage, setButtonMessage] = useState('next');
 
-                if (username) {
-                    setError('username', {
-                        type: 'custom',
-                        message: 'Username is already taken'
-                    });
+    useEffect(() => {
+        inputInitial();
+        inputCaretAnimation();
+        inputValidation();
+    }, []);
+
+    const inputInitial = () => {
+        const inputElement = document.getElementById('input-username');
+        inputElement.focus();
+    }
+
+    const inputCaretAnimation = () => {
+        const inputElement = document.getElementById('input-username');
+        const fakeInputElement = document.getElementById('fake-input');
+
+        let fakeInputCaret, caretPosition = 0;
+        fakeInputCaret = document.createElement('div');
+        fakeInputCaret.id = 'fake-input-caret';
+        fakeInputCaret.classList.add('h-16', 'absolute', 'top-4', 'w-1', 'bg-black');
+
+        // Add initial fake input caret
+        if (!document.getElementById('fake-input-caret')) {
+            fakeInputElement.appendChild(fakeInputCaret);
+        }
+
+        inputElement.addEventListener('input', () => {
+            // Set current caret position
+            caretPosition = inputElement.selectionStart;
+
+            // Remove all fake input spans
+            while (fakeInputElement.firstChild) {
+                fakeInputElement.removeChild(fakeInputElement.firstChild);
+            }
+
+            // Create new fake input spans
+            for (let i = 0; i < inputElement.value.length; i++) {
+                const letter = inputElement.value.charAt(i);
+                const span = document.createElement('span');
+                span.classList.add('fake-input-span', 'block', 'h-full', 'relative', 'flex', 'items-center');
+                span.textContent = letter;
+                fakeInputElement.appendChild(span);
+            }
+
+            // // On each input check if there is a value in input
+            // // If there is no value append fake input caret to fakeInputElement
+            // if (!inputElement.value.length) {
+            //     fakeInputCaret.classList.remove('right-0');
+            //     fakeInputCaret.classList.add('left-8');
+            //     fakeInputElement.appendChild(fakeInputCaret);
+            // } else {
+            //     // Else append fakeInputCaret to fakeInputSpan that is at caretPosition
+            //     const fakeInputSpan = document.getElementsByClassName('fake-input-span')[caretPosition - 1];
+            //     fakeInputCaret.classList.remove('left-8');
+            //     fakeInputCaret.classList.add('right-0');
+            //     fakeInputSpan.appendChild(fakeInputCaret);
+            // }
+        });
+
+        inputElement.addEventListener('blur', () => {
+            const fakeInputCaret = document.getElementById('fake-input-caret');
+            if (fakeInputCaret)
+                fakeInputCaret.remove();
+        });
+
+        ['input', 'click', 'keyup'].forEach((eventType) => {
+            fakeInputElement.appendChild(fakeInputCaret);
+
+            inputElement.addEventListener(eventType, () => {
+                caretPosition = inputElement.selectionStart;
+
+                // If there is no value append fake input caret to the start of fakeInputElement
+                if (!inputElement.value.length) {
+                    fakeInputCaret.classList.remove('right-0');
+                    fakeInputCaret.classList.add('left-8');
+                    fakeInputElement.appendChild(fakeInputCaret);
                 } else {
-                    setAvailableUsername(data.username);
+                    // Else append fakeInputCaret to fakeInputSpan that is at caretPosition
+                    const fakeInputSpan = document.getElementsByClassName('fake-input-span')[caretPosition > 0 ? caretPosition - 1 : 0];
+                    if (caretPosition > 0) {
+                        fakeInputCaret.classList.remove('left-8');
+                        fakeInputCaret.classList.add('right-0');
+                    } else {
+                        fakeInputCaret.classList.remove('left-0', 'left-8', 'right-0');
+                    }
+
+                    fakeInputSpan.appendChild(fakeInputCaret);
                 }
-            } catch (error) {
-                console.log('Failed to check username availability: ', error);
+            });
+        })
+    }
+
+    const inputValidation = () => {
+        const inputElement = document.getElementById('input-username');
+        inputElement.addEventListener('input', () => {
+            const isUsernameValid = inputElement.value.match(/^[a-zA-Z0-9_]*$/i);
+            const isUsernameAvailable = !usernames.includes(inputElement.value);
+
+            if (inputElement.value.length) {
+                inputElement.value = inputElement.value.toLowerCase();
+                setInputUsername(inputElement.value);
+            } else {
+                setInputUsername('');
+            }
+
+            if (!inputElement.value.length) {
+                setButtonMessage('required');
+                setInputState(false);
+            } else if (!isUsernameValid) {
+                setButtonMessage('not allowed!');
+                setInputState(false);
+            } else if (!isUsernameAvailable) {
+                setButtonMessage(`${inputElement.value} is busy`);
+                setInputState(false);
+            } else if (isUsernameValid && isUsernameAvailable) {
+                setButtonMessage(`next`);
+                setInputState(true);
+            }
+        });
+    }
+
+    const nextStep = async (data) => {
+        if (inputState) {
+            if (inputUsername) {
+                animateInput();
+                animateButton();
+                animatePageOverlay();
+                redirectToSignUp();
+
+                // try {
+                //     const response = await axios.get(`${process.env.BACKEND_URL}/users/check-username-availability?username=${inputUsername}`);
+                //     const username = response.data.data.username;
+                //
+                //     if (username) {
+                //         setButtonMessage(`${inputUsername} is busy`);
+                //     } else {
+                //         setAvailableUsername(data.username);
+                //     }
+                // } catch (error) {
+                //     console.log('Failed to check username availability: ', error);
+                // }
+            } else {
+                setInputState(false);
+                setButtonMessage('required');
             }
         }
     };
 
-    const resetForm = () => {
-        reset();
-        setAvailableUsername('');
+    const animateInput = () => {
+        // Smoothly paint the input and text color
+        const fakeInputElement = document.getElementById('fake-input');
+        const fakeInputElementOverlay = fakeInputElement.cloneNode(true);
+        fakeInputElementOverlay.id = 'fake-input-overlay';
+        fakeInputElementOverlay.classList.remove('w-full', 'px-8');
+        fakeInputElementOverlay.classList.add('w-0', 'bg-black', 'text-white', 'truncate', 'z-20');
+        fakeInputElement.insertAdjacentElement('afterend', fakeInputElementOverlay);
+
+        // Move platform name to chosen username
+        const platformNameElement = document.getElementById('platform-name');
+        const firstFakeInputSpanElement = document.getElementsByClassName('fake-input-span')[0];
+        const platformNameElementRect = platformNameElement.getBoundingClientRect();
+        const firstFakeInputSpanElementRect = firstFakeInputSpanElement.getBoundingClientRect();
+
+        requestAnimationFrame(() => {
+            platformNameElement.style.transition = 'transform 0.5s';
+            platformNameElement.style.transform = `translateX(${firstFakeInputSpanElementRect.left - platformNameElementRect.right}px)`;
+        });
+
+        setTimeout(() => {
+            const {left: platformNameElementLeft} = platformNameElement.getBoundingClientRect();
+            platformNameElement.textContent = `${platformNameElement.textContent}${inputUsername}`;
+            platformNameElement.style.transition = 'none';
+            platformNameElement.style.transform = 'translateX(0)';
+            platformNameElement.style.position = 'absolute';
+            platformNameElement.style.left = `${platformNameElementLeft - 8}px`;
+
+            const platformNameWrapperElement = document.getElementById('platform-name-wrapper');
+            platformNameWrapperElement.classList.add('w-full');
+
+            const finalPosition = (platformNameWrapperElement.offsetWidth / 2 - platformNameElement.offsetWidth / 2) - (platformNameElementLeft - 8);
+            platformNameElement.style.transition = 'transform 0.5s';
+            platformNameElement.style.transform = `translateX(${finalPosition}px)`;
+
+            const inputUsernameWrapperElement = document.getElementById('input-username-wrapper');
+            inputUsernameWrapperElement.remove();
+        }, 1000);
     }
 
-    const backgroundImage = 'https://images.unsplash.com/photo-1677443030437-93c9f5e08ae6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80'
+    const animateButton = () => {
+        const buttonWrapperElement = document.getElementById('button-wrapper');
+        const buttonElement = document.getElementById('button');
+        const buttonOverlayElement = document.getElementById('button-overlay');
+        const buttonOverlayTextElement = document.getElementById('button-overlay-text');
+        const buttonOverlayText = 'redirecting...'
+        buttonOverlayElement.style.transition = 'width 0.5s';
+        buttonOverlayElement.classList.add('w-full');
+
+        setTimeout(() => {
+            buttonElement.remove();
+            buttonWrapperElement.classList.remove('h-full', 'border-2', 'bg-green-300');
+            buttonOverlayText.split('').forEach((letter, index) => {
+                setTimeout(() => {
+                    buttonOverlayTextElement.textContent = `${buttonOverlayTextElement.textContent}${letter}`;
+                }, index * 50);
+            });
+        }, 200);
+
+        setTimeout(() => {
+            const inputMainElement = document.getElementById('input-main');
+            const buttonMainElement = document.getElementById('button-main');
+            const inputMainStyle = getComputedStyle(inputMainElement);
+            const buttonMainStyle = getComputedStyle(buttonMainElement);
+            const rpx = (value) => { return value.replace('px', '') * 1 };
+
+            buttonOverlayElement.style.transition = 'transform 0.5s';
+            buttonOverlayElement.style.transform = `translateY(-${rpx(inputMainStyle.height) + rpx(buttonMainStyle.marginTop)}px)`;
+        }, 1000);
+    };
+
+    const animatePageOverlay = () => {
+        setTimeout(() => {
+            const pageOverlayElement = document.getElementById('page-overlay');
+            pageOverlayElement.style.transition = 'width 0.5s';
+            pageOverlayElement.classList.add('z-40', 'w-full');
+        }, 2000);
+    }
+
+    const redirectToSignUp = () => {
+        setTimeout(() => {
+            router.push('/sign-up?username=' + inputUsername);
+        },3000);
+    }
 
     return (
         <>
-            <div className="w-screen h-screen relative">
-                {/*<iframe className="absolute h-full w-full z-0" src="https://embed.lottiefiles.com/animation/78692"></iframe>*/}
-                <div className="w-full h-full flex justify-center bg-cover bg-center"
-                    style={{backgroundImage: `url(${backgroundImage})`}}
-                >
-                    <div className="container relative flex flex-col justify-center items-end">
-                        <div className="w-384">
-                            {
-                                !availableUsername &&
-                                <div>
-                                    <img src="/logo.svg" alt="logo" className="h-10"/>
-                                </div>
-                            }
-                            {
-                                !availableUsername
-                                    ?
-                                    <h1 className="text-6xl mt-10 font-poppins font-bold">Make your account today</h1>
-                                    :
-                                    <h1 className="text-6xl mt-10 font-poppins font-bold">Almost there</h1>
-                            }
+            <div className="w-screen h-screen relative flex justify-center">
+                <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
+                <div className="w-full">
+                    <div className="w-full flex justify-between h-24">
+                        <div className="h-full flex items-center px-8">
+                            <img src="/next.svg" alt="logo" className="h-8" />
                         </div>
-                        {
-                            !availableUsername
-                                ?
-                                <form className="w-384 mt-10">
-                                    <Input
-                                        name="username"
-                                        register={register}
-                                        errors={errors}
-                                        validationSchema={{
-                                            required: 'Username is required',
-                                            minLength: {
-                                                value: 6,
-                                                message: 'Username must be at least 6 characters long'
-                                            },
-                                            pattern: {
-                                                value: /^[a-zA-Z0-9_]*$/i,
-                                                message: 'Username can include only alphanumeric characters and "_"'
-                                            }
-                                        }}
-                                    />
-                                    <div className={`w-full h-12 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-5
-  flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
-                                         onClick={handleSubmit(submit)}
-                                    >
-                                        <p className="text-white font-poppins">
-                                            Claim your account
-                                        </p>
+                        <div className="h-full flex justify-end items-center">
+                            <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who we serve?</div>
+                            <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What we offer?</div>
+                            <div className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black">Sign in</div>
+                        </div>
+                    </div>
+                    <div className="w-full mt-16">
+                        <div className="w-full flex flex-col justify-center py-12">
+                            <h1 className="p-2 font-grotesk text-8xl">SPACE FOR <span className="font-bold">CONTENT</span></h1>
+                            <div className="w-full mt-8 p-2 text-5xl">
+                                <div id="input-main" className="w-full h-24 relative flex border-2 border-black rounded-lg">
+                                    <div id="platform-name-wrapper" className="px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
+                                        <h4 id="platform-name">xpo.space/</h4>
                                     </div>
-                                </form>
-                                :
-                                <div className="w-384 p-2">
-                                    <p className="text-xl mt-5">Your page is <span
-                                        className="font-bold">space.com/{availableUsername}</span>
-                                    </p>
-                                    <div className="mt-10">
-                                        <div
-                                            className="w-full h-12 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 flex justify-center items-center"
-                                            onClick={() => router.push(`/sign-up?username=${availableUsername}`)}
-                                        >
-                                            <p className="text-white font-poppins">
-                                                Continue
-                                            </p>
-                                        </div>
-                                        <div
-                                            className="w-full h-12 mt-2 rounded-md flex justify-center items-center group hover:cursor-pointer"
-                                            onClick={() => resetForm()}
-                                        >
-                                            <p className="font-poppins text-blue-500 group-hover:text-blue-400">
-                                                Try another
-                                            </p>
-                                        </div>
+                                    <div id="input-username-wrapper" className="h-full flex-grow relative hover:cursor-pointer">
+                                        <input
+                                            id="input-username"
+                                            name="username"
+                                            className="w-full h-full rounded-r-md font-grotesk bg-transparent  px-8 input-caret text-transparent absolute z-10"
+                                        />
+                                        <div id="fake-input" className="w-full h-full font-grotesk px-8 absolute z-0 top-0 left-0 flex items-center"></div>
                                     </div>
                                 </div>
-                        }
-                        {
-                            !availableUsername &&
-                            <div className="absolute bottom-0 w-384 flex justify-center">
-                                <div
-                                    className="w-32 h-12 flex justify-center items-center rounded-t-3xl bg-white hover:cursor-pointer">
-                                    <p className="text-black font-poppins">Read more</p>
+                                <div id="button-main" className="w-full h-24 flex mt-4">
+                                    <div className="basis-96 h-full"></div>
+                                    <div
+                                        id="button-wrapper"
+                                        className={`h-full flex-grow relative hover:cursor-pointer border-2 border-black rounded-lg 
+                                        ${inputState ? 'bg-green-300' : 'bg-gray-300'}`}
+                                        onClick={nextStep}
+                                    >
+                                        <div id="button" className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
+                                            {buttonMessage}
+                                        </div>
+                                        <div id="button-overlay" className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
+                                            <h4 id="button-overlay-text" className="h-full flex items-center text-white truncate"></h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>

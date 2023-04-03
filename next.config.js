@@ -8,6 +8,7 @@ const nextConfig = {
     ],
   },
   env: {
+    DOMAIN_URL: process.env.DOMAIN_URL,
     DOMAIN_NAME: process.env.DOMAIN_NAME,
     BACKEND_URL: process.env.BACKEND_URL,
     IMAGES_URL: `${process.env.GCP_STORAGE_URL}/${process.env.GCP_STORAGE_IMAGES_BUCKET}`,

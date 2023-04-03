@@ -1,3 +1,145 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  background-color: #f7f1e3 !important;
+}
+* {
+  box-sizing: border-box;
+  -webkit-user-drag: none;
+  margin: 0;
+  padding: 0;
+  &:focus {
+    outline: none;
+  }
+  &:before, &:after {
+    box-sizing: border-box;
+  }
+}
+a {
+  color: inherit;
+  background-color: transparent;
+}
+a, a:hover {
+  outline: none;
+  text-decoration: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+}
+fieldset {
+  border: none;
+}
+hr {
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  border: none;
+}
+img, video {
+  height: auto;
+}
+img, object, iframe, embed, figure, video {
+  border: none;
+  max-width: 100%;
+  vertical-align: top;
+}
+input:-webkit-autofill, textarea:-webkit-autofill {
+  outline: none;
+}
+input {
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+input::-moz-focus-inner, button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input[type='checkbox'], input[type='radio'] {
+  padding: 0;
+}
+input[type='button'], input[type='submit'], input[type='reset'], button {
+  border-style: none;
+  border-width: 0;
+  max-width: none;
+  overflow: visible;
+  width: auto;
+  -webkit-appearance: button;
+}
+input[type='search']::-webkit-search-decoration, input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+label, input[type='submit'], input[type='button'], button {
+  cursor: pointer;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+svg {
+  transform-style: preserve-3d;
+  max-width: 100%;
+}
+table {
+  border-spacing: 0;
+}
+th {
+  font-weight: normal;
+}
+textarea {
+  border-radius: 0;
+  overflow: auto;
+  resize: none;
+  vertical-align: top;
+}
+ul, ol {
+  list-style-position: inside;
+}
+
+.input-caret {
+  caret-color: transparent;
+}
+
+#fake-input-caret {
+  animation: inputCaret .8s infinite;
+
+  @keyframes inputCaret {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+#fake-input-overlay {
+  animation: inputOverlay .5s forwards;
+
+  @keyframes inputOverlay {
+    0% {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    10% {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    100% {
+      width: 100%;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+}

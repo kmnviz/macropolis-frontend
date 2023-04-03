@@ -2,7 +2,7 @@ import axios from 'axios';
 import Input from '../components/input';
 import PasswordInput from '../components/passwordInput';
 import {useForm} from 'react-hook-form';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 
 export default function SignUp() {
@@ -13,7 +13,10 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
 
     useEffect(() => {
-        if (router.query?.username) setValue('username', router.query.username);
+        if (router.query?.username) {
+            setValue('username', router.query.username);
+            animatePageOverlay();
+        }
     });
 
     const submit = async (data) => {
@@ -44,9 +47,17 @@ export default function SignUp() {
         }
     }
 
+    const animatePageOverlay = () => {
+        const pageOverlayElement = document.getElementById('page-overlay');
+        pageOverlayElement.style.transition = 'width 0.5s';
+        pageOverlayElement.classList.add('z-0', 'w-0');
+        pageOverlayElement.classList.remove('w-full', 'z-40');
+    }
+
     return (
         <>
-            <div className="w-screen h-screen">
+            <div className="w-screen h-screen relative flex justify-center">
+                <div id="page-overlay" className="w-full h-full absolute right-0 z-40 bg-black"></div>
                 <div className="w-full h-full flex flex-col justify-center items-center bg-sky-100">
                     {
                         !formSubmitted
@@ -80,17 +91,17 @@ export default function SignUp() {
                                         }
                                     }}
                                 />
-                                <div className="h-4"></div>
-                                <PasswordInput
-                                    name="password"
-                                    label="Password"
-                                    register={register}
-                                    errors={errors}
-                                    validationSchema={{
-                                        required: 'Password is required',
-                                        minLength: {value: 8, message: 'Password must be at least 8 characters long'},
-                                    }}
-                                />
+                                {/*<div className="h-4"></div>*/}
+                                {/*<PasswordInput*/}
+                                {/*    name="password"*/}
+                                {/*    label="Password"*/}
+                                {/*    register={register}*/}
+                                {/*    errors={errors}*/}
+                                {/*    validationSchema={{*/}
+                                {/*        required: 'Password is required',*/}
+                                {/*        minLength: {value: 8, message: 'Password must be at least 8 characters long'},*/}
+                                {/*    }}*/}
+                                {/*/>*/}
                                 <div className={`w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-10
           flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
                                      onClick={handleSubmit(submit)}

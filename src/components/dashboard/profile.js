@@ -22,7 +22,15 @@ export default function DashboardProfile({profile}) {
                 formData.append('name', data.name);
                 if (avatarInput) formData.append('avatar', avatarInput);
 
-                await axios.post(`${process.env.BACKEND_URL}/profiles/update`, formData, {withCredentials: true});
+                await axios.post(`${process.env.BACKEND_URL}/profiles/update`, formData, {
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Credentials': 'true',
+                        'Access-Control-Allow-Origin': '*',
+                        'SameSite': 'None',
+                        'Secure': true
+                    }
+                });
             } catch (error) {
                 console.log('Failed to update profile: ', error);
             }
@@ -47,9 +55,6 @@ export default function DashboardProfile({profile}) {
     return (
         <>
             <div className="container">
-                <div className="p-6">
-                    <h2 className="text-2xl font-poppins font-bold">Dashboard</h2>
-                </div>
                 <div className="bg-white p-6 rounded-2xl">
                     <h2 className="text-2xl font-poppins font-bold">Profile</h2>
                     <div className="w-full h-px bg-gray-300 mt-4"></div>

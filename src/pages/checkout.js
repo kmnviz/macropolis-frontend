@@ -42,7 +42,7 @@ export default function Checkout({item, paymentIntentId}) {
             const response = stripeClient.confirmPayment({
                 elements: stripeElements,
                 confirmParams: {
-                    return_url: `${process.env.DOMAIN_NAME}/checkout?paymentIntentId=${paymentIntent.id}`
+                    return_url: `${process.env.DOMAIN_URL}/checkout?paymentIntentId=${paymentIntent.id}`
                 },
             });
 

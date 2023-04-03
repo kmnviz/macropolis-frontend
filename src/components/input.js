@@ -5,9 +5,6 @@ export default function Input({ name, label, placeholder, register, validationSc
     return (
         <>
             <div className="w-full relative">
-                {/*<div className="absolute w-32 h-12 bottom-0 rounded-md bg-black flex justify-center items-center">*/}
-                {/*    <p className="text-white font-poppins">space/</p>*/}
-                {/*</div>*/}
                 {
                     label &&
                     <label
