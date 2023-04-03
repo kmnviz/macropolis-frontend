@@ -11,6 +11,7 @@ export default function SignUp() {
 
     const {register, handleSubmit, formState: {errors}, setError, setValue} = useForm();
     const [signUpConfirmed, setSignUpConfirmed] = useState(false);
+    const [formButtonDisabled, setFormButtonDisabled] = useState(false);
 
     useEffect(() => {
         if (router.query?.username || router.query?.confirmationHash) {
@@ -22,23 +23,27 @@ export default function SignUp() {
 
 
     const submit = async (data) => {
-        if (!Object.keys(errors).length) {
-            try {
-                const response = await axios.post(`${process.env.BACKEND_URL}/users/sign-in`, {
-                    username: data.username,
-                    password: data.password
-                });
+        setFormButtonDisabled(true);
 
-                const cookies = new Cookies();
-                cookies.set('token', response.data.data.token, {
-                    domain: process.env.DOMAIN_NAME,
-                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-                });
+        try {
+            const response = await axios.post(`${process.env.BACKEND_URL}/users/sign-in`, {
+                username: data.username,
+                password: data.password
+            });
 
+            const cookies = new Cookies();
+            cookies.set('token', response.data.data.token, {
+                domain: process.env.DOMAIN_NAME,
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            });
+
+            setTimeout(() => {
+                setFormButtonDisabled(false);
                 router.push('/dashboard');
-            } catch (error) {
-                console.log('Failed to sign in: ', error);
-            }
+            }, 1000);
+        } catch (error) {
+            setFormButtonDisabled(false);
+            console.log('Failed to sign in: ', error);
         }
     }
 
@@ -105,7 +110,7 @@ export default function SignUp() {
                         />
                         <div className={`w-full h-16 rounded-md duration-100 mt-10
                                     flex justify-center items-center 
-                                    ${Object.keys(errors).length ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
+                                    ${Object.keys(errors).length || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
                                     `}
                              onClick={handleSubmit(submit)}
                         >

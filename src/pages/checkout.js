@@ -54,12 +54,12 @@ export default function Checkout({item, paymentIntentId}) {
 
     return (
         <>
-            <div className="w-screen h-screen bg-sky-100">
+            <div className="w-screen h-screen">
                 <div className="w-full h-full flex flex-col justify-center items-center">
                     {
                         !paymentIntentId
                         ?
-                            <form className="w-384 p-2">
+                            <form className="w-576 p-2">
                                 {
                                     stage === 0
                                         ?
@@ -93,7 +93,7 @@ export default function Checkout({item, paymentIntentId}) {
                                 </div>
                             </form>
                             :
-                            <div className="w-384">returned paymentIntendId: {paymentIntentId}</div>
+                            <div className="w-576">returned paymentIntendId: {paymentIntentId}</div>
                     }
                 </div>
             </div>

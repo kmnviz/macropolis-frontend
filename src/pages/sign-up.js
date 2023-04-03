@@ -11,6 +11,7 @@ export default function SignUp() {
     const {register, handleSubmit, formState: {errors}, setError, setValue} = useForm();
     const [predefinedUsername, setPredefinedUsername] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formButtonDisabled, setFormButtonDisabled] = useState(false);
     const [email, setEmail] = useState('');
 
     useEffect(() => {
@@ -19,9 +20,11 @@ export default function SignUp() {
             setPredefinedUsername(router.query.username);
             animatePageOverlay();
         }
-    });
+    }, [errors]);
 
     const submit = async (data) => {
+        setFormButtonDisabled(true);
+
         try {
             await axios.post(`${process.env.BACKEND_URL}/users/sign-up`, {
                 username: data.username,
@@ -29,9 +32,13 @@ export default function SignUp() {
                 password: data.password
             });
 
-            setFormSubmitted(true);
-            setEmail(data.email);
+            setTimeout(() => {
+                setFormButtonDisabled(false);
+                setFormSubmitted(true);
+                setEmail(data.email);
+            }, 1000);
         } catch (error) {
+            setFormButtonDisabled(false);
             if (error.response.status === 409) {
                 setError('username', {
                     type: 'custom',
@@ -150,7 +157,7 @@ export default function SignUp() {
                                 />
                                 <div className={`w-full h-16 rounded-md duration-100 mt-10
                                     flex justify-center items-center 
-                                    ${Object.keys(errors).length ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
+                                    ${Object.keys(errors).length > 0 || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
                                     `}
                                      onClick={handleSubmit(submit)}
                                 >

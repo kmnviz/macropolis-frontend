@@ -11,27 +11,32 @@ export default function ForgotPassword() {
     const {register, handleSubmit, formState: {errors}, setError, setValue} = useForm();
     const [restorePasswordHash] = useState(router.query?.restorePasswordHash ? router.query.restorePasswordHash : null);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formButtonDisabled, setFormButtonDisabled] = useState(false);
     const [email, setEmail] = useState('');
 
     const submit = async (data) => {
-        if (!Object.keys(errors).length) {
-            try {
-                const postData = {};
-                if (!restorePasswordHash) {
-                    postData.email = data.email;
-                } else {
-                    postData.restorePasswordHash = restorePasswordHash;
-                    postData.newPassword = data.password;
-                }
+        setFormButtonDisabled(true);
 
-                await axios.post(`${process.env.BACKEND_URL}/users/forgot-password`, postData);
-                setFormSubmitted(true);
-                setEmail(data.email);
-
-                router.push('/forgot-password');
-            } catch (error) {
-                console.log('Failed to send forgot password request: ', error);
+        try {
+            const postData = {};
+            if (!restorePasswordHash) {
+                postData.email = data.email;
+            } else {
+                postData.restorePasswordHash = restorePasswordHash;
+                postData.newPassword = data.password;
             }
+
+            await axios.post(`${process.env.BACKEND_URL}/users/forgot-password`, postData);
+            setFormSubmitted(true);
+            setEmail(data.email);
+
+            setTimeout(() => {
+                setFormButtonDisabled(false);
+                router.push('/forgot-password');
+            });
+        } catch (error) {
+            setFormButtonDisabled(false);
+            console.log('Failed to send forgot password request: ', error);
         }
     }
 

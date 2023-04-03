@@ -18,7 +18,7 @@ export default function Dashboard({user, profile, items}) {
 
     return (
         <>
-            <div className="w-screen min-h-screen bg-sky-100">
+            <div className="w-screen min-h-screen">
                 <div className="w-full flex flex-col items-center">
                     <div className="container">
                         <div className="grid grid-cols-4">
@@ -39,9 +39,9 @@ export default function Dashboard({user, profile, items}) {
                         <div className="h-32"></div>
                     </div>
 
-                    {/*<DashboardPayments />*/}
-                    {/*<div className="mt-8"></div>*/}
-                    {/*<DashboardItems user={user} items={items} />*/}
+                    <DashboardPayments />
+                    <div className="mt-8"></div>
+                    <DashboardItems user={user} items={items} />
                 </div>
             </div>
         </>
