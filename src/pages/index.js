@@ -1,8 +1,7 @@
 import axios from 'axios';
-import Input from '../components/input';
 import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
-import FormData from "form-data";
+import Head from 'next/head';
 
 export default function Index({ usernames }) {
     const router = useRouter();
@@ -218,6 +217,9 @@ export default function Index({ usernames }) {
 
     return (
         <>
+            <Head>
+                <title>xpo.space - a space for tour content</title>
+            </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full">

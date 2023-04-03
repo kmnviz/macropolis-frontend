@@ -28,7 +28,7 @@ export default function Input({ name, label, register, validationSchema, errors,
                     {...register(name, validationSchema)}
                 />
                 <div className={`w-full mt-1 ${!errors?.[name] ? 'hidden' : 'block'}`}>
-                    <p className="text-xs font-grotesk text-red-500 mt-1">
+                    <p className="text-xs font-grotesk text-red-300 mt-1">
                         {`${errors?.[name] ? errors[name].message : ''}`}
                     </p>
                 </div>

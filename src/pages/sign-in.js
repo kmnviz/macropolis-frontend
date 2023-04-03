@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
+import Head from 'next/head';
 
 export default function SignUp() {
     const router = useRouter();
@@ -43,12 +44,25 @@ export default function SignUp() {
             }, 1000);
         } catch (error) {
             setFormButtonDisabled(false);
+            if (error.response.status === 401) {
+                setError('username', {
+                    type: 'custom',
+                    message: error.response.data.message
+                });
+                setError('password', {
+                    type: 'custom',
+                    message: error.response.data.message
+                });
+            }
             console.log('Failed to sign in: ', error);
         }
     }
 
     return (
         <>
+            <Head>
+                <title>xpo.space - sign in</title>
+            </Head>
             <div className="w-screen h-screen">
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
