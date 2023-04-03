@@ -1,8 +1,9 @@
 import axios from 'axios';
 import Input from '../components/input';
 import {useForm} from 'react-hook-form';
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import Head from 'next/head';
 
 export default function Checkout({item, paymentIntentId}) {
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
@@ -54,6 +55,9 @@ export default function Checkout({item, paymentIntentId}) {
 
     return (
         <>
+            <Head>
+                <title>xpo.space - checkout</title>
+            </Head>
             <div className="w-screen h-screen">
                 <div className="w-full h-full flex flex-col justify-center items-center">
                     {

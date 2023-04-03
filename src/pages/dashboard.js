@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import DashboardProfile from '../components/dashboard/profile';
 import DashboardPayments from '../components/dashboard/payments';
 import DashboardItems from '../components/dashboard/items';
+import Head from 'next/head';
 
 export default function Dashboard({user, profile, items}) {
     const router = useRouter();
@@ -18,6 +19,9 @@ export default function Dashboard({user, profile, items}) {
 
     return (
         <>
+            <Head>
+                <title>xpo.space - dashboard</title>
+            </Head>
             <div className="w-screen min-h-screen">
                 <div className="w-full flex flex-col items-center">
                     <div className="container">

@@ -4,6 +4,7 @@ import PasswordInput from '../components/passwordInput';
 import {useForm} from 'react-hook-form';
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
+import Head from 'next/head';
 
 export default function ForgotPassword() {
     const router = useRouter();
@@ -42,6 +43,9 @@ export default function ForgotPassword() {
 
     return (
         <>
+            <Head>
+                <title>xpo.space - forgot password</title>
+            </Head>
             <div className="w-screen h-screen">
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">

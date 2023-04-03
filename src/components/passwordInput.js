@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 
 export default function Input({ name, label, register, validationSchema, errors, forgotPassword = false }) {
     const router = useRouter();
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+        const passwordInputElement = document.getElementById(name);
+        passwordInputElement.type = passwordVisible ? 'password' : 'text';
+    }
 
     return (
         <>
@@ -19,14 +27,28 @@ export default function Input({ name, label, register, validationSchema, errors,
                         <p className="text-sm font-grotesk text-blue-300 hover:cursor-pointer" onClick={() => router.push('/forgot-password')}>Forgot password</p>
                     }
                 </div>
-                <input
-                    type="password"
-                    id={name}
-                    name={name}
-                    className={`block w-full mt-1 h-16 px-2 border rounded-md border-gray-500 focus:outline-none focus:border-gray-900
-                    focus:border-2 bg-transparent ${!errors?.[name] ? 'border-black-500' : 'border-red-300'}`}
-                    {...register(name, validationSchema)}
-                />
+                <div className="w-full relative">
+                    <input
+                        type="password"
+                        id={name}
+                        name={name}
+                        className={`block w-full mt-1 h-16 px-2 border rounded-md border-gray-500 focus:outline-none focus:border-gray-900
+                    focus:border-2 bg-transparent text-2xl ${!errors?.[name] ? 'border-black-500' : 'border-red-300'}`}
+                        {...register(name, validationSchema)}
+                    />
+                    <div className="w-12 h-12 absolute top-2 right-2 flex justify-center items-center">
+                        <div className="w-full h-full absolute z-10 hover:cursor-pointer" onClick={togglePasswordVisibility}></div>
+                        <div className="w-full h-full absolute z-0 flex justify-center items-center">
+                            {
+                                !passwordVisible
+                                ?
+                                <img src="/eye.svg" className="w-8 h-8"/>
+                                :
+                                <img src="/eye-slash.svg" className="w-8 h-8"/>
+                            }
+                        </div>
+                    </div>
+                </div>
                 <div className={`w-full mt-1 ${!errors?.[name] ? 'hidden' : 'block'}`}>
                     <p className="text-xs font-grotesk text-red-300 mt-1">
                         {`${errors?.[name] ? errors[name].message : ''}`}

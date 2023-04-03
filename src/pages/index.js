@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 
-export default function Index({ usernames }) {
+export default function Index({usernames}) {
     const router = useRouter();
 
     const [inputUsername, setInputUsername] = useState('');
@@ -194,7 +194,9 @@ export default function Index({ usernames }) {
             const buttonMainElement = document.getElementById('button-main');
             const inputMainStyle = getComputedStyle(inputMainElement);
             const buttonMainStyle = getComputedStyle(buttonMainElement);
-            const rpx = (value) => { return value.replace('px', '') * 1 };
+            const rpx = (value) => {
+                return value.replace('px', '') * 1
+            };
 
             buttonOverlayElement.style.transition = 'transform 0.5s';
             buttonOverlayElement.style.transform = `translateY(-${rpx(inputMainStyle.height) + rpx(buttonMainStyle.marginTop)}px)`;
@@ -212,7 +214,7 @@ export default function Index({ usernames }) {
     const redirectToSignUp = () => {
         setTimeout(() => {
             router.push('/sign-up?username=' + inputUsername);
-        },3000);
+        }, 3000);
     }
 
     return (
@@ -225,11 +227,17 @@ export default function Index({ usernames }) {
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
                         <div className="h-full flex items-center px-8">
-                            <img src="/next.svg" alt="logo" className="h-8" />
+                            <img src="/next.svg" alt="logo" className="h-8"/>
                         </div>
                         <div className="h-full flex justify-end items-center">
-                            <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who we serve?</div>
-                            <div className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What we offer?</div>
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who
+                                we serve?
+                            </div>
+                            <div
+                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What
+                                we offer?
+                            </div>
                             <div
                                 className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
                                 onClick={() => router.push('/sign-in')}>Sign in
@@ -238,19 +246,24 @@ export default function Index({ usernames }) {
                     </div>
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12">
-                            <h1 className="p-2 font-grotesk text-8xl">SPACE FOR <span className="font-bold">CONTENT</span></h1>
+                            <h1 className="p-2 font-grotesk text-8xl">SPACE FOR <span
+                                className="font-bold">CONTENT</span></h1>
                             <div className="w-full mt-8 p-2 text-5xl">
-                                <div id="input-main" className="w-full h-24 relative flex border-2 border-black rounded-lg">
-                                    <div id="platform-name-wrapper" className="px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
+                                <div id="input-main"
+                                     className="w-full h-24 relative flex border-2 border-black rounded-lg">
+                                    <div id="platform-name-wrapper"
+                                         className="px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
                                         <h4 id="platform-name">xpo.space/</h4>
                                     </div>
-                                    <div id="input-username-wrapper" className="h-full flex-grow relative hover:cursor-pointer">
+                                    <div id="input-username-wrapper"
+                                         className="h-full flex-grow relative hover:cursor-pointer">
                                         <input
                                             id="input-username"
                                             name="username"
                                             className="w-full h-full rounded-r-md font-grotesk bg-transparent  px-8 input-caret text-transparent absolute z-10"
                                         />
-                                        <div id="fake-input" className="w-full h-full font-grotesk px-8 absolute z-0 top-0 left-0 flex items-center"></div>
+                                        <div id="fake-input"
+                                             className="w-full h-full font-grotesk px-8 absolute z-0 top-0 left-0 flex items-center"></div>
                                     </div>
                                 </div>
                                 <div id="button-main" className="w-full h-24 flex mt-4">
@@ -261,17 +274,25 @@ export default function Index({ usernames }) {
                                         ${inputState ? 'bg-green-300' : 'bg-gray-300'}`}
                                         onClick={nextStep}
                                     >
-                                        <div id="button" className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
+                                        <div id="button"
+                                             className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
                                             {buttonMessage}
                                         </div>
-                                        <div id="button-overlay" className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
-                                            <h4 id="button-overlay-text" className="h-full flex items-center text-white truncate"></h4>
+                                        <div id="button-overlay"
+                                             className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
+                                            <h4 id="button-overlay-text"
+                                                className="h-full flex items-center text-white truncate"></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="absolute left-2 bottom-8 p-2 bg-black rounded-lg flex items-center"
+                     style={{boxShadow: 'rgba(149, 157, 165, 2) 0px 8px 24px'}}
+                >
+                    <div className="h-full flex items-center"></div>
                 </div>
             </div>
         </>
@@ -287,11 +308,9 @@ export async function getServerSideProps(context) {
     try {
         const response = await axios.get(`${process.env.BACKEND_URL}/users/get-usernames`);
         props.usernames = response.data.data.usernames;
-
-        console.log('response: ', response);
     } catch (error) {
         console.log('Failed to fetch usernames: ', error);
     }
 
-    return { props };
+    return {props};
 }
