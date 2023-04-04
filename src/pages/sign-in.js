@@ -39,8 +39,11 @@ export default function SignUp() {
             });
 
             setTimeout(() => {
-                setFormButtonDisabled(false);
-                router.push('/dashboard');
+                animatePageOverlay();
+                setTimeout(() => {
+                    setFormButtonDisabled(false);
+                    router.push('/dashboard?entry');
+                }, 1000);
             }, 1000);
         } catch (error) {
             setFormButtonDisabled(false);
@@ -58,12 +61,19 @@ export default function SignUp() {
         }
     }
 
+    const animatePageOverlay = () => {
+        const pageOverlayElement = document.getElementById('page-overlay');
+        pageOverlayElement.style.transition = 'width 0.5s';
+        pageOverlayElement.classList.add('z-40', 'w-full');
+    }
+
     return (
         <>
             <Head>
                 <title>xpo.space - sign in</title>
             </Head>
             <div className="w-screen h-screen">
+                <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
                         <div className="h-full flex items-center px-8 hover:cursor-pointer"

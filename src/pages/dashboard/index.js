@@ -55,7 +55,7 @@ export default function DashboardProfile({profile}) {
         }
     }
 
-    const clearInitialAvatar = (event) => {
+    const clearInitialAvatar = () => {
         setInitialAvatar('');
         setAvatarTemp('');
     }
@@ -63,7 +63,9 @@ export default function DashboardProfile({profile}) {
     return (
         <DashboardLayout>
             <div className="w-full">
-                <h4 className="font-grotesk font-bold text-4xl">Profile</h4>
+                <div className="w-full h-16 flex justify-between items-center">
+                    <h4 className="font-grotesk font-bold text-4xl">Profile</h4>
+                </div>
                 <div className="h-24"></div>
                 <div className="flex flex-col mt-4">
                     <div
