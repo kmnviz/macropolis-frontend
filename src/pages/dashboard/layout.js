@@ -29,20 +29,18 @@ export default function DashboardLayout({children}) {
         if (!reverse) {
             pageOverlayElement.classList.remove('w-full');
             pageOverlayElement.classList.add('z-40', 'w-0');
-
             dashboardMenuWrapperElement.style.marginLeft = '-320px';
             dashboardMenuWrapperElement.style.transition = 'all 0.5s';
             setTimeout(() => {
                 dashboardMenuWrapperElement.style.marginLeft = '0px';
             }, 500);
         } else {
-            pageOverlayElement.classList.remove('w-0');
-            pageOverlayElement.classList.add('w-full');
-
             dashboardMenuWrapperElement.style.marginLeft = '-320px';
-            dashboardMenuWrapperElement.style.transition = 'all 0.5s';
             setTimeout(() => {
-                dashboardMenuWrapperElement.style.marginLeft = '0px';
+                pageOverlayElement.classList.remove('w-0');
+                pageOverlayElement.classList.add('w-full');
+                dashboardMenuWrapperElement.style.marginLeft = '0';
+                dashboardMenuWrapperElement.style.transition = 'all 0.5s';
             }, 500);
         }
     }
