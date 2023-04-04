@@ -17,7 +17,7 @@ export default function DashboardLayout({children}) {
         cookies.set('token', null, { expires: new Date(0) });
         animatePageOverlay(true);
         setTimeout(() => {
-            router.push('/sign-in');
+            router.push('/sign-in?entry');
         }, 1000);
     }
 

@@ -20,6 +20,10 @@ export default function SignUp() {
             setSignUpConfirmed(true);
             router.push('/sign-in', undefined, {shallow: true});
         }
+
+        if ('entry' in router.query) {
+            animatePageOverlay(true);
+        }
     }, []);
 
 
@@ -61,10 +65,15 @@ export default function SignUp() {
         }
     }
 
-    const animatePageOverlay = () => {
+    const animatePageOverlay = (reverse = false) => {
         const pageOverlayElement = document.getElementById('page-overlay');
         pageOverlayElement.style.transition = 'width 0.5s';
-        pageOverlayElement.classList.add('z-40', 'w-full');
+        if (!reverse) {
+            pageOverlayElement.classList.add('z-40', 'w-full');
+        } else {
+            pageOverlayElement.classList.remove('w-full');
+            pageOverlayElement.classList.add('w-0');
+        }
     }
 
     return (
@@ -73,7 +82,7 @@ export default function SignUp() {
                 <title>xpo.space - sign in</title>
             </Head>
             <div className="w-screen h-screen">
-                <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
+                <div id="page-overlay" className={`h-full absolute right-0 bg-black ${!('entry' in router.query) ? 'w-0 z-0' : 'w-full z-40'}`}></div>
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
                         <div className="h-full flex items-center px-8 hover:cursor-pointer"
