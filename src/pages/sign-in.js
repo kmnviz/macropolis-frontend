@@ -71,14 +71,14 @@ export default function SignUp() {
                             <img src="/next.svg" alt="logo" className="h-8"/>
                         </div>
                         <div className="h-full flex justify-end items-center">
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who
-                                we serve?
-                            </div>
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What
-                                we offer?
-                            </div>
+                            {/*<div*/}
+                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
+                            {/*    we serve?*/}
+                            {/*</div>*/}
+                            {/*<div*/}
+                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What*/}
+                            {/*    we offer?*/}
+                            {/*</div>*/}
                             <div
                                 className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
                                 onClick={() => router.push('/sign-up')}>Sign up

@@ -81,14 +81,14 @@ export default function SignUp() {
                             <img src="/next.svg" alt="logo" className="h-8"/>
                         </div>
                         <div className="h-full flex justify-end items-center">
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who
-                                we serve?
-                            </div>
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What
-                                we offer?
-                            </div>
+                            {/*<div*/}
+                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
+                            {/*    we serve?*/}
+                            {/*</div>*/}
+                            {/*<div*/}
+                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What*/}
+                            {/*    we offer?*/}
+                            {/*</div>*/}
                             <div
                                 className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
                                 onClick={() => router.push('/sign-in')}>Sign in
@@ -125,7 +125,7 @@ export default function SignUp() {
                                         :
                                         <div className="w-full relative">
                                             <label htmlFor="username" className="text-sm font-grotesk">username</label>
-                                            <div className="block w-full mt-1 h-16 px-2 border rounded-md border-black focus:outline-none focus:border-blue-500
+                                            <div className="block w-full mt-1 h-16 px-4 border rounded-md border-black focus:outline-none focus:border-blue-500
                                                 focus:border-2 bg-black flex items-center text-2xl">
                                                 <p className="font-grotesk text-white">{predefinedUsername}</p>
                                             </div>

@@ -32,7 +32,7 @@ export default function Input({ name, label, register, validationSchema, errors,
                         type="password"
                         id={name}
                         name={name}
-                        className={`block w-full mt-1 h-16 px-2 border rounded-md border-gray-500 focus:outline-none focus:border-gray-900
+                        className={`block w-full mt-1 h-16 px-4 border rounded-md border-gray-500 focus:outline-none focus:border-gray-900
                     focus:border-2 bg-transparent text-2xl ${!errors?.[name] ? 'border-black-500' : 'border-red-300'}`}
                         {...register(name, validationSchema)}
                     />
