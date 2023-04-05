@@ -87,11 +87,13 @@ export default function Checkout({item, paymentIntentId}) {
                                             </div>
                                         </>
                                 }
-                                <div className={`w-full h-10 rounded-md bg-blue-500 hover:bg-blue-400 hover:cursor-pointer duration-100 mt-10
-  flex justify-center items-center ${Object.keys(errors).length && 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed'}`}
+                                <div className={`w-full h-16 rounded-md duration-100 mt-10
+                                    flex justify-center items-center 
+                                    ${Object.keys(errors).length ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
+                                    `}
                                      onClick={handleSubmit(submit)}
                                 >
-                                    <p className="text-white font-poppins">
+                                    <p className="text-black font-grotesk">
                                         Continue
                                     </p>
                                 </div>

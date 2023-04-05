@@ -131,7 +131,6 @@ const DashboardProfile = ({profile}) => {
 }
 
 DashboardProfile.getLayout = function (page) {
-    console.log('page: ', page);
     return (
         <DashboardLayout user={page.props.user}>
             {page}
