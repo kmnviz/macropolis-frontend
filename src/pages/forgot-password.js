@@ -46,7 +46,7 @@ export default function ForgotPassword() {
             <Head>
                 <title>xpo.space - forgot password</title>
             </Head>
-            <div className="w-screen h-screen">
+            <div className="w-screen h-screen relative">
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
                         <div className="h-full flex items-center px-8 hover:cursor-pointer"
@@ -69,7 +69,7 @@ export default function ForgotPassword() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-full flex flex-col items-center mt-24">
+                <div className="w-full flex flex-col items-center mt-24">
                     {
                         !formSubmitted
                             ?

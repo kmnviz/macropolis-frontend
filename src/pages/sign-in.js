@@ -81,7 +81,7 @@ export default function SignUp() {
             <Head>
                 <title>xpo.space - sign in</title>
             </Head>
-            <div className="w-screen h-screen">
+            <div className="w-screen h-screen relative">
                 <div id="page-overlay" className={`h-full absolute right-0 bg-black ${!('entry' in router.query) ? 'w-0 z-0' : 'w-full z-40'}`}></div>
                 <div className="w-full">
                     <div className="w-full flex justify-between h-24">
@@ -105,7 +105,7 @@ export default function SignUp() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-full flex flex-col items-center mt-24">
+                <div className="w-full flex flex-col items-center mt-24">
                     {
                         signUpConfirmed &&
                         <div className="w-576 p-2">

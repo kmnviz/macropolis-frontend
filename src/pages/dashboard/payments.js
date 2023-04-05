@@ -1,16 +1,23 @@
 import React from 'react';
 import DashboardLayout from './layout';
 import jwt from 'jsonwebtoken';
+import DashboardItems from "@/pages/dashboard/items";
 
-export default function DashboardPayments() {
+function DashboardPayments() {
 
     return (
-        <DashboardLayout>
-            <div className="w-full">
-                <div className="w-full h-16 flex justify-between items-center">
-                    <h4 className="font-grotesk font-bold text-4xl">Payments</h4>
-                </div>
+        <div className="w-full">
+            <div className="w-full h-16 flex justify-between items-center">
+                <h4 className="font-grotesk font-bold text-4xl">Payments</h4>
             </div>
+        </div>
+    );
+}
+
+DashboardPayments.getLayout = function (page) {
+    return (
+        <DashboardLayout user={page.props.user}>
+            {page}
         </DashboardLayout>
     );
 }
@@ -26,3 +33,5 @@ export async function getServerSideProps(context) {
 
     return {props};
 }
+
+export default DashboardPayments;

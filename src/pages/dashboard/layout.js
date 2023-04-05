@@ -2,8 +2,9 @@ import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
 import Head from 'next/head';
+import {useSelectedLayoutSegment} from 'next/navigation';
 
-export default function DashboardLayout({children}) {
+export default function DashboardLayout({children, user}) {
     const router = useRouter();
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export default function DashboardLayout({children}) {
             }, 500);
         } else {
             dashboardMenuWrapperElement.style.marginLeft = '-320px';
+            pageOverlayElement.classList.add('z-40');
             setTimeout(() => {
                 pageOverlayElement.classList.remove('w-0');
                 pageOverlayElement.classList.add('w-full');
@@ -62,6 +64,7 @@ export default function DashboardLayout({children}) {
                             <div className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300" onClick={() => router.push('/dashboard/payments')}>payments</div>
                         </div>
                         <div className="w-full bg-black">
+                            <div className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300" onClick={() => router.push(`/${user.username}`)}>page</div>
                             <div className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300" onClick={logout}>logout</div>
                         </div>
                     </div>

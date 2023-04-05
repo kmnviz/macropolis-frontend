@@ -49,7 +49,7 @@ export default function User({username, profile, items}) {
 
     return (
         <>
-            <div className="w-screen h-screen bg-sky-100">
+            <div className="w-screen h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>
                 <div className="w-full h-full flex flex-col items-center">
                     <div className="container">

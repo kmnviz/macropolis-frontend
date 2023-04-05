@@ -6,8 +6,9 @@ import axios from 'axios';
 import FormData from 'form-data';
 import DashboardLayout from './layout';
 import jwt from 'jsonwebtoken';
+import DashboardProfile from "@/pages/dashboard/index";
 
-export default function DashboardItems({user, items}) {
+function DashboardItems({user, items}) {
     const {register, handleSubmit, formState: {errors}, setValue, reset} = useForm();
     const [itemsLocal, setItemsLocal] = useState(items);
     const [imageTemp, setImageTemp] = useState('');
@@ -92,8 +93,7 @@ export default function DashboardItems({user, items}) {
     };
 
     return (
-        <DashboardLayout>
-            <div className="w-full">
+        <div className="w-full">
                 <div className="w-full h-16 flex justify-between items-center">
                     <h4 className="font-grotesk font-bold text-4xl">{!showForm ? 'Items' : 'Items / Add'}</h4>
                     <div
@@ -254,6 +254,13 @@ export default function DashboardItems({user, items}) {
                         </>
                 }
             </div>
+    );
+}
+
+DashboardItems.getLayout = function (page) {
+    return (
+        <DashboardLayout user={page.props.user}>
+            {page}
         </DashboardLayout>
     );
 }
@@ -276,3 +283,5 @@ export async function getServerSideProps(context) {
 
     return {props};
 }
+
+export default DashboardItems;

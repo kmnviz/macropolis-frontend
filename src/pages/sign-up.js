@@ -69,7 +69,7 @@ export default function SignUp() {
             <Head>
                 <title>xpo.space - sign up</title>
             </Head>
-            <div className="w-screen h-screen relative flex flex-col justify-center">
+            <div className="w-screen h-screen relative">
                 {
                     router.query?.username &&
                     <div id="page-overlay" className="w-full h-full absolute right-0 z-40 bg-black"></div>
@@ -96,7 +96,7 @@ export default function SignUp() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-full flex flex-col items-center mt-24">
+                <div className="w-full flex flex-col items-center mt-24">
                     {
                         !formSubmitted
                             ?

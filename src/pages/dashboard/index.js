@@ -5,9 +5,9 @@ import FileInput from '../../components/fileInput';
 import axios from 'axios';
 import FormData from 'form-data';
 import DashboardLayout from './layout';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export default function DashboardProfile({profile}) {
+const DashboardProfile = ({profile}) => {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm();
     const [avatarTemp, setAvatarTemp] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
     const [initialAvatar, setInitialAvatar] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
@@ -61,8 +61,7 @@ export default function DashboardProfile({profile}) {
     }
 
     return (
-        <DashboardLayout>
-            <div className="w-full">
+        <div className="w-full">
                 <div className="w-full h-16 flex justify-between items-center">
                     <h4 className="font-grotesk font-bold text-4xl">Profile</h4>
                 </div>
@@ -128,6 +127,14 @@ export default function DashboardProfile({profile}) {
                     <p className="text-black font-grotesk">Save</p>
                 </div>
             </div>
+    );
+}
+
+DashboardProfile.getLayout = function (page) {
+    console.log('page: ', page);
+    return (
+        <DashboardLayout user={page.props.user}>
+            {page}
         </DashboardLayout>
     );
 }
@@ -150,3 +157,5 @@ export async function getServerSideProps(context) {
 
     return {props};
 }
+
+export default DashboardProfile;
