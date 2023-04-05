@@ -4,8 +4,9 @@ import {useForm} from 'react-hook-form';
 import React, {useState, useEffect} from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import Head from 'next/head';
+import Decimal from "decimal.js";
 
-export default function Checkout({item, paymentIntentId}) {
+export default function Checkout({item, paymentIntentId, emailAddress}) {
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
     const [enteredEmail, setEnteredEmail] = useState('');
     const [paymentIntent, setPaymentIntent] = useState(null);
@@ -43,7 +44,7 @@ export default function Checkout({item, paymentIntentId}) {
             const response = stripeClient.confirmPayment({
                 elements: stripeElements,
                 confirmParams: {
-                    return_url: `${process.env.DOMAIN_URL}/checkout?paymentIntentId=${paymentIntent.id}`
+                    return_url: `${process.env.DOMAIN_URL}/checkout?paymentIntentId=${paymentIntent.id}&itemId=${item._id}&emailAddress=${enteredEmail}`
                 },
             });
 
@@ -51,6 +52,10 @@ export default function Checkout({item, paymentIntentId}) {
                 console.log(`Failed to confirm payment intent: ${response.error.message}`)
             }
         }
+    }
+
+    const formatAmount = (amount) => {
+        return Decimal(amount).div(100).toFixed(2);
     }
 
     return (
@@ -64,6 +69,19 @@ export default function Checkout({item, paymentIntentId}) {
                         !paymentIntentId
                         ?
                             <form className="w-576 p-2">
+                                <div className="w-full flex flex-col items-center">
+                                    <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
+                                    <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>
+                                    {
+                                        stage === 1 &&
+                                        <>
+                                            <p className="w-full font-grotesk text-md truncate text-center">price: {`$${formatAmount(item.price)}`}</p>
+                                            <p className="w-full font-grotesk text-md truncate text-center">stripe fee: {`$${formatAmount(paymentIntent.stripe_fee)}`}</p>
+                                            <p className="w-full font-grotesk text-md truncate text-center">total: {`$${formatAmount(paymentIntent.total_amount)}`}</p>
+                                        </>
+                                    }
+                                </div>
+                                <div className="h-8"></div>
                                 {
                                     stage === 0
                                         ?
@@ -99,7 +117,14 @@ export default function Checkout({item, paymentIntentId}) {
                                 </div>
                             </form>
                             :
-                            <div className="w-576">returned paymentIntendId: {paymentIntentId}</div>
+                            <div className="w-576 flex flex-col items-center">
+                                <p className="text-2xl font-grotesk font-bold text-center">Congratulations, you just bought</p>
+                                <div className="w-full flex flex-col items-center mt-4">
+                                    <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
+                                    <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>
+                                </div>
+                                <p className="text-xl font-grotesk text-center mt-8">We have sent a download link to <span className="font-bold">{emailAddress}</span></p>
+                            </div>
                     }
                 </div>
             </div>
@@ -125,6 +150,10 @@ export async function getServerSideProps(context) {
 
     if (context.query.paymentIntentId) {
         props.paymentIntentId = context.query.paymentIntentId;
+    }
+
+    if (context.query.emailAddress) {
+        props.emailAddress = context.query.emailAddress;
     }
 
     return {props};
