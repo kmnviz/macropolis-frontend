@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
+import determineScreenType from '../helpers/determineScreenType';
 
 export default function Index({usernames}) {
     const router = useRouter();
@@ -9,6 +10,8 @@ export default function Index({usernames}) {
     const [inputUsername, setInputUsername] = useState('');
     const [inputState, setInputState] = useState(true);
     const [buttonMessage, setButtonMessage] = useState('next');
+    const [screenWidth, setScreenWidth] = useState(0);
+    const [screenType, setScreenType] = useState('');
 
     useEffect(() => {
         inputInitial();
@@ -28,7 +31,7 @@ export default function Index({usernames}) {
         let fakeInputCaret, caretPosition = 0;
         fakeInputCaret = document.createElement('div');
         fakeInputCaret.id = 'fake-input-caret';
-        fakeInputCaret.classList.add('h-16', 'absolute', 'top-4', 'w-1', 'bg-black');
+        fakeInputCaret.classList.add(`h-8`, 'md:h-16', 'absolute', 'top-2', 'md:top-4', 'w-0.5', 'md:w-1', 'bg-black');
 
         // Add initial fake input caret
         if (!document.getElementById('fake-input-caret')) {
@@ -68,17 +71,17 @@ export default function Index({usernames}) {
 
                 // If there is no value append fake input caret to the start of fakeInputElement
                 if (!inputElement.value.length) {
-                    fakeInputCaret.classList.remove('right-0');
-                    fakeInputCaret.classList.add('left-8');
+                    fakeInputCaret.classList.remove('right-0', 'md:right-0');
+                    fakeInputCaret.classList.add('left-4', 'md:left-8');
                     fakeInputElement.appendChild(fakeInputCaret);
                 } else {
                     // Else append fakeInputCaret to fakeInputSpan that is at caretPosition
                     const fakeInputSpan = document.getElementsByClassName('fake-input-span')[caretPosition > 0 ? caretPosition - 1 : 0];
                     if (caretPosition > 0) {
-                        fakeInputCaret.classList.remove('left-8');
-                        fakeInputCaret.classList.add('right-0');
+                        fakeInputCaret.classList.remove('left-4', 'md:left-8');
+                        fakeInputCaret.classList.add('right-0', 'md:right-0');
                     } else {
-                        fakeInputCaret.classList.remove('left-0', 'left-8', 'right-0');
+                        fakeInputCaret.classList.remove('left-0', 'md:left-0', 'left-4', 'md:left-4', 'right-0', 'md:right-0');
                     }
 
                     fakeInputSpan.appendChild(fakeInputCaret);
@@ -135,7 +138,7 @@ export default function Index({usernames}) {
         const fakeInputElement = document.getElementById('fake-input');
         const fakeInputElementOverlay = fakeInputElement.cloneNode(true);
         fakeInputElementOverlay.id = 'fake-input-overlay';
-        fakeInputElementOverlay.classList.remove('w-full', 'px-8');
+        fakeInputElementOverlay.classList.remove('w-full', 'px-4', 'md:px-8');
         fakeInputElementOverlay.classList.add('w-0', 'bg-black', 'text-white', 'truncate', 'z-20');
         fakeInputElement.insertAdjacentElement('afterend', fakeInputElementOverlay);
 
@@ -181,7 +184,7 @@ export default function Index({usernames}) {
 
         setTimeout(() => {
             buttonElement.remove();
-            buttonWrapperElement.classList.remove('h-full', 'border-2', 'bg-green-300');
+            buttonWrapperElement.classList.remove('h-full', 'border', 'md:border-2', 'bg-green-300');
             buttonOverlayText.split('').forEach((letter, index) => {
                 setTimeout(() => {
                     buttonOverlayTextElement.textContent = `${buttonOverlayTextElement.textContent}${letter}`;
@@ -224,12 +227,12 @@ export default function Index({usernames}) {
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
-                <div className="w-full">
+                <div className="w-full max-w-screen-2xl">
                     <div className="w-full flex justify-between h-24">
-                        <div className="h-full flex items-center px-8">
-                            <img src="/next.svg" alt="logo" className="h-8"/>
+                        <div className="h-full flex items-center px-4 md:px-8">
+                            <img src="/next.svg" alt="logo" className="h-4 md:h-8"/>
                         </div>
-                        <div className="h-full flex justify-end items-center">
+                        <div className="h-full flex justify-end items-center px-4 md:px-8">
                             {/*<div*/}
                             {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
                             {/*    we serve?*/}
@@ -239,38 +242,38 @@ export default function Index({usernames}) {
                             {/*    we offer?*/}
                             {/*</div>*/}
                             <div
-                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
+                                className="h-8 md:h-16 px-4 md:px-8 flex items-center font-poppins truncate hover:cursor-pointer rounded-4xl border md:border-2 border-black"
                                 onClick={() => router.push('/sign-in')}>Sign in
                             </div>
                         </div>
                     </div>
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12">
-                            <h1 className="p-2 font-grotesk text-8xl">SPACE FOR <span
+                            <h1 className="p-2 font-grotesk text-5xl md:text-8xl">SPACE FOR <span
                                 className="font-bold">CONTENT</span></h1>
-                            <div className="w-full mt-8 p-2 text-5xl">
+                            <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl">
                                 <div id="input-main"
-                                     className="w-full h-24 relative flex border-2 border-black rounded-lg">
+                                     className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
                                     <div id="platform-name-wrapper"
-                                         className="px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
+                                         className="px-4 md:px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
                                         <h4 id="platform-name">xpo.space/</h4>
                                     </div>
                                     <div id="input-username-wrapper"
-                                         className="h-full flex-grow relative hover:cursor-pointer">
+                                         className="h-full flex-grow relative hover:cursor-pointer truncate">
                                         <input
                                             id="input-username"
                                             name="username"
-                                            className="w-full h-full rounded-r-md font-grotesk bg-transparent  px-8 input-caret text-transparent absolute z-10"
+                                            className="w-full h-full rounded-r-md font-grotesk bg-transparent px-4 md:px-8 input-caret text-transparent absolute z-10"
                                         />
                                         <div id="fake-input"
-                                             className="w-full h-full font-grotesk px-8 absolute z-0 top-0 left-0 flex items-center"></div>
+                                             className="w-full h-full font-grotesk px-4 md:px-8 absolute z-0 top-0 left-0 flex items-center"></div>
                                     </div>
                                 </div>
-                                <div id="button-main" className="w-full h-24 flex mt-4">
-                                    <div className="basis-96 h-full"></div>
+                                <div id="button-main" className="w-full h-12 md:h-24 flex mt-4">
+                                    <div className="hidden md:block basis-48 md:basis-96 h-full"></div>
                                     <div
                                         id="button-wrapper"
-                                        className={`h-full flex-grow relative hover:cursor-pointer border-2 border-black rounded-lg 
+                                        className={`h-full flex-grow relative hover:cursor-pointer border md:border-2 border-black rounded-lg 
                                         ${inputState ? 'bg-green-300' : 'bg-gray-300'}`}
                                         onClick={nextStep}
                                     >
@@ -288,11 +291,6 @@ export default function Index({usernames}) {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="absolute left-2 bottom-8 p-2 bg-black rounded-lg flex items-center"
-                     style={{boxShadow: 'rgba(149, 157, 165, 2) 0px 8px 24px'}}
-                >
-                    <div className="h-full flex items-center"></div>
                 </div>
             </div>
         </>
