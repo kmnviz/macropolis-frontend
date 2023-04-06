@@ -140,6 +140,7 @@ export default function Index({usernames}) {
         fakeInputElementOverlay.id = 'fake-input-overlay';
         fakeInputElementOverlay.classList.remove('w-full', 'px-4', 'md:px-8');
         fakeInputElementOverlay.classList.add('w-0', 'bg-black', 'text-white', 'truncate', 'z-20');
+        window.innerWidth < 768 && fakeInputElementOverlay.style.setProperty('padding-left', '16px', 'important');
         fakeInputElement.insertAdjacentElement('afterend', fakeInputElementOverlay);
 
         // Move platform name to chosen username
