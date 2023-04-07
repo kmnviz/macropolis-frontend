@@ -18,7 +18,7 @@ export default function Input({ name, label, placeholder, register, validationSc
                     {
                         icon &&
                         <div className="w-8 md:w-16 h-12 md:h-16 absolute top-0 left-0 border-r border-black flex justify-center items-center">
-                            <img src={`/${icon}.svg`} className="w-4 md:w-4 h-4 md:h4"/>
+                            <img src={`/${icon}.svg`} className="w-4 md:w-8 h-4 md:h-8"/>
                         </div>
                     }
                     <input

@@ -94,7 +94,7 @@ export default function DashboardLayout({children, user}) {
                 </div>
                 <div id="dashboard-menu-main"
                      className="ml-[-100%] lg:ml-0 w-full lg:w-80 min-h-full h-1 fixed top-0 left-0 bg-black z-10 p-4 lg:p-0">
-                    <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col">
+                    <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col overflow-y-auto">
                         <div className="w-full flex-grow bg-black">
                             <div
                                 className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk select-none">xpo.space

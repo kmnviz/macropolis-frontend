@@ -14,7 +14,6 @@ body {
   position: relative;
   margin: 0;
   min-height: 100%;
-  background-color: #f7f1e3 !important;
 }
 * {
   box-sizing: border-box;
@@ -176,4 +175,8 @@ ul, ol {
       transform: rotate(-45deg);
     }
   }
+}
+
+.black-to-transparent-gradient {
+  background: linear-gradient(180deg, rgba(31, 33, 46, 0) 0%, rgba(31, 33, 46, 0.8) 56.25%, rgba(31, 33, 46, 0.9) 79.17%, #1F212E 100%);
 }

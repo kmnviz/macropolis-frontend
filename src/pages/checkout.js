@@ -4,7 +4,8 @@ import {useForm} from 'react-hook-form';
 import React, {useState, useEffect} from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import Head from 'next/head';
-import Decimal from "decimal.js";
+import Decimal from 'decimal.js';
+import Button from '../components/button';
 
 export default function Checkout({item, paymentIntentId, emailAddress}) {
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
@@ -68,7 +69,7 @@ export default function Checkout({item, paymentIntentId, emailAddress}) {
                     {
                         !paymentIntentId
                         ?
-                            <form className="w-576 p-2">
+                            <form className="w-full md:w-576 p-2">
                                 <div className="w-full flex flex-col items-center">
                                     <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
                                     <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>
@@ -105,16 +106,12 @@ export default function Checkout({item, paymentIntentId, emailAddress}) {
                                             </div>
                                         </>
                                 }
-                                <div className={`w-full h-16 rounded-md duration-100 mt-10
-                                    flex justify-center items-center 
-                                    ${Object.keys(errors).length ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
-                                    `}
-                                     onClick={handleSubmit(submit)}
-                                >
-                                    <p className="text-black font-grotesk">
-                                        Continue
-                                    </p>
-                                </div>
+                                <div className="h-10"></div>
+                                <Button
+                                    disabled={Object.keys(errors).length}
+                                    onClick={handleSubmit(submit)}
+                                    text="Continue"
+                                />
                             </form>
                             :
                             <div className="w-576 flex flex-col items-center">
