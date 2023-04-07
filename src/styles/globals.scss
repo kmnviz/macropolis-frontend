@@ -147,3 +147,33 @@ ul, ol {
 #dashboard-menu-main {
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
+
+#dashboard-menu-button {
+  width: 60px;
+  height: 60px;
+}
+
+#dashboard-menu-icon {
+  width: 40px;
+  height: 40px;
+  div:first-child {
+    top: 8px;
+    transition: .1s;
+  }
+  div:last-child {
+    bottom: 8px;
+    transition: .1s;
+    transition-delay: .1s;
+  }
+
+  &.active {
+    div:first-child {
+      top: 18px;
+      transform: rotate(45deg);
+    }
+    div:last-child {
+      bottom: 18px;
+      transform: rotate(-45deg);
+    }
+  }
+}

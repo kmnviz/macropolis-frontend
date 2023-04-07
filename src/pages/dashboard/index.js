@@ -6,6 +6,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import DashboardLayout from './layout';
 import jwt from 'jsonwebtoken';
+import Button from '../../components/button';
 
 const DashboardProfile = ({profile}) => {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm();
@@ -118,14 +119,11 @@ const DashboardProfile = ({profile}) => {
                     }}
                 />
                 <div className="h-10"></div>
-                <div className={`w-full h-16 rounded-md duration-100
-                    flex justify-center items-center 
-                    ${Object.keys(errors).length || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
-                    `}
-                     onClick={handleSubmit(submit)}
-                >
-                    <p className="text-black font-grotesk">Save</p>
-                </div>
+                <Button
+                    disabled={Object.keys(errors).length || formButtonDisabled}
+                    submit={handleSubmit(submit)}
+                    text="Save"
+                />
             </div>
     );
 }

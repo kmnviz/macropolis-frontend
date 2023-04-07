@@ -6,7 +6,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import DashboardLayout from './layout';
 import jwt from 'jsonwebtoken';
-import DashboardProfile from "@/pages/dashboard/index";
+import Button from '../../components/button';
 
 function DashboardItems({user, items}) {
     const {register, handleSubmit, formState: {errors}, setValue, reset} = useForm();
@@ -118,17 +118,17 @@ function DashboardItems({user, items}) {
                                     return (
                                         <div key={index}>
                                             <div
-                                                className="w-full h-16 rounded-md border border-black p-2 flex justify-between">
+                                                className="w-full h-12 md:h-16 rounded-md border border-black p-2 flex justify-between">
                                                 <div className="flex items-center">
-                                                    <div className="w-12 h-12 rounded-sm bg-center bg-cover"
+                                                    <div className="w-8 md:w-12 h-8 md:h-12 rounded-sm bg-center bg-cover"
                                                          style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
                                                     <p className="ml-4 text-black font-grotesk text-lg truncate">{item.name}</p>
                                                 </div>
                                                 <div className="flex items-center"
                                                      onClick={() => item?.audio_preview && deleteItem(item._id)}>
                                                     <div
-                                                        className="w-12 h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
-                                                        <img src="/trash.svg" className="w-6 h-6"/>
+                                                        className="w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
+                                                        <img src="/trash.svg" className="w-4 md:w-6 h-4 md:h-6"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -138,15 +138,15 @@ function DashboardItems({user, items}) {
                                 })
                             }
                             <div
-                                className="w-full h-16 rounded-md border border-black p-2 flex justify-center items-center hover:cursor-pointer hover:border-2"
+                                className="w-full h-12 md:h-16 rounded-md border border-black p-2 flex justify-center items-center hover:cursor-pointer hover:border-2"
                                 onClick={() => setShowForm(!showForm)}
                             >
                                 <div className="flex items-center">
-                                    <div className="w-12 h-12 flex items-center justify-center">
-                                        <img src="/plus.svg" className="w-6 h-6"/>
+                                    <div className="w-8 md:w-12 h-8 md:h-12 flex items-center justify-center">
+                                        <img src="/plus.svg" className="w-4 md:w-6 h-4 md:h-6"/>
                                     </div>
                                 </div>
-                                <p className="ml-4 text-black font-grotesk text-lg truncate">Add item</p>
+                                <p className="ml-4 text-black font-grotesk text-base md:text-lg truncate">Add item</p>
                             </div>
                         </div>
                         :
@@ -242,14 +242,11 @@ function DashboardItems({user, items}) {
                                     />
                                 </div>
                                 <div className="h-10"></div>
-                                <div className={`w-full h-16 rounded-md duration-100
-                    flex justify-center items-center 
-                    ${Object.keys(errors).length || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
-                    `}
-                                     onClick={handleSubmit(submit)}
-                                >
-                                    <p className="text-black font-grotesk">Save</p>
-                                </div>
+                                <Button
+                                    disabled={Object.keys(errors).length || formButtonDisabled}
+                                    submit={handleSubmit(submit)}
+                                    text="Save"
+                                />
                             </div>
                         </>
                 }
