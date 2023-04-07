@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
-import determineScreenType from '../helpers/determineScreenType';
+import Header from '../components/header';
 
 export default function Index({usernames}) {
     const router = useRouter();
@@ -229,25 +229,7 @@ export default function Index({usernames}) {
             <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full max-w-screen-2xl">
-                    <div className="w-full flex justify-between h-24">
-                        <div className="h-full flex items-center px-4 md:px-8">
-                            <img src="/next.svg" alt="logo" className="h-4 md:h-8"/>
-                        </div>
-                        <div className="h-full flex justify-end items-center px-4 md:px-8">
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
-                            {/*    we serve?*/}
-                            {/*</div>*/}
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What*/}
-                            {/*    we offer?*/}
-                            {/*</div>*/}
-                            <div
-                                className="h-8 md:h-16 px-4 md:px-8 flex items-center font-poppins truncate hover:cursor-pointer rounded-4xl border md:border-2 border-black"
-                                onClick={() => router.push('/sign-in')}>Sign in
-                            </div>
-                        </div>
-                    </div>
+                    <Header router={router} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12">
                             <h1 className="p-2 font-grotesk text-5xl md:text-8xl">SPACE FOR <span

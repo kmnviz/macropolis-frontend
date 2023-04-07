@@ -5,6 +5,8 @@ import {useForm} from 'react-hook-form';
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
+import Header from '../components/header';
+import Button from '../components/button';
 
 export default function SignUp() {
     const router = useRouter();
@@ -74,33 +76,12 @@ export default function SignUp() {
                     router.query?.username &&
                     <div id="page-overlay" className="w-full h-full absolute right-0 z-40 bg-black"></div>
                 }
-                <div className="w-full">
-                    <div className="w-full flex justify-between h-24">
-                        <div className="h-full flex items-center px-8 hover:cursor-pointer"
-                             onClick={() => router.push('/')}>
-                            <img src="/next.svg" alt="logo" className="h-8"/>
-                        </div>
-                        <div className="h-full flex justify-end items-center">
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
-                            {/*    we serve?*/}
-                            {/*</div>*/}
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What*/}
-                            {/*    we offer?*/}
-                            {/*</div>*/}
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
-                                onClick={() => router.push('/sign-in')}>Sign in
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Header router={router} />
                 <div className="w-full flex flex-col items-center mt-24">
                     {
                         !formSubmitted
                             ?
-                            <form className="w-576 p-2">
+                            <form className="w-full md:w-576 p-2">
                                 <h6 className="font-grotesk text-xl">Sign up</h6>
                                 <div className="h-4"></div>
                                 {
@@ -159,22 +140,18 @@ export default function SignUp() {
                                         }
                                     }}
                                 />
-                                <div className={`w-full h-16 rounded-md duration-100 mt-10
-                                    flex justify-center items-center 
-                                    ${Object.keys(errors).length > 0 || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
-                                    `}
-                                     onClick={handleSubmit(submit)}
-                                >
-                                    <p className="text-black font-grotesk">
-                                        Sign up
-                                    </p>
-                                </div>
+                                <div className="h-10"></div>
+                                <Button
+                                    disabled={Object.keys(errors).length > 0 || formButtonDisabled}
+                                    submit={handleSubmit(submit)}
+                                    text="Sign up"
+                                />
                             </form>
                             :
-                            <div className="w-576 p-2">
-                                <p className="text-4xl font-grotesk font-bold">Confirm your email address to get
+                            <div className="w-full md:w-576 p-2">
+                                <p className="text-xl md:text-4xl font-grotesk font-bold">Confirm your email address to get
                                     started</p>
-                                <p className="text-lg mt-4">
+                                <p className="text-base md:text-lg mt-4">
                                     We have sent a confirmation request to <span
                                     className="text-blue-300">{email}</span> to verify that the email address belongs to
                                     you.

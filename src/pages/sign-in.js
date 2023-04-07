@@ -6,6 +6,8 @@ import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
 import Head from 'next/head';
+import Header from '../components/header';
+import Button from '../components/button';
 
 export default function SignUp() {
     const router = useRouter();
@@ -84,35 +86,16 @@ export default function SignUp() {
             <div className="w-screen h-screen relative">
                 <div id="page-overlay" className={`h-full absolute right-0 bg-black ${!('entry' in router.query) ? 'w-0 z-0' : 'w-full z-40'}`}></div>
                 <div className="w-full">
-                    <div className="w-full flex justify-between h-24">
-                        <div className="h-full flex items-center px-8 hover:cursor-pointer"
-                             onClick={() => router.push('/')}>
-                            <img src="/next.svg" alt="logo" className="h-8"/>
-                        </div>
-                        <div className="h-full flex justify-end items-center">
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">Who*/}
-                            {/*    we serve?*/}
-                            {/*</div>*/}
-                            {/*<div*/}
-                            {/*    className="h-16 px-8 flex items-center font-poppins text-black mr-8 hover:cursor-pointer">What*/}
-                            {/*    we offer?*/}
-                            {/*</div>*/}
-                            <div
-                                className="h-16 px-8 flex items-center font-poppins mr-8 hover:cursor-pointer rounded-4xl border-2 border-black"
-                                onClick={() => router.push('/sign-up')}>Sign up
-                            </div>
-                        </div>
-                    </div>
+                    <Header router={router}/>
                 </div>
                 <div className="w-full flex flex-col items-center mt-24">
                     {
                         signUpConfirmed &&
-                        <div className="w-576 p-2">
-                            <p className="text-4xl font-grotesk font-bold">Email address was confirmed. Welcome!</p>
+                        <div className="w-full md:w-576 p-2">
+                            <p className="text-xl md:text-4xl font-grotesk font-bold">Email address was confirmed. Welcome!</p>
                         </div>
                     }
-                    <form className="w-576 p-2">
+                    <form className="w-full md:w-576 p-2">
                         <h6 className="font-grotesk text-xl">Sign in</h6>
                         <div className="h-4"></div>
                         <Input
@@ -141,16 +124,12 @@ export default function SignUp() {
                                 minLength: {value: 8, message: 'Password must be at least 8 characters long'},
                             }}
                         />
-                        <div className={`w-full h-16 rounded-md duration-100 mt-10
-                                    flex justify-center items-center 
-                                    ${Object.keys(errors).length || formButtonDisabled ? 'bg-gray-300 hover:bg-gray-300 hover:cursor-not-allowed' : 'bg-green-300 hover:bg-green-400 hover:cursor-pointer'}
-                                    `}
-                             onClick={handleSubmit(submit)}
-                        >
-                            <p className="text-black font-grotesk">
-                                Sign in
-                            </p>
-                        </div>
+                        <div className="h-10"></div>
+                        <Button
+                            disabled={Object.keys(errors).length || formButtonDisabled}
+                            submit={handleSubmit(submit)}
+                            text="Sign in"
+                        />
                     </form>
                 </div>
             </div>
