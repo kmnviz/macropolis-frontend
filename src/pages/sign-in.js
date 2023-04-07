@@ -83,54 +83,54 @@ export default function SignUp() {
             <Head>
                 <title>xpo.space - sign in</title>
             </Head>
-            <div className="w-screen h-screen relative">
+            <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className={`h-full absolute right-0 bg-black ${!('entry' in router.query) ? 'w-0 z-0' : 'w-full z-40'}`}></div>
-                <div className="w-full">
+                <div className="w-full max-w-screen-2xl">
                     <Header router={router}/>
-                </div>
-                <div className="w-full flex flex-col items-center mt-24">
-                    {
-                        signUpConfirmed &&
-                        <div className="w-full md:w-576 p-2">
-                            <p className="text-xl md:text-4xl font-grotesk font-bold">Email address was confirmed. Welcome!</p>
-                        </div>
-                    }
-                    <form className="w-full md:w-576 p-2">
-                        <h6 className="font-grotesk text-xl">Sign in</h6>
-                        <div className="h-4"></div>
-                        <Input
-                            name="username"
-                            label="Username"
-                            register={register}
-                            errors={errors}
-                            validationSchema={{
-                                required: 'Username is required',
-                                minLength: {value: 6, message: 'Username must be at least 6 characters long'},
-                                pattern: {
-                                    value: /^[a-zA-Z0-9_]*$/i,
-                                    message: 'Username can include only alphanumeric characters and "_"'
-                                }
-                            }}
-                        />
-                        <div className="h-4"></div>
-                        <PasswordInput
-                            name="password"
-                            label="Password"
-                            register={register}
-                            errors={errors}
-                            forgotPassword={true}
-                            validationSchema={{
-                                required: 'Password is required',
-                                minLength: {value: 8, message: 'Password must be at least 8 characters long'},
-                            }}
-                        />
-                        <div className="h-10"></div>
-                        <Button
-                            disabled={Object.keys(errors).length || formButtonDisabled}
-                            submit={handleSubmit(submit)}
-                            text="Sign in"
-                        />
-                    </form>
+                    <div className="w-full flex flex-col items-center mt-24">
+                        {
+                            signUpConfirmed &&
+                            <div className="w-full md:w-576 p-2">
+                                <p className="text-xl md:text-4xl font-grotesk font-bold">Email address was confirmed. Welcome!</p>
+                            </div>
+                        }
+                        <form className="w-full md:w-576 p-2">
+                            <h6 className="font-grotesk text-xl">Sign in</h6>
+                            <div className="h-4"></div>
+                            <Input
+                                name="username"
+                                label="Username"
+                                register={register}
+                                errors={errors}
+                                validationSchema={{
+                                    required: 'Username is required',
+                                    minLength: {value: 6, message: 'Username must be at least 6 characters long'},
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9_]*$/i,
+                                        message: 'Username can include only alphanumeric characters and "_"'
+                                    }
+                                }}
+                            />
+                            <div className="h-4"></div>
+                            <PasswordInput
+                                name="password"
+                                label="Password"
+                                register={register}
+                                errors={errors}
+                                forgotPassword={true}
+                                validationSchema={{
+                                    required: 'Password is required',
+                                    minLength: {value: 8, message: 'Password must be at least 8 characters long'},
+                                }}
+                            />
+                            <div className="h-10"></div>
+                            <Button
+                                disabled={Object.keys(errors).length || formButtonDisabled}
+                                submit={handleSubmit(submit)}
+                                text="Sign in"
+                            />
+                        </form>
+                    </div>
                 </div>
             </div>
         </>

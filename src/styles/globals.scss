@@ -180,3 +180,16 @@ ul, ol {
 .black-to-transparent-gradient {
   background: linear-gradient(180deg, rgba(31, 33, 46, 0) 0%, rgba(31, 33, 46, 0.8) 56.25%, rgba(31, 33, 46, 0.9) 79.17%, #1F212E 100%);
 }
+
+#payment-element {
+  font-size: 16px;
+  color: #333;
+}
+
+#payment-element input::placeholder {
+  color: #999;
+}
+
+#payment-element .StripeElement--invalid {
+  color: #e5424d;
+}

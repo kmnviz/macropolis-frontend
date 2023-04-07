@@ -71,93 +71,95 @@ export default function SignUp() {
             <Head>
                 <title>xpo.space - sign up</title>
             </Head>
-            <div className="w-screen h-screen relative">
+            <div className="w-screen h-screen relative flex justify-center">
                 {
                     router.query?.username &&
                     <div id="page-overlay" className="w-full h-full absolute right-0 z-40 bg-black"></div>
                 }
-                <Header router={router} />
-                <div className="w-full flex flex-col items-center mt-24">
-                    {
-                        !formSubmitted
-                            ?
-                            <form className="w-full md:w-576 p-2">
-                                <h6 className="font-grotesk text-xl">Sign up</h6>
-                                <div className="h-4"></div>
-                                {
-                                    !predefinedUsername ?
-                                        <Input
-                                            name="username"
-                                            label="Username"
-                                            register={register}
-                                            errors={errors}
-                                            validationSchema={{
-                                                required: 'Username is required',
-                                                minLength: {
-                                                    value: 6,
-                                                    message: 'Username must be at least 6 characters long'
-                                                },
-                                                pattern: {
-                                                    value: /^[a-zA-Z0-9_]*$/i,
-                                                    message: 'Username can include only alphanumeric characters and "_"'
-                                                }
-                                            }}
-                                        />
-                                        :
-                                        <div className="w-full relative">
-                                            <label htmlFor="username" className="text-sm font-grotesk">username</label>
-                                            <div className="block w-full mt-1 h-16 px-4 border rounded-md border-black focus:outline-none focus:border-blue-500
+                <div className="w-full max-w-screen-2xl">
+                    <Header router={router} />
+                    <div className="w-full flex flex-col items-center mt-24">
+                        {
+                            !formSubmitted
+                                ?
+                                <form className="w-full md:w-576 p-2">
+                                    <h6 className="font-grotesk text-xl">Sign up</h6>
+                                    <div className="h-4"></div>
+                                    {
+                                        !predefinedUsername ?
+                                            <Input
+                                                name="username"
+                                                label="Username"
+                                                register={register}
+                                                errors={errors}
+                                                validationSchema={{
+                                                    required: 'Username is required',
+                                                    minLength: {
+                                                        value: 6,
+                                                        message: 'Username must be at least 6 characters long'
+                                                    },
+                                                    pattern: {
+                                                        value: /^[a-zA-Z0-9_]*$/i,
+                                                        message: 'Username can include only alphanumeric characters and "_"'
+                                                    }
+                                                }}
+                                            />
+                                            :
+                                            <div className="w-full relative">
+                                                <label htmlFor="username" className="text-sm font-grotesk">username</label>
+                                                <div className="block w-full mt-1 h-16 px-4 border rounded-md border-black focus:outline-none focus:border-blue-500
                                                 focus:border-2 bg-black flex items-center text-2xl">
-                                                <p className="font-grotesk text-white">{predefinedUsername}</p>
+                                                    <p className="font-grotesk text-white">{predefinedUsername}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                }
-                                <div className="h-4"></div>
-                                <Input
-                                    name="email"
-                                    label="email"
-                                    register={register}
-                                    errors={errors}
-                                    validationSchema={{
-                                        required: 'Email is required',
-                                        pattern: {
-                                            value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
-                                            message: 'Must be a valid email address'
-                                        }
-                                    }}
-                                />
-                                <div className="h-4"></div>
-                                <PasswordInput
-                                    name="password"
-                                    label="password"
-                                    register={register}
-                                    errors={errors}
-                                    validationSchema={{
-                                        required: 'Password is required',
-                                        minLength: {
-                                            value: 8,
-                                            message: 'Password must be at least 8 characters long'
-                                        }
-                                    }}
-                                />
-                                <div className="h-10"></div>
-                                <Button
-                                    disabled={Object.keys(errors).length > 0 || formButtonDisabled}
-                                    submit={handleSubmit(submit)}
-                                    text="Sign up"
-                                />
-                            </form>
-                            :
-                            <div className="w-full md:w-576 p-2">
-                                <p className="text-xl md:text-4xl font-grotesk font-bold">Confirm your email address to get
-                                    started</p>
-                                <p className="text-base md:text-lg mt-4">
-                                    We have sent a confirmation request to <span
-                                    className="text-blue-300">{email}</span> to verify that the email address belongs to
-                                    you.
-                                </p>
-                            </div>
-                    }
+                                    }
+                                    <div className="h-4"></div>
+                                    <Input
+                                        name="email"
+                                        label="email"
+                                        register={register}
+                                        errors={errors}
+                                        validationSchema={{
+                                            required: 'Email is required',
+                                            pattern: {
+                                                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
+                                                message: 'Must be a valid email address'
+                                            }
+                                        }}
+                                    />
+                                    <div className="h-4"></div>
+                                    <PasswordInput
+                                        name="password"
+                                        label="password"
+                                        register={register}
+                                        errors={errors}
+                                        validationSchema={{
+                                            required: 'Password is required',
+                                            minLength: {
+                                                value: 8,
+                                                message: 'Password must be at least 8 characters long'
+                                            }
+                                        }}
+                                    />
+                                    <div className="h-10"></div>
+                                    <Button
+                                        disabled={Object.keys(errors).length > 0 || formButtonDisabled}
+                                        submit={handleSubmit(submit)}
+                                        text="Sign up"
+                                    />
+                                </form>
+                                :
+                                <div className="w-full md:w-576 p-2">
+                                    <p className="text-xl md:text-4xl font-grotesk font-bold">Confirm your email address to get
+                                        started</p>
+                                    <p className="text-base md:text-lg mt-4">
+                                        We have sent a confirmation request to <span
+                                        className="text-blue-300">{email}</span> to verify that the email address belongs to
+                                        you.
+                                    </p>
+                                </div>
+                        }
+                    </div>
                 </div>
             </div>
         </>

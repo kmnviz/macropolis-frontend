@@ -119,7 +119,7 @@ export default function User({username, profile, items, user}) {
                             {
                                 items.map((item, index) => {
                                     return (
-                                        <div className="h-96 rounded-lg relative"
+                                        <div className="h-96 rounded-lg relative shadow-md"
                                              style={{backgroundImage: `url(${process.env.IMAGES_URL}/480_${item.image})`}}
                                              key={`item-${index}`}
                                         >
@@ -145,7 +145,7 @@ export default function User({username, profile, items, user}) {
                                                 <div className="h-6"></div>
                                                 <div
                                                     className="w-full h-10 px-4 bg-black border rounded-lg flex justify-between items-center hover:cursor-pointer group"
-                                                    onClick={() => router.push(`/checkout?itemId=${item._id}`)}>
+                                                    onClick={() => router.push(`/checkout?itemId=${item._id}&username=${username}`)}>
                                                     <div
                                                         className="h-full flex items-center group-hover:pl-2 duration-200">
                                                         <img src="/cart.svg" className="w-6 h-6 invert"/>
