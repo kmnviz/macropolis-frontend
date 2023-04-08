@@ -161,7 +161,7 @@ export default function User({username, profile, items, user}) {
                     </div>
                 </div>
                 <div className="w-full h-24 pb-2 flex justify-center items-end">
-                    <h6 className="font-grotesk text-base text-black">by <span className="font-bold">xpo.space</span></h6>
+                    <h6 className="font-grotesk text-base text-black">by <span className="font-bold hover:cursor-pointer" onClick={() => router.push('/')}>xpo.space</span></h6>
                 </div>
             </div>
         </>

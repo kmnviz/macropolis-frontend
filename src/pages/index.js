@@ -12,6 +12,7 @@ export default function Index({usernames}) {
     const [buttonMessage, setButtonMessage] = useState('next');
     const [screenWidth, setScreenWidth] = useState(0);
     const [screenType, setScreenType] = useState('');
+    const [busyUsername, setBusyUsername] = useState('');
 
     useEffect(() => {
         inputInitial();
@@ -95,6 +96,7 @@ export default function Index({usernames}) {
         inputElement.addEventListener('input', () => {
             const isUsernameValid = inputElement.value.match(/^[a-zA-Z0-9_]*$/i);
             const isUsernameAvailable = !usernames.includes(inputElement.value);
+            setBusyUsername('');
 
             if (inputElement.value.length) {
                 inputElement.value = inputElement.value.toLowerCase();
@@ -110,8 +112,9 @@ export default function Index({usernames}) {
                 setButtonMessage('not allowed!');
                 setInputState(false);
             } else if (!isUsernameAvailable) {
-                setButtonMessage(`${inputElement.value} is busy`);
+                setButtonMessage(` is busy`);
                 setInputState(false);
+                setBusyUsername(inputElement.value);
             } else if (isUsernameValid && isUsernameAvailable) {
                 setButtonMessage(`next`);
                 setInputState(true);
@@ -262,7 +265,15 @@ export default function Index({usernames}) {
                                     >
                                         <div id="button"
                                              className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
-                                            {buttonMessage}
+                                            {
+                                                busyUsername !== ''
+                                                    ?
+                                                    <>
+                                                        <a target="_blank" href={`/${busyUsername}`} className="block text-blue-300"><span className="text-blue-300 underline">{busyUsername}</span> <span className="text-black">{buttonMessage}</span></a>
+                                                    </>
+                                                    :
+                                                    buttonMessage
+                                            }
                                         </div>
                                         <div id="button-overlay"
                                              className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
