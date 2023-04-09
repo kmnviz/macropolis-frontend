@@ -73,7 +73,7 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
             <div className="w-screen h-screen relative flex justify-center">
                 <div className="w-full max-w-screen-2xl">
                     <Header router={router}/>
-                    <div className="h-8 md:h-24"></div>
+                    <div className="h-8 md:h-0"></div>
                     <div className="w-full flex justify-center px-2 md:px-8">
                         <div className="w-full max-w-8xl p-2 md:p-8 shadow-md rounded-lg">
                             {
@@ -180,76 +180,9 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                                             </div>
                                         </div>
                                     </>
-                                    // <div className="w-576 flex flex-col items-center">
-                                    //     <p className="text-2xl font-grotesk font-bold text-center">Congratulations, you just bought</p>
-                                    //     <div className="w-full flex flex-col items-center mt-4">
-                                    //         <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
-                                    //         <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>
-                                    //     </div>
-                                    //     <p className="text-xl font-grotesk text-center mt-8">We have sent a download link to <span className="font-bold">{emailAddress}</span></p>
-                                    // </div>
                             }
                         </div>
                     </div>
-                    {/*<div className="w-full h-full flex flex-col justify-center items-center">*/}
-                    {/*{*/}
-                    {/*    !paymentIntentId*/}
-                    {/*        ?*/}
-                    {/*        <form className="w-full md:w-576 p-2">*/}
-                    {/*            <div className="w-full flex flex-col items-center">*/}
-                    {/*                <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>*/}
-                    {/*                <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>*/}
-                    {/*                {*/}
-                    {/*                    stage === 1 &&*/}
-                    {/*                    <>*/}
-                    {/*                        <p className="w-full font-grotesk text-md truncate text-center">price: {`$${formatAmount(item.price)}`}</p>*/}
-                    {/*                        <p className="w-full font-grotesk text-md truncate text-center">stripe fee: {`$${formatAmount(paymentIntent.stripe_fee)}`}</p>*/}
-                    {/*                        <p className="w-full font-grotesk text-md truncate text-center">total: {`$${formatAmount(paymentIntent.total_amount)}`}</p>*/}
-                    {/*                    </>*/}
-                    {/*                }*/}
-                    {/*            </div>*/}
-                    {/*            <div className="h-8"></div>*/}
-                    {/*            {*/}
-                    {/*                stage === 0*/}
-                    {/*                    ?*/}
-                    {/*                    <Input*/}
-                    {/*                        name="email"*/}
-                    {/*                        label="Email"*/}
-                    {/*                        register={register}*/}
-                    {/*                        errors={errors}*/}
-                    {/*                        validationSchema={{*/}
-                    {/*                            required: 'Email is required',*/}
-                    {/*                            pattern: {*/}
-                    {/*                                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,*/}
-                    {/*                                message: 'Must be a valid email address'*/}
-                    {/*                            }*/}
-                    {/*                        }}*/}
-                    {/*                    />*/}
-                    {/*                    :*/}
-                    {/*                    <>*/}
-                    {/*                        <div>*/}
-                    {/*                            <div id="payment-element"></div>*/}
-                    {/*                        </div>*/}
-                    {/*                    </>*/}
-                    {/*            }*/}
-                    {/*            <div className="h-10"></div>*/}
-                    {/*            <Button*/}
-                    {/*                disabled={Object.keys(errors).length}*/}
-                    {/*                onClick={handleSubmit(submit)}*/}
-                    {/*                text="Continue"*/}
-                    {/*            />*/}
-                    {/*        </form>*/}
-                    {/*        :*/}
-                    {/*        <div className="w-576 flex flex-col items-center">*/}
-                    {/*            <p className="text-2xl font-grotesk font-bold text-center">Congratulations, you just bought</p>*/}
-                    {/*            <div className="w-full flex flex-col items-center mt-4">*/}
-                    {/*                <div className="w-32 h-32 rounded-lg" style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>*/}
-                    {/*                <p className="w-full font-grotesk text-md truncate text-center">{item.name}</p>*/}
-                    {/*            </div>*/}
-                    {/*            <p className="text-xl font-grotesk text-center mt-8">We have sent a download link to <span className="font-bold">{emailAddress}</span></p>*/}
-                    {/*        </div>*/}
-                    {/*}*/}
-                    {/*</div>*/}
                     <div className="w-full h-24 pb-2 flex justify-center items-end">
                         <h6 className="font-grotesk text-base text-black">by <span className="font-bold">xpo.space</span></h6>
                     </div>

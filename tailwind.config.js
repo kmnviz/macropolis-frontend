@@ -17,6 +17,7 @@ module.exports = {
                 '576': '576px',
             },
             height: {
+                '432': '432px',
                 '576': '576px',
             },
             borderRadius: {

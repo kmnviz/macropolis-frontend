@@ -65,7 +65,7 @@ export default function User({username, profile, items, user}) {
                 <div className="w-full flex justify-center">
                     <div className="w-full max-w-screen-2xl">
                         <div className="w-full h-24 lg:h-16 py-4 lg:py-0 px-8 flex flex-col lg:flex-row justify-between items-center">
-                            <h6 className="font-grotesk text-xl">{username}</h6>
+                            <h6 className="font-grotesk text-xl select-none">{username}</h6>
                             <div className="h-full flex items-center">
                                 <div
                                     className="w-10 h-10 flex justify-center items-center relative hover:cursor-pointer">

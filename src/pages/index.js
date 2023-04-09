@@ -259,8 +259,8 @@ export default function Index({usernames}) {
                                     <div className="hidden md:block basis-48 md:basis-96 h-full"></div>
                                     <div
                                         id="button-wrapper"
-                                        className={`h-full flex-grow relative hover:cursor-pointer border md:border-2 border-black rounded-lg 
-                                        ${inputState ? 'bg-green-300' : 'bg-gray-300'}`}
+                                        className={`h-full flex-grow relative border md:border-2 border-black rounded-lg 
+                                        ${inputState ? 'bg-green-300 hover:cursor-pointer' : 'bg-gray-300 hover:cursor-not-allowed'}`}
                                         onClick={nextStep}
                                     >
                                         <div id="button"

@@ -7,11 +7,13 @@ import FormData from 'form-data';
 import DashboardLayout from './layout';
 import jwt from 'jsonwebtoken';
 import Button from '../../components/button';
+import validateImage from '../../helpers/validateImage';
 
 const DashboardProfile = ({profile}) => {
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm();
+    const {register, handleSubmit, formState: {errors}, setError, setValue, clearErrors} = useForm();
     const [avatarTemp, setAvatarTemp] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
     const [initialAvatar, setInitialAvatar] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
+    const [hasInitialAvatar, setHasInitialAvatar] = useState(profile?.avatar && profile.avatar !== '');
     const [avatarInput, setAvatarInput] = useState(null);
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
 
@@ -25,7 +27,13 @@ const DashboardProfile = ({profile}) => {
         try {
             const formData = new FormData();
             formData.append('name', data.name);
-            if (avatarInput) formData.append('avatar', avatarInput);
+
+            if (!hasInitialAvatar) {
+                formData.append('avatar', avatarInput ? avatarInput : '');
+            } else {
+                if (!initialAvatar)
+                    formData.append('avatar', avatarInput ? avatarInput : '');
+            }
 
             await axios.post(`${process.env.BACKEND_URL}/profiles/update`, formData, {
                 withCredentials: true,
@@ -48,8 +56,18 @@ const DashboardProfile = ({profile}) => {
 
     const handleAvatarChange = (event) => {
         if (event.target.files.length) {
-            setAvatarTemp(URL.createObjectURL(event.target.files[0]));
-            setAvatarInput(event.target.files[0]);
+            if (!validateImage(event.target.files[0], 4 * 1024 * 1024)) {
+                setAvatarTemp('');
+                setAvatarInput(null);
+                setError('avatar', {
+                    type: 'custom',
+                    message: 'Accepted image formats: jpg, jpeg, png. Maximum size 4MB'
+                });
+            } else {
+                clearErrors('avatar');
+                setAvatarTemp(URL.createObjectURL(event.target.files[0]));
+                setAvatarInput(event.target.files[0]);
+            }
         } else {
             setAvatarTemp('');
             setAvatarInput(null);
@@ -70,7 +88,8 @@ const DashboardProfile = ({profile}) => {
                 <div className="flex flex-col mt-4">
                     <div
                         className={`w-32 h-32 relative rounded-md border border-black duration-100 
-                                                      ${!initialAvatar && 'hover:cursor-pointer hover:border-gray-900 hover:border-2'}`}
+                                  ${!initialAvatar && 'hover:cursor-pointer hover:border-gray-900 hover:border-2'}
+                                  ${errors?.avatar && 'border-red-300'}`}
                         onClick={() => !initialAvatar && document.getElementById('avatar').click()}
                     >
                         {
@@ -99,6 +118,10 @@ const DashboardProfile = ({profile}) => {
                             />
                         }
                     </div>
+                    {
+                        errors?.avatar &&
+                        <p className="text-xs font-grotesk text-red-300 mt-1">{errors.avatar.message}</p>
+                    }
                     {
                         initialAvatar &&
                         <p className="w-24 mt-2 text-sm font-poppins text-blue-500 hover:cursor-pointer"
