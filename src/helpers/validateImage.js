@@ -1,8 +1,6 @@
 import path from 'path';
 
 const validateImage = (file, size) => {
-    console.log('file: ', file);
-
     const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     const extension = path.extname(file.name);
     const mimetype = file.type;
