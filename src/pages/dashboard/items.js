@@ -63,7 +63,7 @@ function DashboardItems({user, items}) {
                     message: 'Accepted image formats: jpg, jpeg, png. Maximum size 4MB'
                 });
             } else {
-                clearErrors('avatar');
+                clearErrors('image');
                 setImageTemp(URL.createObjectURL(event.target.files[0]));
                 setImageInput(event.target.files[0]);
             }
