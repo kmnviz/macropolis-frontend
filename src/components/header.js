@@ -9,11 +9,13 @@ export default function Header({router}) {
                         ?
                         <div className="h-full flex items-center px-4 md:px-8 hover:cursor-pointer"
                              onClick={() => router.push('/')}>
-                            <img src="/next.svg" alt="logo" className="h-4 md:h-8"/>
+                            <p className="font-grotesk text-xl">xpo.space</p>
+                            {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>
                         :
                         <div className="h-full flex items-center px-4 md:px-8">
-                            <img src="/next.svg" alt="logo" className="h-4 md:h-8"/>
+                            <p className="font-grotesk text-xl">xpo.space</p>
+                            {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>
                 }
                 {

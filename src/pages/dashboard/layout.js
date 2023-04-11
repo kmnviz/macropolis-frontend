@@ -117,6 +117,10 @@ export default function DashboardLayout({children, user}) {
                         <div className="w-full bg-black">
                             <div
                                 className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                onClick={() => redirectTo(`/dashboard/subscriptions`)}>subscriptions
+                            </div>
+                            <div
+                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
                                 onClick={() => redirectTo(`/${user.username}`)}>page
                             </div>
                             <div
