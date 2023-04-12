@@ -132,7 +132,7 @@ function DashboardItems({user, items}) {
             {
                 !showForm &&
                 <>
-                    <p className="font-grotesk text-xl text-right">[{items.length}/{user.plan.items}]</p>
+                    <p className="font-grotesk text-xl text-right">[{itemsLocal.length}/{user.plan.items}]</p>
                     <div className="h-8"></div>
                 </>
             }

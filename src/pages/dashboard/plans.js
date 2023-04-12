@@ -88,9 +88,10 @@ function DashboardPlans({user, plans, paymentMethod}) {
                 {withCredentials: true}
             );
 
-            console.log('subscriptionResponse: ', subscriptionResponse.data.data);
-            // setShowConfirmSubscription(false);
-            // window.location.reload();
+            const user = {...userLocal};
+            user.plan = subscriptionResponse.data.data.plan.name;
+            setUserLocal(user);
+            setShowConfirmSubscription(false);
         } catch (error) {
             console.log('Failed to confirm subscription: ', error);
         }
@@ -158,7 +159,10 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                                             </div>
                                                     }
                                                 </div>
-                                                <div className="h-8"></div>
+                                                {
+                                                    index !== plans.length - 1 &&
+                                                    <div className="h-8"></div>
+                                                }
                                             </div>
                                         );
                                     })
