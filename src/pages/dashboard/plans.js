@@ -5,14 +5,17 @@ import Decimal from 'decimal.js';
 import Button from '../../components/button';
 import {useState, useEffect} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
+import FormData from 'form-data';
 
 function DashboardPlans({user, plans, paymentMethod}) {
+    const [userLocal, setUserLocal] = useState(user);
     const [stripeClient, setStripeClient] = useState(null);
     const [stripeElements, setStripeElements] = useState(null);
     const [stripeCardElement, setStripeCardElement] = useState(null);
     const [stripeCardElementComplete, setStripeCardElementComplete] = useState(false);
     const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
     const [paymentMethodLocal, setPaymentMethodLocal] = useState(paymentMethod);
+    const [showConfirmSubscription, setShowConfirmSubscription] = useState(false);
 
     useEffect(() => {
         if (stripeCardElement) {
@@ -74,6 +77,25 @@ function DashboardPlans({user, plans, paymentMethod}) {
         }
     }
 
+    const confirmSubscription = async (planId) => {
+        try {
+            const formData = new FormData();
+            formData.append('planId', planId);
+
+            const subscriptionResponse = await axios.post(
+                `${process.env.BACKEND_URL}/stripe/create-subscription`,
+                formData,
+                {withCredentials: true}
+            );
+
+            console.log('subscriptionResponse: ', subscriptionResponse.data.data);
+            // setShowConfirmSubscription(false);
+            // window.location.reload();
+        } catch (error) {
+            console.log('Failed to confirm subscription: ', error);
+        }
+    }
+
     const formatAmount = (amount) => {
         return Decimal(amount).div(100).toFixed(2);
     }
@@ -86,95 +108,142 @@ function DashboardPlans({user, plans, paymentMethod}) {
             <div className="h-24"></div>
             <div className="w-full">
                 {
-                    !showAddPaymentMethod
+                    !showAddPaymentMethod && !showConfirmSubscription
                         ?
-                        <div className="w-full flex justify-between items-center">
-                            <h6 className="font-grotesk text-lg">Payment method: {paymentMethodLocal ? `*${paymentMethodLocal.last4}` : ''}</h6>
-                            <div className="px-4 py-0.5 rounded-md bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                                 onClick={addPaymentMethod}>
-                                <p className="font-grotesk text-lg text-center select-none">{!paymentMethodLocal ? 'add' : 'change'}</p>
-                            </div>
-                        </div>
-                        :
-                        <div className="w-full">
+                        <>
                             <div className="w-full flex justify-between items-center">
-                                <h6 className="font-grotesk text-lg">Add payment method</h6>
-                                <div className="px-4 h-8 flex items-center rounded-md border hover:border-black hover:cursor-pointer"
-                                     onClick={hideAddPaymentMethod}>
-                                    <img src="/arrow-left.svg" className="w-4 h-4"/>
+                                <h6 className="font-grotesk text-lg">Payment
+                                    method: {paymentMethodLocal ? `*${paymentMethodLocal.last4}` : ''}</h6>
+                                <div
+                                    className="px-4 py-0.5 rounded-md bg-green-300 hover:cursor-pointer hover:bg-green-400"
+                                    onClick={addPaymentMethod}>
+                                    <p className="font-grotesk text-lg text-center select-none">{!paymentMethodLocal ? 'add' : 'change'}</p>
                                 </div>
                             </div>
-                            <div className="h-8"></div>
-                            <div className="h-12 md:h-16 px-2 md:px-4 flex items-center border rounded-md border-black">
-                                <div className="w-full">
-                                    <div id="card-element"></div>
-                                </div>
+                            <div className="h-12"></div>
+                            <div className="w-full">
+                                {
+                                    plans.map((plan, index) => {
+                                        return (
+                                            <div key={`plan-${index}`}>
+                                                <div className="w-full px-4 py-2 grid grid-cols-2 rounded-lg border-2">
+                                                    <div>
+                                                        <p className="font-grotesk font-bold text-lg">{plan.name}</p>
+                                                        <p className="font-grotesk text-lg">&middot; up
+                                                            to {plan.items} items</p>
+                                                        {
+                                                            plan.price > 0 &&
+                                                            <>
+                                                                <div className="h-8"></div>
+                                                                <p className="font-grotesk text-lg">${formatAmount(plan.price)} / month</p>
+                                                            </>
+                                                        }
+                                                    </div>
+                                                    {
+                                                        plan.name === userLocal.plan.name
+                                                            ?
+                                                            <div className="h-full flex justify-end items-end">
+                                                                <div className="px-4 h-8 flex items-center justify-center">
+                                                                    <img src="/check.svg" className="w-6 h-6"/>
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            <div className="h-full flex justify-end items-end">
+                                                                <div className={`px-4 py-0.5 rounded-md 
+                                                                ${paymentMethodLocal ? 'bg-green-300 hover:cursor-pointer hover:bg-green-400' : 'bg-gray-300'}`}
+                                                                     onClick={() => setShowConfirmSubscription(true)}
+                                                                >
+                                                                    <p className="font-grotesk text-lg text-center select-none">{plan.price > 0 ? 'upgrade' : 'downgrade'}</p>
+                                                                </div>
+                                                            </div>
+                                                    }
+                                                </div>
+                                                <div className="h-8"></div>
+                                            </div>
+                                        );
+                                    })
+                                }
+                                {
+                                    !paymentMethodLocal &&
+                                    <p className="font-grotesk text-sm text-center">*you need to add payment method to
+                                        upgrade</p>
+                                }
                             </div>
-                            <div className="h-2"></div>
-                            <div className="font-grotesk text-xs">powered by Stripe</div>
-                            <div className="h-10"></div>
-                            <Button
-                                disabled={!stripeCardElementComplete}
-                                submit={submitPaymentMethod}
-                                text="Add card"
-                            />
-                        </div>
+                        </>
+                        :
+                        <>
+                            {
+                                showAddPaymentMethod
+                                    ?
+                                    <div className="w-full">
+                                        <div className="w-full flex justify-between items-center">
+                                            <h6 className="font-grotesk text-lg">Add payment method</h6>
+                                            <div
+                                                className="px-4 h-8 flex items-center rounded-md border hover:border-black hover:cursor-pointer"
+                                                onClick={hideAddPaymentMethod}>
+                                                <img src="/arrow-left.svg" className="w-4 h-4"/>
+                                            </div>
+                                        </div>
+                                        <div className="h-8"></div>
+                                        <div
+                                            className="h-12 md:h-16 px-2 md:px-4 flex items-center border rounded-md border-black">
+                                            <div className="w-full">
+                                                <div id="card-element"></div>
+                                            </div>
+                                        </div>
+                                        <div className="h-2"></div>
+                                        <div className="font-grotesk text-xs">powered by Stripe</div>
+                                        <div className="h-10"></div>
+                                        <Button
+                                            disabled={!stripeCardElementComplete}
+                                            submit={submitPaymentMethod}
+                                            text="Add card"
+                                        />
+                                    </div>
+                                    :
+                                    <div className="w-full">
+                                        <div className="w-full flex justify-between items-center">
+                                            <h6 className="font-grotesk text-lg">Selected plan: Enhanced</h6>
+                                            <div
+                                                className="px-4 h-8 flex items-center rounded-md border hover:border-black hover:cursor-pointer"
+                                                onClick={() => setShowConfirmSubscription(false)}>
+                                                <img src="/arrow-left.svg" className="w-4 h-4"/>
+                                            </div>
+                                        </div>
+                                        <div className="h-8"></div>
+                                        <p className="font-grotesk">
+                                            You are going to change your plan to Enhanced plan. You will be charged
+                                            $9.00 automatically every month.
+                                            You will be able to cancel your subscription at any time.
+                                        </p>
+                                        <div className="h-10"></div>
+                                        <Button
+                                            disabled={false}
+                                            submit={() => confirmSubscription('643655b559d35ce3effd4675')}
+                                            text="Confirm"
+                                        />
+                                    </div>
+                            }
+                        </>
                 }
             </div>
-            {
-                !showAddPaymentMethod &&
-                <>
-                    <div className="h-12"></div>
-                    <div className="w-full">
-                        <div className="w-full px-4 py-2 grid grid-cols-2 rounded-lg border-2">
-                            <div>
-                                <p className="font-grotesk font-bold text-lg">Free</p>
-                                <p className="font-grotesk text-lg">&middot; up to 10 items</p>
-                            </div>
-                            <div className="h-full flex justify-end items-end">
-                                <div className="px-4 h-8 flex items-center justify-center">
-                                    <img src="/check.svg" className="w-6 h-6"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="h-8"></div>
-                        <div className="w-full px-4 py-2 grid grid-cols-2 rounded-lg border-2">
-                            <div>
-                                <p className="font-grotesk font-bold text-lg">Enhanced</p>
-                                <p className="font-grotesk text-lg">&middot; up to 50 items</p>
-                                <div className="h-8"></div>
-                                <p className="font-grotesk text-lg">$9.00 / month</p>
-                            </div>
-                            <div className="h-full flex justify-end items-end">
-                                <div className="px-4 py-0.5 rounded-md bg-gray-300">
-                                    <p className="font-grotesk text-lg text-center select-none">upgrade</p>
-                                </div>
-                            </div>
-                        </div>
-                        {
-                            !paymentMethodLocal &&
-                            <p className="font-grotesk text-sm text-center">*you need to add payment method to upgrade</p>
-                        }
-                    </div>
-                </>
-            }
-                {/*<div className="w-full p-6 rounded-lg bg-orange-200">*/}
-                {/*    <div>*/}
-                {/*        <p className="font-grotesk font-bold text-lg">Enhanced</p>*/}
-                {/*        <div className="h-8"></div>*/}
-                {/*        <p className="font-grotesk text-lg">&middot; up to 50 items for sale</p>*/}
-                {/*        <div className="h-8"></div>*/}
-                {/*        <div className="w-full rounded-md p-4 flex justify-center items-center bg-green-300 hover:cursor-pointer hover:bg-green-400">*/}
-                {/*            Select*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                {/*<div className="w-full p-8 rounded-md bg-gray-300 flex justify-between items-center">*/}
-                {/*    <div>*/}
-                {/*        <p className="font-grotesk text-lg">Enhanced</p>*/}
-                {/*        <p className="font-grotesk text-lg">up to 50 items</p>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+            {/*<div className="w-full p-6 rounded-lg bg-orange-200">*/}
+            {/*    <div>*/}
+            {/*        <p className="font-grotesk font-bold text-lg">Enhanced</p>*/}
+            {/*        <div className="h-8"></div>*/}
+            {/*        <p className="font-grotesk text-lg">&middot; up to 50 items for sale</p>*/}
+            {/*        <div className="h-8"></div>*/}
+            {/*        <div className="w-full rounded-md p-4 flex justify-center items-center bg-green-300 hover:cursor-pointer hover:bg-green-400">*/}
+            {/*            Select*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            {/*<div className="w-full p-8 rounded-md bg-gray-300 flex justify-between items-center">*/}
+            {/*    <div>*/}
+            {/*        <p className="font-grotesk text-lg">Enhanced</p>*/}
+            {/*        <p className="font-grotesk text-lg">up to 50 items</p>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
             {/*</div>*/}
             {/*<div className="w-full relative">*/}
             {/*    {*/}
