@@ -104,7 +104,6 @@ export default function SignUp() {
                                 errors={errors}
                                 validationSchema={{
                                     required: 'Username is required',
-                                    minLength: {value: 6, message: 'Username must be at least 6 characters long'},
                                     pattern: {
                                         value: /^[a-zA-Z0-9_]*$/i,
                                         message: 'Username can include only alphanumeric characters and "_"'

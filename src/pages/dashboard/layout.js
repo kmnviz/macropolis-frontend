@@ -16,7 +16,7 @@ export default function DashboardLayout({children, user}) {
 
     const logout = () => {
         const cookies = new Cookies();
-        cookies.set('token', null, {expires: new Date(0)});
+        cookies.remove('token');
         animatePageOverlay(true);
         setTimeout(() => {
             router.push('/sign-in?entry');
@@ -97,7 +97,7 @@ export default function DashboardLayout({children, user}) {
                     <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col overflow-y-auto">
                         <div className="w-full flex-grow bg-black">
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk select-none">xpo.space
+                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk select-none">xpo.space [{user.plan.name}]
                             </div>
                             <div
                                 className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"></div>
@@ -117,7 +117,7 @@ export default function DashboardLayout({children, user}) {
                         <div className="w-full bg-black">
                             <div
                                 className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
-                                onClick={() => redirectTo(`/dashboard/subscriptions`)}>subscriptions
+                                onClick={() => redirectTo(`/dashboard/plans`)}>plans
                             </div>
                             <div
                                 className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"

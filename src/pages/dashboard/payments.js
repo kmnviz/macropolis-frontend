@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardLayout from './layout';
-import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import Decimal from 'decimal.js';
 import Button from '../../components/button';
@@ -68,36 +67,36 @@ function DashboardPayments({sales, balance, paymentMethod}) {
                 <h4 className="font-grotesk font-bold text-4xl">Payments</h4>
             </div>
             <div className="h-24"></div>
+            {/*<div className="w-full relative">*/}
+            {/*    <h6 className="font-grotesk text-2l">Payment methods: {`${paymentMethodLocal ? `*${paymentMethodLocal.last4}` : 'none'}`}</h6>*/}
+            {/*    <div className="h-6"></div>*/}
+            {/*    {*/}
+            {/*        addPaymentMethodState*/}
+            {/*            ?*/}
+            {/*            <div>*/}
+            {/*                <div id="card-element"></div>*/}
+            {/*                <div className="h-6"></div>*/}
+            {/*                <Button*/}
+            {/*                    disabled={!stripeCardElementComplete}*/}
+            {/*                    submit={submitPaymentMethod}*/}
+            {/*                    text="Add card"*/}
+            {/*                />*/}
+            {/*            </div>*/}
+            {/*            :*/}
+            {/*            <Button*/}
+            {/*                disabled={false}*/}
+            {/*                submit={addPaymentMethod}*/}
+            {/*                text={`${!paymentMethodLocal ? 'Add card' : 'Change card'}`}*/}
+            {/*            />*/}
+            {/*    }*/}
+            {/*</div>*/}
+            {/*<div className="h-12"></div>*/}
             <div className="w-full relative">
-                <h6 className="font-grotesk text-2l">Payment methods: {`${paymentMethodLocal ? `*${paymentMethodLocal.last4}` : 'none'}`}</h6>
-                <div className="h-6"></div>
-                {
-                    addPaymentMethodState
-                        ?
-                        <div>
-                            <div id="card-element"></div>
-                            <div className="h-6"></div>
-                            <Button
-                                disabled={!stripeCardElementComplete}
-                                submit={submitPaymentMethod}
-                                text="Add card"
-                            />
-                        </div>
-                        :
-                        <Button
-                            disabled={false}
-                            submit={addPaymentMethod}
-                            text={`${!paymentMethodLocal ? 'Add card' : 'Change card'}`}
-                        />
-                }
+                <h6 className="font-grotesk text-lg">Balance: ${formatAmount(balance)}</h6>
             </div>
             <div className="h-12"></div>
             <div className="w-full relative">
-                <h6 className="font-grotesk text-2l">Balance: ${formatAmount(balance)}</h6>
-            </div>
-            <div className="h-12"></div>
-            <div className="w-full relative">
-                <h6 className="font-grotesk text-2l">Sales: {sales.length}</h6>
+                <h6 className="font-grotesk text-lg">Sales: {sales.length}</h6>
                 <div className="h-4"></div>
                 {
                     sales.map((sale, index) => {
@@ -139,13 +138,19 @@ DashboardPayments.getLayout = function (page) {
 export async function getServerSideProps(context) {
     const props = {};
 
-    if (context.req.cookies?.token) {
-        props.user = jwt.decode(context.req.cookies.token);
-    } else {
+    if (!context.req.cookies?.token) {
         return {redirect: {destination: '/', permanent: false}};
     }
 
     try {
+        const userResponse = await axios.get(`${process.env.BACKEND_URL}/users/get?withPlan=true`, {
+            headers: {
+                'Cookie': context.req.headers.cookie
+            },
+            withCredentials: true
+        });
+        props.user = userResponse.data.data.user;
+
         const salesResponse = await axios.get(`${process.env.BACKEND_URL}/sales/get-many`, {
             headers: {
                 'Cookie': context.req.headers.cookie

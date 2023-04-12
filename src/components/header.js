@@ -7,13 +7,13 @@ export default function Header({router}) {
                 {
                     router.pathname !== '/' && router.pathname !== '/checkout' && router.pathname !== '/download'
                         ?
-                        <div className="h-full flex items-center px-4 md:px-8 hover:cursor-pointer"
+                        <div className="h-full flex items-center px-8 md:px-16 hover:cursor-pointer"
                              onClick={() => router.push('/')}>
                             <p className="font-grotesk text-xl">xpo.space</p>
                             {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>
                         :
-                        <div className="h-full flex items-center px-4 md:px-8">
+                        <div className="h-full flex items-center px-8 md:px-16">
                             <p className="font-grotesk text-xl">xpo.space</p>
                             {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>

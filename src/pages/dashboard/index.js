@@ -162,13 +162,19 @@ DashboardProfile.getLayout = function (page) {
 export async function getServerSideProps(context) {
     const props = {};
 
-    if (context.req.cookies?.token) {
-        props.user = jwt.decode(context.req.cookies.token);
-    } else {
+    if (!context.req.cookies?.token) {
         return {redirect: {destination: '/', permanent: false}};
     }
 
     try {
+        const userResponse = await axios.get(`${process.env.BACKEND_URL}/users/get?withPlan=true`, {
+            headers: {
+                'Cookie': context.req.headers.cookie
+            },
+            withCredentials: true
+        });
+        props.user = userResponse.data.data.user;
+
         const response = await axios.get(`${process.env.BACKEND_URL}/profiles/get?username=${props.user.username}`, { withCredentials: true });
         props.profile = response.data.data.profile;
     } catch (error) {

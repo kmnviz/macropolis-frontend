@@ -5,7 +5,6 @@ import FileInput from '../../components/fileInput';
 import axios from 'axios';
 import FormData from 'form-data';
 import DashboardLayout from './layout';
-import jwt from 'jsonwebtoken';
 import Button from '../../components/button';
 import validateImage from '../../helpers/validateImage';
 import validateAudio from '../../helpers/validateAudio';
@@ -130,6 +129,13 @@ function DashboardItems({user, items}) {
                 </div>
             </div>
             <div className="h-24"></div>
+            {
+                !showForm &&
+                <>
+                    <p className="font-grotesk text-xl text-right">[{items.length}/{user.plan.items}]</p>
+                    <div className="h-8"></div>
+                </>
+            }
             {
                 !showForm
                     ?
@@ -297,13 +303,19 @@ DashboardItems.getLayout = function (page) {
 export async function getServerSideProps(context) {
     const props = {};
 
-    if (context.req.cookies?.token) {
-        props.user = jwt.decode(context.req.cookies.token);
-    } else {
+    if (!context.req.cookies?.token) {
         return {redirect: {destination: '/', permanent: false}};
     }
 
     try {
+        const userResponse = await axios.get(`${process.env.BACKEND_URL}/users/get?withPlan=true`, {
+            headers: {
+                'Cookie': context.req.headers.cookie
+            },
+            withCredentials: true
+        });
+        props.user = userResponse.data.data.user;
+
         const response = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${props.user.username}`, {withCredentials: true});
         props.items = response.data.data.items;
     } catch (error) {
