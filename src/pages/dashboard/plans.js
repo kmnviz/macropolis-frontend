@@ -8,14 +8,14 @@ import {loadStripe} from '@stripe/stripe-js';
 import FormData from 'form-data';
 
 function DashboardPlans({user, plans, paymentMethod}) {
-    const [userLocal, setUserLocal] = useState(user);
     const [stripeClient, setStripeClient] = useState(null);
     const [stripeElements, setStripeElements] = useState(null);
     const [stripeCardElement, setStripeCardElement] = useState(null);
     const [stripeCardElementComplete, setStripeCardElementComplete] = useState(false);
     const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
     const [paymentMethodLocal, setPaymentMethodLocal] = useState(paymentMethod);
-    const [showConfirmSubscription, setShowConfirmSubscription] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState(null);
+    const [userCurrentPlan, setUserCurrentPlan] = useState(user.plan.name);
 
     useEffect(() => {
         if (stripeCardElement) {
@@ -77,21 +77,27 @@ function DashboardPlans({user, plans, paymentMethod}) {
         }
     }
 
-    const confirmSubscription = async (planId) => {
+    const confirmSubscription = async () => {
         try {
-            const formData = new FormData();
-            formData.append('planId', planId);
+            let subscriptionResponse;
+            if (selectedPlan.price > 0) {
+                const formData = new FormData();
+                formData.append('planId', selectedPlan._id);
+                subscriptionResponse = await axios.post(
+                    `${process.env.BACKEND_URL}/stripe/create-subscription`,
+                    formData,
+                    {withCredentials: true}
+                );
+            } else {
+                subscriptionResponse = await axios.post(
+                    `${process.env.BACKEND_URL}/stripe/cancel-subscription`,
+                    {},
+                    {withCredentials: true}
+                );
+            }
 
-            const subscriptionResponse = await axios.post(
-                `${process.env.BACKEND_URL}/stripe/create-subscription`,
-                formData,
-                {withCredentials: true}
-            );
-
-            const user = {...userLocal};
-            user.plan = subscriptionResponse.data.data.plan.name;
-            setUserLocal(user);
-            setShowConfirmSubscription(false);
+            setUserCurrentPlan(subscriptionResponse.data.data.plan.name);
+            setSelectedPlan(null);
         } catch (error) {
             console.log('Failed to confirm subscription: ', error);
         }
@@ -109,7 +115,7 @@ function DashboardPlans({user, plans, paymentMethod}) {
             <div className="h-24"></div>
             <div className="w-full">
                 {
-                    !showAddPaymentMethod && !showConfirmSubscription
+                    !showAddPaymentMethod && !selectedPlan
                         ?
                         <>
                             <div className="w-full flex justify-between items-center">
@@ -141,7 +147,7 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                                         }
                                                     </div>
                                                     {
-                                                        plan.name === userLocal.plan.name
+                                                        plan.name === userCurrentPlan
                                                             ?
                                                             <div className="h-full flex justify-end items-end">
                                                                 <div className="px-4 h-8 flex items-center justify-center">
@@ -152,9 +158,9 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                                             <div className="h-full flex justify-end items-end">
                                                                 <div className={`px-4 py-0.5 rounded-md 
                                                                 ${paymentMethodLocal ? 'bg-green-300 hover:cursor-pointer hover:bg-green-400' : 'bg-gray-300'}`}
-                                                                     onClick={() => setShowConfirmSubscription(true)}
+                                                                     onClick={() => setSelectedPlan(plan)}
                                                                 >
-                                                                    <p className="font-grotesk text-lg text-center select-none">{plan.price > 0 ? 'upgrade' : 'downgrade'}</p>
+                                                                    <p className="font-grotesk text-lg text-center select-none">select</p>
                                                                 </div>
                                                             </div>
                                                     }
@@ -207,23 +213,34 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                     :
                                     <div className="w-full">
                                         <div className="w-full flex justify-between items-center">
-                                            <h6 className="font-grotesk text-lg">Selected plan: Enhanced</h6>
+                                            <h6 className="font-grotesk text-lg">Selected plan: {selectedPlan.name}</h6>
                                             <div
                                                 className="px-4 h-8 flex items-center rounded-md border hover:border-black hover:cursor-pointer"
-                                                onClick={() => setShowConfirmSubscription(false)}>
+                                                onClick={() => setSelectedPlan(null)}>
                                                 <img src="/arrow-left.svg" className="w-4 h-4"/>
                                             </div>
                                         </div>
                                         <div className="h-8"></div>
-                                        <p className="font-grotesk">
-                                            You are going to change your plan to Enhanced plan. You will be charged
-                                            $9.00 automatically every month.
-                                            You will be able to cancel your subscription at any time.
-                                        </p>
+                                        {
+                                            selectedPlan.price > 0
+                                            ?
+                                                <p className="font-grotesk">
+                                                    You are going to change your plan to Enhanced plan. You will be charged
+                                                    ${formatAmount(selectedPlan.price)} automatically every month.
+                                                    You will be able to cancel your subscription at any time.
+                                                </p>
+                                                :
+                                                <p className="font-grotesk">
+                                                    You are going to cancel your subscription. Your plan will be changed to Free
+                                                    with 10 items for sell. If you have more items, they will be deleted after 7 days.
+                                                    You will be able to upgrade your plan at any time.
+                                                </p>
+                                        }
+
                                         <div className="h-10"></div>
                                         <Button
                                             disabled={false}
-                                            submit={() => confirmSubscription('643655b559d35ce3effd4675')}
+                                            submit={() => confirmSubscription()}
                                             text="Confirm"
                                         />
                                     </div>
@@ -231,58 +248,6 @@ function DashboardPlans({user, plans, paymentMethod}) {
                         </>
                 }
             </div>
-            {/*<div className="w-full p-6 rounded-lg bg-orange-200">*/}
-            {/*    <div>*/}
-            {/*        <p className="font-grotesk font-bold text-lg">Enhanced</p>*/}
-            {/*        <div className="h-8"></div>*/}
-            {/*        <p className="font-grotesk text-lg">&middot; up to 50 items for sale</p>*/}
-            {/*        <div className="h-8"></div>*/}
-            {/*        <div className="w-full rounded-md p-4 flex justify-center items-center bg-green-300 hover:cursor-pointer hover:bg-green-400">*/}
-            {/*            Select*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="w-full p-8 rounded-md bg-gray-300 flex justify-between items-center">*/}
-            {/*    <div>*/}
-            {/*        <p className="font-grotesk text-lg">Enhanced</p>*/}
-            {/*        <p className="font-grotesk text-lg">up to 50 items</p>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<div className="w-full relative">*/}
-            {/*    {*/}
-            {/*        plans.map((plan, index) => {*/}
-            {/*            return (*/}
-            {/*                <div key={index}>*/}
-            {/*                    <div*/}
-            {/*                        className="w-full h-16 rounded-md border border-black p-2 flex justify-between">*/}
-            {/*                        <div className="flex items-center">*/}
-            {/*                            <div className="">*/}
-            {/*                                <p className="ml-4 text-black font-grotesk text-sm truncate">{plan.name}</p>*/}
-            {/*                                <p className="ml-4 text-black font-grotesk text-sm truncate">${formatAmount(plan.price)}</p>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className="h-full flex flex-col justify-center">*/}
-            {/*                            <div*/}
-            {/*                                className={`w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center */}
-            {/*                                ${plan.name !== 'free' && `hover:border-green-300 hover:cursor-pointer` }`}>*/}
-            {/*                                {*/}
-            {/*                                    user.plan.name === plan.name*/}
-            {/*                                        ?*/}
-            {/*                                        <img src="/check.svg" className="w-4 md:w-6 h-4 md:h-6"/>*/}
-            {/*                                        :*/}
-            {/*                                        <img src="/rocket-launch.svg" className="w-4 md:w-6 h-4 md:h-6"/>*/}
-
-            {/*                                }*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <div className="h-4"></div>*/}
-            {/*                </div>*/}
-            {/*            )*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</div>*/}
         </div>
     );
 }

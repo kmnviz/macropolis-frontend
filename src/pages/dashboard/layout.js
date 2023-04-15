@@ -84,7 +84,7 @@ export default function DashboardLayout({children, user}) {
                 <div id="page-overlay"
                      className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}></div>
                 <div id="dashboard-menu-button"
-                     className="lg:hidden absolute right-8 bottom-8 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                     className="lg:hidden absolute right-2 bottom-2 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
                      onClick={showMenu}
                 >
                     <div id="dashboard-menu-icon" className="relative">

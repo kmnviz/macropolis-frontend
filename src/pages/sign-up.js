@@ -107,8 +107,8 @@ export default function SignUp() {
                                             :
                                             <div className="w-full relative">
                                                 <label htmlFor="username" className="text-sm font-grotesk">username</label>
-                                                <div className="block w-full mt-1 h-16 px-4 border rounded-md border-black focus:outline-none focus:border-blue-500
-                                                focus:border-2 bg-black flex items-center text-2xl">
+                                                <div className="block w-full mt-1 h-12 md:h-16 px-4 border rounded-md border-black focus:outline-none focus:border-blue-500
+                                                focus:border-2 bg-black flex items-center text-base md:text-2xl">
                                                     <p className="font-grotesk text-white">{predefinedUsername}</p>
                                                 </div>
                                             </div>
