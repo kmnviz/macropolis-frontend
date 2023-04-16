@@ -8,6 +8,7 @@ const nextConfig = {
     ],
   },
   env: {
+    APP_NAME: process.env.APP_NAME,
     DOMAIN_URL: process.env.DOMAIN_URL,
     DOMAIN_NAME: process.env.DOMAIN_NAME,
     BACKEND_URL: process.env.BACKEND_URL,

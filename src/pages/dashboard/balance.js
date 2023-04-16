@@ -2,8 +2,15 @@ import React from 'react';
 import DashboardLayout from './layout';
 import axios from 'axios';
 import Decimal from 'decimal.js';
+import Button from '../../components/button';
 
 function DashboardBalance({user, balance}) {
+
+    console.log('balance: ', balance);
+
+    const submit = async (data) => {
+
+    }
 
     const formatAmount = (amount) => {
         return Decimal(amount).div(100).toFixed(2);
@@ -17,6 +24,12 @@ function DashboardBalance({user, balance}) {
             <div className="h-24"></div>
             <div className="w-full relative">
                 <h6 className="font-grotesk text-lg">Balance: ${formatAmount(balance)}</h6>
+                <div className="h-10"></div>
+                <Button
+                    disabled={parseInt(balance) === 0}
+                    submit={() => submit}
+                    text="Request Withdrawal"
+                />
             </div>
         </div>
     );

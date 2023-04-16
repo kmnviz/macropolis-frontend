@@ -69,7 +69,7 @@ export default function SignUp() {
     return (
         <>
             <Head>
-                <title>xpo.space - sign up</title>
+                <title>{process.env.APP_NAME} - sign up</title>
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 {

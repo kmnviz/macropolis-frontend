@@ -81,7 +81,7 @@ export default function SignUp() {
     return (
         <>
             <Head>
-                <title>xpo.space - sign in</title>
+                <title>{process.env.APP_NAME} - sign in</title>
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className={`h-full absolute right-0 bg-black ${!('entry' in router.query) ? 'w-0 z-0' : 'w-full z-40'}`}></div>

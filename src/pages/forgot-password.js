@@ -46,7 +46,7 @@ export default function ForgotPassword() {
     return (
         <>
             <Head>
-                <title>xpo.space - forgot password</title>
+                <title>{process.env.APP_NAME} - forgot password</title>
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div className="w-full max-w-screen-2xl">

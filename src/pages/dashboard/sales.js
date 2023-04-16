@@ -32,7 +32,7 @@ function DashboardSales({user, sales}) {
                                             <p className="ml-4 text-black font-grotesk text-sm truncate">${formatAmount(sale.item.price)}</p>
                                         </div>
                                     </div>
-                                    <div className="h-full flex flex-col justify-center">
+                                    <div className="h-full flex flex-col justify-center overflow-hidden">
                                         <p className="ml-4 text-black font-grotesk text-sm truncate text-right">{sale.bought_by}</p>
                                         <p className="ml-4 text-black font-grotesk text-sm truncate text-right">{sale.created_at}</p>
                                     </div>

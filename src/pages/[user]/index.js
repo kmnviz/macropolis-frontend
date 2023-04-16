@@ -58,7 +58,7 @@ export default function User({username, profile, items, user}) {
     return (
         <>
             <Head>
-                <title>{username} at xpo.space</title>
+                <title>{username} at {process.env.APP_NAME}</title>
             </Head>
             <div className="w-screen h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>
@@ -97,21 +97,26 @@ export default function User({username, profile, items, user}) {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-auto lg:h-80 relative flex justify-center">
-                    <div className="w-full h-full absolute bg-cover bg-center blur-sm grayscale z-0"
-                         style={{backgroundImage: `url(${backgroundImage})`}}></div>
-                    <div className="w-full h-full max-w-screen-2xl px-8 z-10 flex flex-col lg:flex-row items-center z-10">
-                        <div className="w-40 lg:w-64 h-40 lg:h-64 mt-8 lg:mt-0 bg-cover bg-center rounded-lg"
-                             style={{backgroundImage: `url(${backgroundImage})`}}></div>
-                        <div className="hidden lg:w-16 lg:block"></div>
-                        <div className="block h-8 lg:hidden"></div>
-                        <div className="h-auto lg:h-64">
-                            <div className="h-full flex items-center">
-                                <h1 className="font-grotesk font-bold text-white text-center lg:text-right text-5xl lg:text-7xl">{profile && profile?.name ? profile.name : ''}</h1>
+                {
+                    profile &&
+                    <>
+                        <div className="w-full h-auto lg:h-80 relative flex justify-center">
+                            <div className="w-full h-full absolute bg-cover bg-center blur-sm grayscale z-0"
+                                 style={{backgroundImage: `url(${backgroundImage})`}}></div>
+                            <div className="w-full h-full max-w-screen-2xl px-8 z-10 flex flex-col lg:flex-row items-center z-10">
+                                <div className="w-40 lg:w-64 h-40 lg:h-64 mt-8 lg:mt-0 bg-cover bg-center rounded-lg"
+                                     style={{backgroundImage: `url(${backgroundImage})`}}></div>
+                                <div className="hidden lg:w-16 lg:block"></div>
+                                <div className="block h-8 lg:hidden"></div>
+                                <div className="h-auto lg:h-64">
+                                    <div className="h-full flex items-center">
+                                        <h1 className="font-grotesk font-bold text-white text-center lg:text-right text-5xl lg:text-7xl">{profile && profile?.name ? profile.name : ''}</h1>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </>
+                }
                 <div className="h-32"></div>
                 <div className="w-full flex justify-center">
                     <div className="w-full max-w-screen-2xl px-8">
@@ -161,7 +166,7 @@ export default function User({username, profile, items, user}) {
                     </div>
                 </div>
                 <div className="w-full h-24 pb-2 flex justify-center items-end">
-                    <h6 className="font-grotesk text-base text-black">by <span className="font-bold hover:cursor-pointer" onClick={() => router.push('/')}>xpo.space</span></h6>
+                    <h6 className="font-grotesk text-base text-black">by <span className="font-bold hover:cursor-pointer" onClick={() => router.push('/')}>{process.env.APP_NAME}</span></h6>
                 </div>
             </div>
         </>

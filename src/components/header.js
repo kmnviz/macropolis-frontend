@@ -9,12 +9,12 @@ export default function Header({router}) {
                         ?
                         <div className="h-full flex items-center px-8 md:px-16 hover:cursor-pointer"
                              onClick={() => router.push('/')}>
-                            <p className="font-grotesk text-xl">xpo.space</p>
+                            <p className="font-grotesk text-xl">{process.env.APP_NAME}</p>
                             {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>
                         :
                         <div className="h-full flex items-center px-8 md:px-16">
-                            <p className="font-grotesk text-xl">xpo.space</p>
+                            <p className="font-grotesk text-xl">{process.env.APP_NAME}</p>
                             {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
                         </div>
                 }

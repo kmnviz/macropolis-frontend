@@ -10,6 +10,7 @@ COPY . /app
 
 EXPOSE 80
 
+ENV APP_NAME=xpo.space
 ENV DOMAIN_NAME=testdomainaaa.xyz
 ENV DOMAIN_URL=https://testdomainaaa.xyz
 ENV BACKEND_URL=https://api.testdomainaaa.xyz
