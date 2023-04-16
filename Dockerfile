@@ -16,6 +16,8 @@ ENV BACKEND_URL=https://api.testdomainaaa.xyz
 ENV GCP_STORAGE_URL=https://storage.googleapis.com
 ENV GCP_STORAGE_IMAGES_BUCKET=lisenmi-images-test
 ENV GCP_STORAGE_AUDIO_PREVIEWS_BUCKET=lisenmi-audio-preview-test
+ENV STRIPE_PUBLISHABLE_KEY=pk_test_tJtcQqBrRirhhiwzIAr1brzT000LqQs92t
+
 RUN npm run build
 
 CMD [ "npm", "run", "start" ]

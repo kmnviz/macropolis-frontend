@@ -35,7 +35,7 @@ function DashboardPlans({user, plans, paymentMethod}) {
 
     const addPaymentMethod = async () => {
         setShowAddPaymentMethod(true);
-        const stripe = await loadStripe('pk_test_tJtcQqBrRirhhiwzIAr1brzT000LqQs92t');
+        const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
         setStripeClient(stripe);
         const elements = stripe.elements();
         setStripeElements(elements);
