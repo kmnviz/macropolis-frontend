@@ -110,12 +110,12 @@ export default function DashboardLayout({children, user}) {
                                 onClick={() => redirectTo('/dashboard/items')}>items
                             </div>
                             <div
-                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/balance') ? 'text-green-300' : 'text-white'}`}
-                                onClick={() => redirectTo('/dashboard/balance')}>balance
-                            </div>
-                            <div
                                 className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/sales') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/sales')}>sales
+                            </div>
+                            <div
+                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
+                                onClick={() => redirectTo('/dashboard/withdrawals')}>withdrawals
                             </div>
                         </div>
                         <div className="w-full bg-black">
