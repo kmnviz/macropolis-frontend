@@ -16,6 +16,8 @@ function DashboardPlans({user, plans, paymentMethod}) {
     const [paymentMethodLocal, setPaymentMethodLocal] = useState(paymentMethod);
     const [selectedPlan, setSelectedPlan] = useState(null);
     const [userCurrentPlan, setUserCurrentPlan] = useState(user.plan.name);
+    const [formButtonDisabled, setFormButtonDisabled] = useState(false);
+    const [formButtonLoading, setFormButtonLoading] = useState(false);
 
     useEffect(() => {
         if (stripeCardElement) {
@@ -60,6 +62,9 @@ function DashboardPlans({user, plans, paymentMethod}) {
 
     const submitPaymentMethod = async () => {
         if (stripeCardElementComplete) {
+            setFormButtonDisabled(true);
+            setFormButtonLoading(true);
+
             const paymentMethod = await stripeClient.createPaymentMethod({
                 type: 'card',
                 card: stripeCardElement,
@@ -69,8 +74,13 @@ function DashboardPlans({user, plans, paymentMethod}) {
             formData.append('stripePaymentMethodId', paymentMethod.paymentMethod.id);
             try {
                 await axios.post(`${process.env.BACKEND_URL}/users/update`, formData, {withCredentials: true});
-                hideAddPaymentMethod();
-                setPaymentMethodLocal({last4: paymentMethod.paymentMethod.card.last4,});
+
+                setTimeout(() => {
+                    hideAddPaymentMethod();
+                    setPaymentMethodLocal({last4: paymentMethod.paymentMethod.card.last4});
+                    setFormButtonDisabled(false);
+                    setFormButtonLoading(false);
+                }, 1000);
             } catch (error) {
                 console.log('Failed to update user: ', error);
             }
@@ -79,6 +89,9 @@ function DashboardPlans({user, plans, paymentMethod}) {
 
     const confirmSubscription = async () => {
         try {
+            setFormButtonDisabled(true);
+            setFormButtonLoading(true);
+
             let subscriptionResponse;
             if (selectedPlan.price > 0) {
                 const formData = new FormData();
@@ -96,8 +109,12 @@ function DashboardPlans({user, plans, paymentMethod}) {
                 );
             }
 
-            setUserCurrentPlan(subscriptionResponse.data.data.plan.name);
-            setSelectedPlan(null);
+            setTimeout(() => {
+                setUserCurrentPlan(subscriptionResponse.data.data.plan.name);
+                setSelectedPlan(null);
+                setFormButtonDisabled(false);
+                setFormButtonLoading(false);
+            }, 1000);
         } catch (error) {
             console.log('Failed to confirm subscription: ', error);
         }
@@ -205,7 +222,8 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                         <div className="font-grotesk text-xs">powered by Stripe</div>
                                         <div className="h-10"></div>
                                         <Button
-                                            disabled={!stripeCardElementComplete}
+                                            disabled={!stripeCardElementComplete || formButtonDisabled}
+                                            loading={formButtonLoading}
                                             submit={submitPaymentMethod}
                                             text="Add card"
                                         />
@@ -239,7 +257,8 @@ function DashboardPlans({user, plans, paymentMethod}) {
 
                                         <div className="h-10"></div>
                                         <Button
-                                            disabled={false}
+                                            disabled={formButtonDisabled}
+                                            loading={formButtonLoading}
                                             submit={() => confirmSubscription()}
                                             text="Confirm"
                                         />

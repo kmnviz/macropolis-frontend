@@ -14,20 +14,27 @@ function DashboardWithdrawals({user, availableAmount, withdrawals}) {
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
 
     const [requestedWithdrawal, setRequestedWithdrawal] = useState(false);
+    const [formButtonDisabled, setFormButtonDisabled] = useState(false);
+    const [formButtonLoading, setFormButtonLoading] = useState(false);
 
     const submit = async (data) => {
         if (!validateIban(data.iban)) {
             setError('iban', {message: 'Invalid IBAN'});
         } else {
+            setFormButtonDisabled(true);
+            setFormButtonLoading(true);
+
             const formData = new FormData();
             formData.append('iban', data.iban);
 
             try {
                 const response = await axios.post(`${process.env.BACKEND_URL}/withdrawals/create`, formData, {withCredentials: true});
-                console.log('response: ', response);
 
-                setRequestedWithdrawal(false);
-                window.location.reload();
+                setTimeout(() => {
+                    setFormButtonDisabled(false);
+                    setFormButtonLoading(false);
+                    window.location.reload();
+                }, 1000);
             } catch (error) {
                 console.log('Failed to create withdrawal: ', error);
             }
@@ -69,13 +76,13 @@ function DashboardWithdrawals({user, availableAmount, withdrawals}) {
                                                 className="w-full h-16 rounded-md border border-black p-2 flex justify-between">
                                                 <div className="flex items-center">
                                                     <div className="">
-                                                        <p className="ml-4 text-black font-grotesk text-sm truncate">IBAN: {withdrawal.metadata.iban}</p>
-                                                        <p className="ml-4 text-black font-grotesk text-sm truncate">amount: ${formatAmount(withdrawal.amount)}</p>
+                                                        <p className="text-black font-grotesk text-sm truncate">IBAN: {withdrawal.metadata.iban}</p>
+                                                        <p className="text-black font-grotesk text-sm truncate">amount: ${formatAmount(withdrawal.amount)}</p>
                                                     </div>
                                                 </div>
                                                 <div className="h-full flex flex-col justify-center overflow-hidden">
-                                                    <p className="ml-4 text-black font-grotesk text-sm truncate text-right">status: {withdrawal.status}</p>
-                                                    <p className="ml-4 text-black font-grotesk text-sm truncate text-right">{withdrawal.created_at}</p>
+                                                    <p className="text-black font-grotesk text-sm truncate text-right">status: {withdrawal.status}</p>
+                                                    <p className="text-black font-grotesk text-sm truncate text-right">{withdrawal.created_at}</p>
                                                 </div>
                                             </div>
                                             <div className="h-4"></div>
@@ -114,7 +121,8 @@ function DashboardWithdrawals({user, availableAmount, withdrawals}) {
                             />
                             <div className="h-10"></div>
                             <Button
-                                disabled={Object.keys(errors).length}
+                                disabled={Object.keys(errors).length || formButtonDisabled}
+                                loading={formButtonLoading}
                                 submit={handleSubmit(submit)}
                                 text="Confirm"
                             />

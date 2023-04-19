@@ -17,6 +17,7 @@ function DashboardItems({user, items}) {
     const [audioInput, setAudioInput] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
+    const [formButtonLoading, setFormButtonLoading] = useState(false);
 
     useEffect(() => {
         if (showForm) {
@@ -26,6 +27,7 @@ function DashboardItems({user, items}) {
 
     const submit = async (data) => {
         setFormButtonDisabled(true);
+        setFormButtonLoading(true);
 
         try {
             const formData = new FormData();
@@ -40,6 +42,7 @@ function DashboardItems({user, items}) {
             setItemsLocal(itemsResponse.data.data.items);
             setTimeout(() => {
                 setFormButtonDisabled(false);
+                setFormButtonLoading(false);
                 setShowForm(false);
                 reset();
                 setImageTemp('');
@@ -282,6 +285,7 @@ function DashboardItems({user, items}) {
                             <div className="h-10"></div>
                             <Button
                                 disabled={Object.keys(errors).length || formButtonDisabled}
+                                loading={formButtonLoading}
                                 submit={handleSubmit(submit)}
                                 text="Save"
                             />

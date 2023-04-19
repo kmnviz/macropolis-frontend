@@ -16,6 +16,7 @@ const DashboardProfile = ({profile}) => {
     const [hasInitialAvatar, setHasInitialAvatar] = useState(profile?.avatar && profile.avatar !== '');
     const [avatarInput, setAvatarInput] = useState(null);
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
+    const [formButtonLoading, setFormButtonLoading] = useState(false);
 
     useEffect(() => {
         if (profile?.name && profile.name) setValue('name', profile.name);
@@ -23,6 +24,7 @@ const DashboardProfile = ({profile}) => {
 
     const submit = async (data) => {
         setFormButtonDisabled(true);
+        setFormButtonLoading(true);
 
         try {
             const formData = new FormData();
@@ -47,6 +49,7 @@ const DashboardProfile = ({profile}) => {
 
             setTimeout(() => {
                 setFormButtonDisabled(false);
+                setFormButtonLoading(false);
             }, 1000);
         } catch (error) {
             setFormButtonDisabled(false);
@@ -144,6 +147,7 @@ const DashboardProfile = ({profile}) => {
                 <div className="h-10"></div>
                 <Button
                     disabled={Object.keys(errors).length || formButtonDisabled}
+                    loading={formButtonLoading}
                     submit={handleSubmit(submit)}
                     text="Save"
                 />
