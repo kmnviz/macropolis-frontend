@@ -3,7 +3,7 @@ import React from 'react';
 export default function FileInput({ name, register, validationSchema, errors, onFileInputChange }) {
 
     const handleChange = (event) => {
-        onFileInputChange(event)
+        onFileInputChange(event);
     }
 
     return (

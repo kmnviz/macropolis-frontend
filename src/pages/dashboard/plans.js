@@ -155,13 +155,8 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                                         <p className="font-grotesk font-bold text-lg">{plan.name}</p>
                                                         <p className="font-grotesk text-lg">&middot; up
                                                             to {plan.items} items</p>
-                                                        {
-                                                            plan.price > 0 &&
-                                                            <>
-                                                                <div className="h-8"></div>
-                                                                <p className="font-grotesk text-lg">${formatAmount(plan.price)} / month</p>
-                                                            </>
-                                                        }
+                                                        <div className="h-8"></div>
+                                                        <p className="font-grotesk text-lg">${formatAmount(plan.price)} / month</p>
                                                     </div>
                                                     {
                                                         plan.name === userCurrentPlan

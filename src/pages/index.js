@@ -227,11 +227,11 @@ export default function Index({usernames}) {
     return (
         <>
             <Head>
-                <title>{process.env.APP_NAME} - a space for tour content</title>
+                <title>{`${process.env.APP_NAME} - a space for tour content`}</title>
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
-                <div className="w-full max-w-screen-2xl">
+                <div className="w-full max-w-screen-2xl relative">
                     <Header router={router} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12">
@@ -285,6 +285,20 @@ export default function Index({usernames}) {
                             </div>
                         </div>
                     </div>
+                    {/*<div className="w-full fixed left-0 bottom-0 z-30">*/}
+                    {/*    <div className="w-full relative">*/}
+                    {/*        <div className="w-full flex justify-center items-center">*/}
+                    {/*            <div className="py-2 px-16 bg-black rounded-t-2xl hover:cursor-pointer font-grotesk*/}
+                    {/*                text-white shadow-2xl flex justify-between items-center"*/}
+                    {/*            >*/}
+                    {/*                <img src="/arrow-up.svg" className="w-8 h-4 invert"/>*/}
+                    {/*                <p className="select-none">About</p>*/}
+                    {/*                <img src="/arrow-up.svg" className="w-8 h-4 invert"/>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="w-screen h-screen bg-black"></div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </>

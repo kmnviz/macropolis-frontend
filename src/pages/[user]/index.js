@@ -58,7 +58,7 @@ export default function User({username, profile, items, user}) {
     return (
         <>
             <Head>
-                <title>{username} at {process.env.APP_NAME}</title>
+                <title>{`${username} at ${process.env.APP_NAME}`}</title>
             </Head>
             <div className="w-screen h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>

@@ -68,7 +68,7 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
     return (
         <>
             <Head>
-                <title>{process.env.APP_NAME} - checkout</title>
+                <title>{`${process.env.APP_NAME} - checkout`}</title>
             </Head>
             <div className="w-screen h-screen relative flex justify-center">
                 <div className="w-full max-w-screen-2xl">

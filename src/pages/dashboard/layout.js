@@ -78,7 +78,7 @@ export default function DashboardLayout({children, user}) {
     return (
         <>
             <Head>
-                <title>{process.env.APP_NAME} - dashboard</title>
+                <title>{`${process.env.APP_NAME} - dashboard`}</title>
             </Head>
             <div className="w-screen h-screen relative">
                 <div id="page-overlay"
