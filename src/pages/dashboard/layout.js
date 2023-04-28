@@ -66,8 +66,16 @@ export default function DashboardLayout({children, user}) {
         setMenuVisible(!menuVisible);
     }
 
-    const isCurrentRoute = (route) => {
-        return router.pathname === route;
+    const isCurrentRoute = (routePath) => {
+        const routesGroups = {
+            '/dashboard': ['/dashboard'],
+            '/dashboard/items': ['/dashboard/items', '/dashboard/items/create'],
+            '/dashboard/sales': ['/dashboard/sales'],
+            '/dashboard/withdrawals': ['/dashboard/withdrawals'],
+            '/dashboard/plans': ['/dashboard/plans'],
+        }
+
+        return routesGroups[routePath].includes(router.pathname);
     }
 
     const redirectTo = (route) => {
@@ -84,7 +92,7 @@ export default function DashboardLayout({children, user}) {
                 <div id="page-overlay"
                      className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}></div>
                 <div id="dashboard-menu-button"
-                     className="lg:hidden absolute right-2 bottom-2 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                     className="lg:hidden absolute right-4 bottom-4 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
                      onClick={showMenu}
                 >
                     <div id="dashboard-menu-icon" className="relative">
@@ -93,42 +101,42 @@ export default function DashboardLayout({children, user}) {
                     </div>
                 </div>
                 <div id="dashboard-menu-main"
-                     className="ml-[-100%] lg:ml-0 w-full lg:w-80 min-h-full h-1 fixed top-0 left-0 bg-black z-20 p-4 lg:p-0">
+                     className="ml-[-100%] lg:ml-0 w-full lg:w-80 min-h-full h-1 fixed top-0 left-0 bg-black z-20 lg:p-0">
                     <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col overflow-y-auto">
                         <div className="w-full flex-grow bg-black">
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk select-none">{process.env.APP_NAME} [{user.plan.name}]
+                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk select-none">{process.env.APP_NAME} [{user.plan.name}]
                             </div>
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"></div>
+                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"></div>
                             <div
-                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300 ${isCurrentRoute('/dashboard') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300 ${isCurrentRoute('/dashboard') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard')}>profile
                             </div>
                             <div
-                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/items') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/items') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/items')}>items
                             </div>
                             <div
-                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/sales') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/sales') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/sales')}>sales
                             </div>
                             <div
-                                className={`w-full h-16 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/withdrawals')}>withdrawals
                             </div>
                         </div>
                         <div className="w-full bg-black">
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/plans') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo(`/dashboard/plans`)}>plans
                             </div>
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
                                 onClick={() => redirectTo(`/${user.username}`)}>page
                             </div>
                             <div
-                                className="w-full h-16 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
                                 onClick={logout}>logout
                             </div>
                         </div>

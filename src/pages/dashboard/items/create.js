@@ -1,29 +1,38 @@
-import {useForm} from 'react-hook-form';
-import React, {useEffect, useState} from 'react';
-import Input from '../../components/input';
-import FileInput from '../../components/fileInput';
 import axios from 'axios';
 import FormData from 'form-data';
-import DashboardLayout from './layout';
-import Button from '../../components/button';
-import validateImage from '../../helpers/validateImage';
-import validateAudio from '../../helpers/validateAudio';
+import {useForm} from 'react-hook-form';
+import React, {useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
+import Input from '../../../components/input';
+import FileInput from '../../../components/fileInput';
+import DashboardLayout from '../layout';
+import Button from '../../../components/button';
+import Select from '../../../components/select';
+import validateImage from '../../../helpers/validateImage';
+import validateAudio from '../../../helpers/validateAudio';
+import validateArchive from '../../../helpers/validateArchive';
 
-function DashboardItems({user, items}) {
-    const {register, handleSubmit, formState: {errors}, setValue, reset, setError, clearErrors} = useForm();
-    const [itemsLocal, setItemsLocal] = useState(items);
+function DashboardItemsCreate({user}) {
+    const router = useRouter();
+
+    const itemTypesOptions = [
+        { key: 'Archive', value: 'archive' },
+        { key: 'Audio', value: 'audio' },
+    ];
+
+    const [selectedItemTypeOption, setSelectedItemTypeOption] = useState(null);
+    const {register, handleSubmit, formState: {errors}, reset, setError, clearErrors} = useForm();
     const [imageTemp, setImageTemp] = useState('');
     const [imageInput, setImageInput] = useState(null);
-    const [audioInput, setAudioInput] = useState(null);
-    const [showForm, setShowForm] = useState(false);
+    const [itemInput, setItemInput] = useState(null);
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
     const [formButtonLoading, setFormButtonLoading] = useState(false);
 
     useEffect(() => {
-        if (showForm) {
+        if (selectedItemTypeOption) {
             handlePriceInput();
         }
-    }, [showForm]);
+    }, [selectedItemTypeOption]);
 
     const submit = async (data) => {
         setFormButtonDisabled(true);
@@ -33,24 +42,18 @@ function DashboardItems({user, items}) {
             const formData = new FormData();
             formData.append('name', data.name);
             formData.append('price', data.price);
+            formData.append('type', selectedItemTypeOption.value);
             if (imageInput) formData.append('image', imageInput);
-            if (audioInput) formData.append('audio', audioInput);
+            if (itemInput) formData.append('item', itemInput);
 
             await axios.post(`${process.env.BACKEND_URL}/items/create`, formData, {withCredentials: true});
-            const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${user.username}`, {withCredentials: true});
 
-            setItemsLocal(itemsResponse.data.data.items);
             setTimeout(() => {
-                setFormButtonDisabled(false);
-                setFormButtonLoading(false);
-                setShowForm(false);
-                reset();
-                setImageTemp('');
-                setImageInput(null);
-                setAudioInput(null);
+                router.push('/dashboard/items');
             }, 1000);
         } catch (error) {
             setFormButtonDisabled(false);
+            setFormButtonLoading(false);
             console.log('Failed to create items: ', error);
         }
     }
@@ -75,30 +78,29 @@ function DashboardItems({user, items}) {
         }
     }
 
-    const handleAudioChange = (event) => {
+    const handleItemChange = (event) => {
         if (event.target.files.length) {
-            if (!validateAudio(event.target.files[0], 200 * 1024 * 1024)) {
-                setAudioInput(null);
-                setError('audio', {
+            let validated = false, message = '';
+            if (selectedItemTypeOption.value === 'archive') {
+                validated = validateArchive(event.target.files[0], 200 * 1024 * 1024);
+                message = 'Accepted archive formats: zip, rar. Maximum size 200MB';
+            } else if (selectedItemTypeOption.value === 'audio') {
+                validated = validateAudio(event.target.files[0], 200 * 1024 * 1024);
+                message = 'Accepted archive formats: wav, flac, aiff. Maximum size 200MB';
+            }
+
+            if (!validated) {
+                setItemInput(null);
+                setError('item', {
                     type: 'custom',
-                    message: 'Accepted audio formats: wav, flac, aiff. Maximum size 200MB'
+                    message: message
                 });
             } else {
-                clearErrors('audio');
-                setAudioInput(event.target.files[0]);
+                clearErrors('item');
+                setItemInput(event.target.files[0]);
             }
         } else {
-            setAudioInput(null);
-        }
-    }
-
-    const deleteItem = async (id) => {
-        try {
-            await axios.delete(`${process.env.BACKEND_URL}/items/delete?id=${id}`, {withCredentials: true});
-            const filteredItems = [...itemsLocal].filter((item) => item._id !== id);
-            setItemsLocal(filteredItems);
-        } catch (error) {
-            console.log('Failed to delete item: ', error);
+            setItemInput(null);
         }
     }
 
@@ -115,76 +117,45 @@ function DashboardItems({user, items}) {
         }
     };
 
+    const handleSelectEvent = (event) => {
+        setSelectedItemTypeOption(event);
+    }
+
+    const itemIconSrc = () => {
+        if (selectedItemTypeOption.value === 'archive') {
+            return '/archive.svg';
+        } else if (selectedItemTypeOption.value === 'audio') {
+            return '/play.svg';
+        }
+    }
+
     return (
         <div className="w-full">
             <div className="w-full h-16 flex justify-between items-center">
-                <h4 className="font-grotesk font-bold text-4xl">{!showForm ? 'Items' : 'Items / Add'}</h4>
+                <h4 className="font-grotesk font-bold text-4xl">Items / Add</h4>
                 <div
                     className="w-16 h-16 flex justify-center items-center relative rounded-md bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                    onClick={() => setShowForm(!showForm)}>
-                    {
-                        !showForm
-                            ?
-                            <img src="/plus.svg" className="w-8 h-8"/>
-                            :
-                            <img src="/arrow-left.svg" className="w-8 h-8"/>
-                    }
+                    onClick={() => router.push('/dashboard/items')}>
+                    <img src="/arrow-left.svg" className="w-8 h-8"/>
                 </div>
             </div>
             <div className="h-24"></div>
             {
-                !showForm &&
-                <>
-                    <p className="font-grotesk text-xl text-right">[{itemsLocal.length}/{user.plan.items}]</p>
-                    <div className="h-8"></div>
-                </>
-            }
-            {
-                !showForm
-                    ?
-                    <div className="w-full relative">
-                        {
-                            itemsLocal.map((item, index) => {
-                                return (
-                                    <div key={index}>
-                                        <div
-                                            className="w-full h-12 md:h-16 rounded-md border border-black p-2 flex justify-between">
-                                            <div className="flex items-center">
-                                                <div className="w-8 md:w-12 h-8 md:h-12 rounded-sm bg-center bg-cover"
-                                                     style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
-                                                <p className="ml-4 text-black font-grotesk text-lg truncate">{item.name}</p>
-                                            </div>
-                                            <div className="flex items-center"
-                                                 onClick={() => item?.audio_preview && deleteItem(item._id)}>
-                                                <div
-                                                    className="w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
-                                                    <img src="/trash.svg" className="w-4 md:w-6 h-4 md:h-6"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="h-4"></div>
-                                    </div>
-                                )
-                            })
-                        }
-                        <div
-                            className="w-full h-12 md:h-16 rounded-md border border-black p-2 flex justify-center items-center hover:cursor-pointer hover:border-2"
-                            onClick={() => setShowForm(!showForm)}
-                        >
-                            <div className="flex items-center">
-                                <div className="w-8 md:w-12 h-8 md:h-12 flex items-center justify-center">
-                                    <img src="/plus.svg" className="w-4 md:w-6 h-4 md:h-6"/>
-                                </div>
-                            </div>
-                            <p className="ml-4 text-black font-grotesk text-base md:text-lg truncate">Add item</p>
-                        </div>
-                    </div>
+                !selectedItemTypeOption
+                ?
+                    <Select
+                        label="Item type"
+                        name="itemType"
+                        placeholder={selectedItemTypeOption ? selectedItemTypeOption.key : 'Select item type'}
+                        options={itemTypesOptions}
+                        onSelect={(event) => handleSelectEvent(event)}
+                    />
                     :
                     <>
                         <div className="flex items-center">
                             <div
                                 className={`w-32 h-32 relative border border-gray-500 rounded-md hover:cursor-pointer hover:border-gray-900 hover:border-2 flex flex-col items center
-                                ${errors?.image && 'border-red-300'}`}
+                    ${errors?.image && 'border-red-300'}`}
                                 onClick={() => document.getElementById('image').click()}
                             >
                                 {
@@ -214,34 +185,34 @@ function DashboardItems({user, items}) {
 
                             <div
                                 className={`w-32 h-32 ml-4 relative border border-gray-500 rounded-md hover:cursor-pointer hover:border-gray-900 hover:border-2 flex flex-col items center
-                                ${errors?.audio && 'border-red-300'}
-                                `}
-                                onClick={() => document.getElementById('audio').click()}
+                    ${errors?.item && 'border-red-300'}
+                    `}
+                                onClick={() => document.getElementById('item').click()}
                             >
                                 {
-                                    !audioInput &&
+                                    !itemInput &&
                                     <div
                                         className="w-full h-full absolute z-0 flex flex-col justify-center items-center">
-                                        <img src="/play.svg" className="w-8 h-8"/>
-                                        <p className="text-sm font-poppins">Select audio</p>
+                                        <img src={itemIconSrc()} className="w-8 h-8"/>
+                                        <p className="text-sm font-poppins">Select item</p>
                                     </div>
                                 }
                                 {
-                                    !audioInput
+                                    !itemInput
                                         ?
                                         <div className="w-full h-full absolute z-10"></div>
                                         :
                                         <div
                                             className="w-full h-full absolute z-10 flex justify-center items-center">
-                                            <p className="w-full text-sm font-poppins overflow-hidden break-words">{audioInput.name}</p>
+                                            <p className="w-full text-sm font-poppins overflow-hidden break-words">{itemInput.name}</p>
                                         </div>
                                 }
                                 <FileInput
-                                    name="audio"
+                                    name="item"
                                     register={register}
                                     errors={errors}
                                     validationSchema={{}}
-                                    onFileInputChange={handleAudioChange}
+                                    onFileInputChange={handleItemChange}
                                 />
                             </div>
                         </div>
@@ -250,8 +221,8 @@ function DashboardItems({user, items}) {
                             <p className="text-xs font-grotesk text-red-300 mt-1">{errors.image.message}</p>
                         }
                         {
-                            errors?.audio &&
-                            <p className="text-xs font-grotesk text-red-300 mt-1">{errors.audio.message}</p>
+                            errors?.item &&
+                            <p className="text-xs font-grotesk text-red-300 mt-1">{errors.item.message}</p>
                         }
                         <div className="h-4"></div>
                         <div className="flex flex-col items-center">
@@ -296,7 +267,7 @@ function DashboardItems({user, items}) {
     );
 }
 
-DashboardItems.getLayout = function (page) {
+DashboardItemsCreate.getLayout = function (page) {
     return (
         <DashboardLayout user={page.props.user}>
             {page}
@@ -312,21 +283,18 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const userResponse = await axios.get(`${process.env.BACKEND_URL}/users/get?withPlan=true`, {
+        const response = await axios.get(`${process.env.BACKEND_URL}/users/get?withPlan=true`, {
             headers: {
                 'Cookie': context.req.headers.cookie
             },
             withCredentials: true
         });
-        props.user = userResponse.data.data.user;
-
-        const response = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${props.user.username}`, {withCredentials: true});
-        props.items = response.data.data.items;
+        props.user = response.data.data.user;
     } catch (error) {
-        console.log('Failed to fetch items: ', error);
+        console.log('Failed to fetch user: ', error);
     }
 
     return {props};
 }
 
-export default DashboardItems;
+export default DashboardItemsCreate;
