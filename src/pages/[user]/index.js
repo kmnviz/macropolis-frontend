@@ -12,7 +12,8 @@ export default function User({username, profile, items, user}) {
     const [selectedAudioState, setSelectedAudioState] = useState(false);
     const [selectedAudioDuration, setSelectedAudioDuration] = useState(0);
     const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
-    const [backgroundImage, setBackgroundImage] = useState(profile && profile?.avatar ? `${process.env.IMAGES_URL}/1920_${profile.avatar}` : '');
+    const [avatarImage, setAvatarImage] = useState(profile && profile?.avatar ? `${process.env.IMAGES_URL}/1920_${profile.avatar}` : '');
+    const [backgroundImage, setBackgroundImage] = useState(profile && profile?.background ? `${process.env.IMAGES_URL}/1920_${profile.background}` : '');
 
     const handleAudioChange = (src) => {
         const audioElement = document.getElementById('audio');
@@ -105,7 +106,7 @@ export default function User({username, profile, items, user}) {
                                  style={{backgroundImage: `url(${backgroundImage})`}}></div>
                             <div className="w-full h-full max-w-screen-2xl px-8 z-10 flex flex-col lg:flex-row items-center z-10">
                                 <div className="w-40 lg:w-64 h-40 lg:h-64 mt-8 lg:mt-0 bg-cover bg-center rounded-lg"
-                                     style={{backgroundImage: `url(${backgroundImage})`}}></div>
+                                     style={{backgroundImage: `url(${avatarImage})`}}></div>
                                 <div className="hidden lg:w-16 lg:block"></div>
                                 <div className="block h-8 lg:hidden"></div>
                                 <div className="h-auto lg:h-64">
@@ -131,7 +132,7 @@ export default function User({username, profile, items, user}) {
                                             <div
                                                 className="w-full h-full rounded-lg absolute black-to-transparent-gradient"></div>
                                             {
-                                                item?.audio_preview &&
+                                                item?.audio && item?.audio_preview &&
                                                 <div className="w-full h-full absolute flex justify-center items-center"
                                                      onClick={() => handleAudioChange(item.audio_preview)}>
                                                     <div className="w-16 h-16 -mt-16 hover:cursor-pointer">
