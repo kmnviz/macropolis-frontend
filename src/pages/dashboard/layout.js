@@ -16,11 +16,11 @@ export default function DashboardLayout({children, user}) {
 
     const logout = () => {
         const cookies = new Cookies();
+        console.log('cookies: ', cookies.get('token'));
         cookies.remove('token');
-        animatePageOverlay(true);
-        setTimeout(() => {
-            router.push('/sign-in?entry');
-        }, 1000);
+        console.log('cookies: ', cookies.get('token'));
+        // animatePageOverlay(true);
+        // router.push('/sign-in?entry');
     }
 
     const animatePageOverlay = (reverse = false) => {

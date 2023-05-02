@@ -44,13 +44,16 @@ function DashboardItems({user, items}) {
                                              style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${item.image})`}}></div>
                                         <p className="ml-4 text-black font-grotesk text-lg truncate">{item.name}</p>
                                     </div>
-                                    <div className="flex items-center"
-                                         onClick={() => item?.audio_preview && deleteItem(item._id)}>
-                                        <div
-                                            className="w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
-                                            <img src="/trash.svg" className="w-4 md:w-6 h-4 md:h-6"/>
+                                    {
+                                        item?.audio_preview &&
+                                        <div className="flex items-center"
+                                             onClick={() => deleteItem(item._id)}>
+                                            <div
+                                                className="w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
+                                                <img src="/trash.svg" className="w-4 md:w-6 h-4 md:h-6"/>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                                 <div className="h-4"></div>
                             </div>
