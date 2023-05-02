@@ -229,7 +229,7 @@ export default function Index({usernames}) {
             <Head>
                 <title>{`${process.env.APP_NAME} - a space for tour content`}</title>
             </Head>
-            <div className="w-screen h-screen relative flex justify-center">
+            <div className="w-screen min-h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full max-w-screen-2xl relative">
                     <Header router={router} />
@@ -296,7 +296,7 @@ export default function Index({usernames}) {
                     {/*                <img src="/arrow-up.svg" className="w-8 h-4 invert"/>*/}
                     {/*            </div>*/}
                     {/*        </div>*/}
-                    {/*        <div className="w-screen h-screen bg-black"></div>*/}
+                    {/*        <div className="w-screen min-h-screen bg-black"></div>*/}
                     {/*    </div>*/}
                     {/*</div>*/}
                 </div>

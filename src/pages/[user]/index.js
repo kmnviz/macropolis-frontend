@@ -61,7 +61,7 @@ export default function User({username, profile, items, user}) {
             <Head>
                 <title>{`${username} at ${process.env.APP_NAME}`}</title>
             </Head>
-            <div className="w-screen h-screen">
+            <div className="w-screen min-h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>
                 <div className="w-full flex justify-center">
                     <div className="w-full max-w-screen-2xl">

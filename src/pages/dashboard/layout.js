@@ -89,16 +89,21 @@ export default function DashboardLayout({children, user}) {
             <Head>
                 <title>{`${process.env.APP_NAME} - dashboard`}</title>
             </Head>
-            <div className="w-screen h-screen relative">
+            <div className="w-screen min-h-screen relative">
                 <div id="page-overlay"
-                     className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}></div>
-                <div id="dashboard-menu-button"
-                     className="lg:hidden absolute right-4 bottom-4 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
-                     onClick={showMenu}
-                >
-                    <div id="dashboard-menu-icon" className="relative">
-                        <div className="w-full h-1 bg-white rounded-sm absolute"></div>
-                        <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                     className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}
+                ></div>
+                <div className="w-screen h-screen fixed top-0 -right-full z-30">
+                    <div className="w-full h-full relative">
+                        <div id="dashboard-menu-button"
+                             className="lg:hidden absolute -left-20 bottom-4 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                             onClick={showMenu}
+                        >
+                            <div id="dashboard-menu-icon" className="relative">
+                                <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                                <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="dashboard-menu-main"
@@ -146,6 +151,7 @@ export default function DashboardLayout({children, user}) {
                 <div className="p-2 md:p-16 lg:ml-80">
                     <div className="w-full lg:w-576">{children}</div>
                 </div>
+                <div className="h-20"></div>
             </div>
         </>
     );

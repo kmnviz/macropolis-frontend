@@ -24,7 +24,7 @@ export default function Download({downloadUrl, fileExtension, item, username}) {
             <Head>
                 <title>{process.env.APP_NAME}</title>
             </Head>
-            <div className="w-screen h-screen relative flex justify-center">
+            <div className="w-screen min-h-screen relative flex justify-center">
                 <div className="w-full max-w-screen-2xl">
                     <Header router={router}/>
                     <div className="h-8 md:h-24"></div>

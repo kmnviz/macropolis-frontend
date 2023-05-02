@@ -71,7 +71,7 @@ export default function SignUp() {
             <Head>
                 <title>{`${process.env.APP_NAME} - sign up`}</title>
             </Head>
-            <div className="w-screen h-screen relative flex justify-center">
+            <div className="w-screen min-h-screen relative flex justify-center">
                 {
                     router.query?.username &&
                     <div id="page-overlay" className="w-full h-full absolute right-0 z-40 bg-black"></div>
