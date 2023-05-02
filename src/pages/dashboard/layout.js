@@ -89,23 +89,23 @@ export default function DashboardLayout({children, user}) {
             <Head>
                 <title>{`${process.env.APP_NAME} - dashboard`}</title>
             </Head>
+            <div className="w-screen h-screen fixed top-0 -right-full z-30">
+                <div className="w-full h-full relative">
+                    <div id="dashboard-menu-button"
+                         className="lg:hidden absolute -left-16 bottom-1 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                         onClick={showMenu}
+                    >
+                        <div id="dashboard-menu-icon" className="relative">
+                            <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                            <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="w-screen min-h-screen relative">
                 <div id="page-overlay"
                      className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}
                 ></div>
-                <div className="w-screen h-screen fixed top-0 -right-full z-30">
-                    <div className="w-full h-full relative">
-                        <div id="dashboard-menu-button"
-                             className="lg:hidden absolute -left-16 bottom-1 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
-                             onClick={showMenu}
-                        >
-                            <div id="dashboard-menu-icon" className="relative">
-                                <div className="w-full h-1 bg-white rounded-sm absolute"></div>
-                                <div className="w-full h-1 bg-white rounded-sm absolute"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div id="dashboard-menu-main"
                      className="ml-[-100%] lg:ml-0 w-full lg:w-80 min-h-full h-1 fixed top-0 left-0 bg-black z-20 lg:p-0">
                     <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col overflow-y-auto">
