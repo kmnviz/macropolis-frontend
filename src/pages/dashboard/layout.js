@@ -105,7 +105,7 @@ export default function DashboardLayout({children, user}) {
                     <div id="dashboard-menu-wrapper" className="w-full h-full min-h-full flex flex-col overflow-y-auto">
                         <div className="w-full flex-grow bg-black">
                             <div
-                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk select-none">{process.env.APP_NAME} [{user.plan.name}]
+                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk select-none">{process.env.APP_NAME} [{user?.plan ? user.plan.name : ''}]
                             </div>
                             <div
                                 className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"></div>
