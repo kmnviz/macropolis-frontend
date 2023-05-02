@@ -89,17 +89,13 @@ export default function DashboardLayout({children, user}) {
             <Head>
                 <title>{`${process.env.APP_NAME} - dashboard`}</title>
             </Head>
-            <div className="w-screen h-screen fixed top-0 -right-full z-30">
-                <div className="w-full h-full relative">
-                    <div id="dashboard-menu-button"
-                         className="lg:hidden absolute -left-16 bottom-1 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
-                         onClick={showMenu}
-                    >
-                        <div id="dashboard-menu-icon" className="relative">
-                            <div className="w-full h-1 bg-white rounded-sm absolute"></div>
-                            <div className="w-full h-1 bg-white rounded-sm absolute"></div>
-                        </div>
-                    </div>
+            <div id="dashboard-menu-button"
+                 className="lg:hidden fixed right-2 bottom-2 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                 onClick={showMenu}
+            >
+                <div id="dashboard-menu-icon" className="relative">
+                    <div className="w-full h-1 bg-white rounded-sm absolute"></div>
+                    <div className="w-full h-1 bg-white rounded-sm absolute"></div>
                 </div>
             </div>
             <div className="w-screen min-h-screen relative">
