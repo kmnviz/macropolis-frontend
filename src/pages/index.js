@@ -32,7 +32,7 @@ export default function Index({usernames}) {
         let fakeInputCaret, caretPosition = 0;
         fakeInputCaret = document.createElement('div');
         fakeInputCaret.id = 'fake-input-caret';
-        fakeInputCaret.classList.add(`h-8`, 'md:h-16', 'absolute', 'top-2', 'md:top-4', 'w-0.5', 'md:w-1', 'bg-black');
+        fakeInputCaret.classList.add(`h-8`, 'md:h-16', 'absolute', 'top-1.5', 'md:top-4', 'w-0.5', 'md:w-1', 'bg-black');
 
         // Add initial fake input caret
         if (!document.getElementById('fake-input-caret')) {
