@@ -17,7 +17,9 @@ export default function DashboardLayout({children, user}) {
     const logout = () => {
         const cookies = new Cookies();
         console.log('cookies: ', cookies.get('token'));
-        cookies.remove('token');
+        cookies.remove('token', {
+            path: '/'
+        });
         console.log('cookies: ', cookies.get('token'));
         // animatePageOverlay(true);
         // router.push('/sign-in?entry');
