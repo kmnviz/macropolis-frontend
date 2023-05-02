@@ -2,6 +2,7 @@ import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
 import Head from 'next/head';
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function DashboardLayout({children, user}) {
     const router = useRouter();
@@ -16,11 +17,13 @@ export default function DashboardLayout({children, user}) {
 
     const logout = () => {
         const cookies = new Cookies();
-        cookies.remove('token', { path: '/' });
-        animatePageOverlay(true);
-        setTimeout(() => {
-            router.push('/sign-in?entry');
-        }, 1000);
+        console.log('cookies', cookies.getAll());
+        cookies.remove('token', { domain: process.env.DOMAIN_NAME });
+        console.log('cookies', cookies.getAll());
+        // animatePageOverlay(true);
+        // setTimeout(() => {
+        //     router.push('/sign-in?entry');
+        // }, 1000);
     }
 
     const animatePageOverlay = (reverse = false) => {
