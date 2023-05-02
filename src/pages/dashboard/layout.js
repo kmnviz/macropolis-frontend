@@ -96,7 +96,7 @@ export default function DashboardLayout({children, user}) {
                 <div className="w-screen h-screen fixed top-0 -right-full z-30">
                     <div className="w-full h-full relative">
                         <div id="dashboard-menu-button"
-                             className="lg:hidden absolute -left-20 bottom-4 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
+                             className="lg:hidden absolute -left-16 bottom-1 z-30 flex justify-center items-center border-2 rounded-lg bg-black hover:cursor-pointer"
                              onClick={showMenu}
                         >
                             <div id="dashboard-menu-icon" className="relative">
