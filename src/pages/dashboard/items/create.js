@@ -8,6 +8,7 @@ import FileInput from '../../../components/fileInput';
 import DashboardLayout from '../layout';
 import Button from '../../../components/button';
 import Select from '../../../components/select';
+import TextArea from '../../../components/textArea';
 import validateImage from '../../../helpers/validateImage';
 import validateAudio from '../../../helpers/validateAudio';
 import validateArchive from '../../../helpers/validateArchive';
@@ -45,6 +46,7 @@ function DashboardItemsCreate({user}) {
             formData.append('type', selectedItemTypeOption.value);
             if (imageInput) formData.append('image', imageInput);
             if (itemInput) formData.append('item', itemInput);
+            if (data?.description && data.description) formData.append('description', data.description);
 
             await axios.post(`${process.env.BACKEND_URL}/items/create`, formData, {withCredentials: true});
 
@@ -234,6 +236,22 @@ function DashboardItemsCreate({user}) {
                                     errors={errors}
                                     validationSchema={{
                                         required: 'Name is required',
+                                    }}
+                                />
+                            </div>
+                            <div className="w-full mt-4">
+                                <TextArea
+                                    name="description"
+                                    label="Description"
+                                    counter={true}
+                                    maxLength={200}
+                                    register={register}
+                                    errors={errors}
+                                    validationSchema={{
+                                        maxLength: {
+                                            value: 200,
+                                            message: 'Maximum 200 characters'
+                                        }
                                     }}
                                 />
                             </div>

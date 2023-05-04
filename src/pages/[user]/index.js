@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
-import Decimal from "decimal.js";
+import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
 
 export default function User({username, profile, items, user}) {

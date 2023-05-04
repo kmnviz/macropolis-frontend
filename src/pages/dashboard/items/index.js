@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import DashboardLayout from '../layout';
+import itemTypesEnumerations from'../../../enumerations/itemTypes';
 
 function DashboardItems({user, items}) {
     const router = useRouter();
@@ -45,7 +46,7 @@ function DashboardItems({user, items}) {
                                         <p className="ml-4 text-black font-grotesk text-lg truncate">{item.name}</p>
                                     </div>
                                     {
-                                        item?.audio_preview &&
+                                        (item.type !== itemTypesEnumerations.AUDIO || item?.audio_preview) &&
                                         <div className="flex items-center"
                                              onClick={() => deleteItem(item._id)}>
                                             <div
