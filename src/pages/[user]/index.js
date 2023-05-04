@@ -56,6 +56,17 @@ export default function User({username, profile, items, user}) {
         return Decimal(amount).div(100).toFixed(2);
     }
 
+    const copyLinkToClipboard = (id) => {
+        navigator.clipboard.writeText(location.href)
+            .then(() => {
+                const element = document.getElementById(id);
+                element.classList.remove('hidden');
+                setTimeout(() => {
+                    element.classList.add('hidden');
+                }, 1500);
+            });
+    }
+
     return (
         <>
             <Head>
@@ -64,17 +75,25 @@ export default function User({username, profile, items, user}) {
             <div className="w-screen min-h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>
                 <div className="w-full flex justify-center">
-                    <div className="w-full max-w-screen-2xl">
+                    <div className="w-full max-w-screen-2xl relative z-20">
                         <div
                             className="w-full h-16 py-4 lg:py-0 px-8 flex flex-row justify-between items-center">
                             <h6 className="font-grotesk text-xl select-none">{username}</h6>
                             <div className="h-full flex items-center">
                                 <div
                                     className="w-10 h-10 flex justify-center items-center relative hover:cursor-pointer group">
-                                    <div className="w-full h-full absolute flex justify-center items-center z-10"></div>
+                                    <div className="w-full h-full absolute flex justify-center items-center z-10"
+                                         onClick={() => copyLinkToClipboard('copy-link')}
+                                    ></div>
                                     <div
-                                        className="w-full h-full absolute flex justify-center items-center z-0 group-hover:rounded-md group-hover:shadow">
-                                        <img src="/share.svg" className="w-6 h-6"/>
+                                        className="w-full h-full absolute flex justify-center items-center z-0 group-hover:rounded-md
+                                        group-hover:shadow relative"
+                                    >
+                                        <img src="/link.svg" className="w-6 h-6"/>
+                                        <div id="copy-link" className="hidden absolute top-3 -left-3 h-4 w-16 bg-gray-300 flex justify-center items-center
+                                            rounded font-grotesk text-sm">
+                                            copied
+                                        </div>
                                     </div>
                                 </div>
                             </div>
