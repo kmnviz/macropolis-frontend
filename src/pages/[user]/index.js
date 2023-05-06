@@ -127,8 +127,8 @@ export default function User({username, profile, items, user}) {
                                              className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
                                              onClick={() => router.push(`/${username}/${item._id}`)}
                                         >
-                                            <div className="w-full h-64 relative">
-                                                <img className="rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                            <div className="w-full h-64 relative overflow-hidden">
+                                                <img className="absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
                                             </div>
                                             <div className="w-full p-4">
                                                 <p className="font-grotesk truncate">{item.name}</p>
