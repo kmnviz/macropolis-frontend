@@ -267,38 +267,41 @@ export default function User({username, item, items}) {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex justify-center mt-24">
-                    <div className="w-full max-w-screen-2xl px-8">
-                        <h4 className="font-grotesk text-4xl text-center">More from me</h4>
-                        <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-                            {
-                                items.map((item, index) => {
-                                    return (
-                                        <div key={`item-${item._id}`}
-                                             className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group"
-                                             onClick={() => router.push(`/${username}/${item._id}`)}
-                                        >
-                                            <div className="w-full h-64 relative">
-                                                <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
-                                            </div>
-                                            <div className="w-full p-4">
-                                                <p className="font-grotesk truncate">{item.name}</p>
-                                            </div>
-                                            <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
-                                                 onClick={(event) => {
-                                                     event.stopPropagation();
-                                                     router.push(`/checkout?itemId=${item._id}&username=${username}`);
-                                                 }}
+                {
+                    items.length > 0 &&
+                    <div className="w-full flex justify-center mt-24">
+                        <div className="w-full max-w-screen-2xl px-8">
+                            <h4 className="font-grotesk text-4xl">More from me</h4>
+                            <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                                {
+                                    items.map((item, index) => {
+                                        return (
+                                            <div key={`item-${item._id}`}
+                                                 className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group"
+                                                 onClick={() => router.push(`/${username}/${item._id}`)}
                                             >
-                                                {`Buy for $${formatAmount(item.price)}`}
+                                                <div className="w-full h-64 relative">
+                                                    <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                                </div>
+                                                <div className="w-full p-4">
+                                                    <p className="font-grotesk truncate">{item.name}</p>
+                                                </div>
+                                                <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
+                                                     onClick={(event) => {
+                                                         event.stopPropagation();
+                                                         router.push(`/checkout?itemId=${item._id}&username=${username}`);
+                                                     }}
+                                                >
+                                                    {`Buy for $${formatAmount(item.price)}`}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div className="w-full h-24 pb-2 flex justify-center items-end">
                     <h6 className="font-grotesk text-base text-black">by <span
                         className="font-bold hover:cursor-pointer"
