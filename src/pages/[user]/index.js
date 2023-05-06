@@ -128,7 +128,7 @@ export default function User({username, profile, items, user}) {
                                              onClick={() => router.push(`/${username}/${item._id}`)}
                                         >
                                             <div className="w-full h-64 relative overflow-hidden">
-                                                <img className="absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                                <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
                                             </div>
                                             <div className="w-full p-4">
                                                 <p className="font-grotesk truncate">{item.name}</p>
