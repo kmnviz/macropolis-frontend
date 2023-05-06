@@ -153,8 +153,13 @@ function DashboardPlans({user, plans, paymentMethod}) {
                                                 <div className="w-full px-4 py-2 grid grid-cols-2 rounded-lg border-2">
                                                     <div>
                                                         <p className="font-grotesk font-bold text-lg">{plan.name}</p>
-                                                        <p className="font-grotesk text-lg">&middot; up
-                                                            to {plan.items} items</p>
+                                                        {
+                                                            Object.keys(plan.includes).map((key) => {
+                                                                return (
+                                                                    <p className="font-grotesk text-lg">&middot; {plan.includes[key].description}</p>
+                                                                )
+                                                            })
+                                                        }
                                                         <div className="h-8"></div>
                                                         <p className="font-grotesk text-lg">${formatAmount(plan.price)} / month</p>
                                                     </div>

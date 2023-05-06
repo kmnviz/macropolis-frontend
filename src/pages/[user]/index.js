@@ -63,7 +63,7 @@ export default function User({username, profile, items, user}) {
                 element.classList.remove('hidden');
                 setTimeout(() => {
                     element.classList.add('hidden');
-                }, 1500);
+                }, 1000);
             });
     }
 
@@ -118,54 +118,28 @@ export default function User({username, profile, items, user}) {
                         <p className="font-grotesk mt-8">Items: {items.length}</p>
                         <div className="w-full h-px mt-1 bg-gray-300"></div>
                         <div
-                            className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                            className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
+                        >
                             {
                                 items.map((item, index) => {
                                     return (
                                         <div key={`item-${item._id}`}
-                                             className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group"
+                                             className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
+                                             onClick={() => router.push(`/${username}/${item._id}`)}
                                         >
                                             <div className="w-full h-64 relative">
-                                                <div className="w-full h-full absolute top-0 left-0 bg-cover bg-center rounded-t-md z-10"
-                                                     style={{backgroundImage: `url(${process.env.IMAGES_URL}/480_${item.image})`}}
-                                                ></div>
-                                                <div className="w-full h-full absolute top-0 left-0 rounded-t-md z-20">
-                                                    <div className="w-full h-full relative">
-                                                        <div className="w-full h-full absolute top-0 left-0 bg-black
-                                                            rounded-t-md opacity-0 group-hover:opacity-25"
-                                                        ></div>
-                                                        {
-                                                            item?.audio_preview &&
-                                                            <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center">
-                                                                <div className={`w-12 h-12 group-hover:block bg-white rounded shadow 
-                                                                ${!(selectedAudio === item.audio_preview) ? 'hidden' : '' }`}
-                                                                     onClick={() => handleAudioChange(item.audio_preview)}
-                                                                >
-                                                                    {
-                                                                        selectedAudioState && selectedAudio === item.audio_preview
-                                                                            ?
-                                                                            <img src="/pause.svg" className="w-full h-full"/>
-                                                                            :
-                                                                            <img src="/play.svg" className="w-full h-full"/>
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                </div>
+                                                <img className="rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
                                             </div>
                                             <div className="w-full p-4">
-                                                <p className="font-grotesk truncate">{item.name}{item.name}{item.name}</p>
-                                                <div className="flex justify-end items-center mt-4">
-                                                    <div
-                                                        className="px-2 py-0.5 rounded shadow flex justify-between items-center
-                                                        bg-blue-100 hover:shadow-lg hover:bg-blue-300"
-                                                        onClick={() => router.push(`/checkout?itemId=${item._id}&username=${username}`)}
-                                                    >
-                                                        <img src="/cart.svg" className="w-4 h-4 mr-4"/>
-                                                        ${formatAmount(item.price)}
-                                                    </div>
-                                                </div>
+                                                <p className="font-grotesk truncate">{item.name}</p>
+                                            </div>
+                                            <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
+                                                 onClick={(event) => {
+                                                     event.stopPropagation();
+                                                     router.push(`/checkout?itemId=${item._id}&username=${username}`);
+                                                 }}
+                                            >
+                                                {`Buy for $${formatAmount(item.price)}`}
                                             </div>
                                         </div>
                                     )

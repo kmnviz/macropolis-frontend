@@ -17,11 +17,12 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
     const [paymentIntent, setPaymentIntent] = useState(null);
     const [stripeClient, setStripeClient] = useState(null);
     const [stripeElements, setStripeElements] = useState(null);
+    const [stripeCardElement, setStripeCardElement] = useState(null);
     const [stage, setStage] = useState(0);
 
     useEffect(() => {
         if (stage === 1) {
-            createPaymentElement();
+            createCardElement();
         }
     }, [stage]);
 
@@ -43,22 +44,36 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                 console.log('Failed to create payment intent: ', error);
             }
         } else if (stage === 1) {
-            const response = stripeClient.confirmPayment({
-                elements: stripeElements,
-                confirmParams: {
-                    return_url: `${process.env.DOMAIN_URL}/checkout?paymentIntentId=${paymentIntent.id}&itemId=${item._id}&emailAddress=${enteredEmail}&username=${username}`
+            const response = stripeClient.confirmCardPayment(paymentIntent.client_secret, {
+                payment_method: {
+                    card: stripeCardElement,
                 },
-            });
-
-            if (response?.error && response.error) {
+            }).then((response) => {
+                router.push(`${process.env.DOMAIN_URL}/checkout?paymentIntentId=${response.paymentIntent.id}&itemId=${item._id}&emailAddress=${enteredEmail}&username=${username}`)
+            }).catch((error) => {
                 console.log(`Failed to confirm payment intent: ${response.error.message}`)
-            }
+            })
         }
     }
 
-    const createPaymentElement = () => {
-        const paymentElement = stripeElements.create('payment');
-        paymentElement.mount('#payment-element');
+    const createCardElement = () => {
+        const cardElement = stripeElements.create('card', {
+            hidePostalCode: true,
+            style: {
+                base: {
+                    color: '#000',
+                    fontFamily: 'Space Grotesk, Arial, sans-serif',
+                    fontSize: '16px',
+                    fontSmoothing: 'antialiased',
+                },
+                invalid: {
+                    iconColor: '#fca5a5',
+                    color: '#fca5a5',
+                },
+            },
+        });
+        cardElement.mount('#card-element');
+        setStripeCardElement(cardElement);
     }
 
     const formatAmount = (amount) => {
@@ -137,8 +152,15 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                                                         </>
                                                         :
                                                         <>
-                                                            <div>
-                                                                <div id="payment-element"></div>
+                                                            <div
+                                                                className="w-full h-12 md:h-16 px-2 md:px-4 flex items-center border rounded-md border-black">
+                                                                <div className="w-full">
+                                                                    <div id="card-element"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="w-full">
+                                                                <div className="h-2"></div>
+                                                                <div className="font-grotesk text-xs">powered by Stripe</div>
                                                             </div>
                                                         </>
                                                 }

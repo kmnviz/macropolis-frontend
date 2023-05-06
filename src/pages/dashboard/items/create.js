@@ -17,8 +17,8 @@ function DashboardItemsCreate({user}) {
     const router = useRouter();
 
     const itemTypesOptions = [
-        { key: 'Archive', value: 'archive' },
-        { key: 'Audio', value: 'audio' },
+        { key: '.zip, .rar', value: 'archive' },
+        { key: '.wav, .flac, .aiff', value: 'audio' },
     ];
 
     const [selectedItemTypeOption, setSelectedItemTypeOption] = useState(null);
