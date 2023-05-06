@@ -17,17 +17,12 @@ export default function User({username, item, items}) {
     useEffect(() => {
         if (item.type === itemTypesEnumerations.AUDIO) {
             const audioElement = document.getElementById('audio');
-            audioElement.addEventListener('loadedmetadata', () => {
+            audioElement.addEventListener('canplaythrough', () => {
                 setAudioDuration(audioElement.duration);
                 handleAudioDraggable();
             });
         }
     }, []);
-
-    useEffect(() => {
-        console.log('enters here...');
-        // changeDraggableCursorPositionBasedOnCurrentTime(audioElementCurrentTime);
-    }, [audioElementCurrentTime]);
 
     const handleAudioToggle = () => {
         const audioElement = document.getElementById('audio');
@@ -186,7 +181,7 @@ export default function User({username, item, items}) {
                                             <img className="w-full rounded-lg z-0"
                                                  src={`${process.env.IMAGES_URL}/480_${item.image}`} alt={item.name}/>
                                             <div
-                                                className="w-full h-full absolute top-0 z-10 flex justify-center items-center">
+                                                className="w-full h-full absolute top-0 right-4 z-10 flex justify-center items-center">
                                                 <div
                                                     className="w-24 h-24 border-4 border-gray-300 rounded-full relative group hover:cursor-pointer"
                                                     onClick={() => handleAudioToggle()}
