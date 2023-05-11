@@ -291,7 +291,7 @@ export default function User({username, item, items}) {
                                     items.map((item, index) => {
                                         return (
                                             <div key={`item-${item._id}`}
-                                                 className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group"
+                                                 className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
                                                  onClick={() => router.push(`/${username}/${item._id}`)}
                                             >
                                                 <div className="w-full h-64 relative overflow-hidden">
