@@ -1,6 +1,8 @@
 /.next
 /.idea
 /.env
+/.DS_Store
 /temp
 /node_modules
 /package-lock.json
+/src/.DS_Store

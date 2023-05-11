@@ -235,8 +235,8 @@ export default function Index({usernames}) {
                     <Header router={router} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12">
-                            <h1 className="p-2 font-grotesk text-5xl md:text-8xl">SPACE FOR <span
-                                className="font-bold">CONTENT</span></h1>
+                            <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
+                            <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
                             <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl">
                                 <div id="input-main"
                                      className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
@@ -256,7 +256,7 @@ export default function Index({usernames}) {
                                     </div>
                                 </div>
                                 <div id="button-main" className="w-full h-12 md:h-24 flex mt-4">
-                                    <div className="hidden md:block basis-48 md:basis-96 h-full"></div>
+                                    <div className="hidden md:block basis-48 md:basis-112 h-full"></div>
                                     <div
                                         id="button-wrapper"
                                         className={`h-full flex-grow relative border md:border-2 border-black rounded-lg 

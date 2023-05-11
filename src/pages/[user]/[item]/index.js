@@ -15,13 +15,13 @@ export default function User({username, item, items}) {
     const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
 
     useEffect(() => {
-        if (item.type === itemTypesEnumerations.AUDIO) {
-            const audioElement = document.getElementById('audio');
-            audioElement.addEventListener('canplaythrough', () => {
-                setAudioDuration(audioElement.duration);
-                handleAudioDraggable();
-            });
-        }
+        // if (item.type === itemTypesEnumerations.AUDIO) {
+        //     const audioElement = document.getElementById('audio');
+        //     audioElement.addEventListener('canplaythrough', () => {
+        //         setAudioDuration(audioElement.duration);
+        //         handleAudioDraggable();
+        //     });
+        // }
     }, []);
 
     const handleAudioToggle = () => {
@@ -200,39 +200,39 @@ export default function User({username, item, items}) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div
-                                                className="w-full h-16 absolute p-0 lg:pr-8 bottom-0 rounded-b-lg group z-20">
-                                                <div className="w-full h-full relative">
-                                                    <div
-                                                        className="w-full h-full absolute top-0 rounded-b-lg bg-black opacity-75 z-20"></div>
-                                                    <div
-                                                        className="w-full h-full absolute top-0 rounded-b-lg z-30 px-4">
-                                                        <div
-                                                            className="w-full h-full flex justify-between items-center">
-                                                            <div
-                                                                className="w-12 font-grotesk text-xl text-white select-none">
-                                                                {formatTime(audioElementCurrentTime)}
-                                                            </div>
-                                                            <div
-                                                                className="h-full flex-grow flex justify-center items-center">
-                                                                <div id="audio-draggable-wrapper"
-                                                                     className="w-4/5 h-full relative">
-                                                                    <div id="audio-draggable-path"
-                                                                         className="w-full h-2 absolute top-7 rounded-sm bg-white hover:cursor-pointer"
-                                                                    ></div>
-                                                                    <div id="audio-draggable-cursor"
-                                                                         className={`w-4 h-4 absolute top-6 rounded-full bg-green-300 hover:cursor-pointer`}
-                                                                    ></div>
-                                                                </div>
-                                                            </div>
-                                                            <div
-                                                                className="w-12 font-grotesk text-xl text-white select-none">
-                                                                {formatTime(audioDuration)}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            {/*<div*/}
+                                            {/*    className="w-full h-16 absolute p-0 lg:pr-8 bottom-0 rounded-b-lg group z-20">*/}
+                                            {/*    <div className="w-full h-full relative">*/}
+                                            {/*        <div*/}
+                                            {/*            className="w-full h-full absolute top-0 rounded-b-lg bg-black opacity-75 z-20"></div>*/}
+                                            {/*        <div*/}
+                                            {/*            className="w-full h-full absolute top-0 rounded-b-lg z-30 px-4">*/}
+                                            {/*            <div*/}
+                                            {/*                className="w-full h-full flex justify-between items-center">*/}
+                                            {/*                <div*/}
+                                            {/*                    className="w-12 font-grotesk text-xl text-white select-none">*/}
+                                            {/*                    {formatTime(audioElementCurrentTime)}*/}
+                                            {/*                </div>*/}
+                                            {/*                <div*/}
+                                            {/*                    className="h-full flex-grow flex justify-center items-center">*/}
+                                            {/*                    <div id="audio-draggable-wrapper"*/}
+                                            {/*                         className="w-4/5 h-full relative">*/}
+                                            {/*                        <div id="audio-draggable-path"*/}
+                                            {/*                             className="w-full h-2 absolute top-7 rounded-sm bg-white hover:cursor-pointer"*/}
+                                            {/*                        ></div>*/}
+                                            {/*                        <div id="audio-draggable-cursor"*/}
+                                            {/*                             className={`w-4 h-4 absolute top-6 rounded-full bg-green-300 hover:cursor-pointer`}*/}
+                                            {/*                        ></div>*/}
+                                            {/*                    </div>*/}
+                                            {/*                </div>*/}
+                                            {/*                <div*/}
+                                            {/*                    className="w-12 font-grotesk text-xl text-white select-none">*/}
+                                            {/*                    {formatTime(audioDuration)}*/}
+                                            {/*                </div>*/}
+                                            {/*            </div>*/}
+                                            {/*        </div>*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
                                         </>
                                     }
                                     {
