@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Header from '../components/header';
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function Index({usernames}) {
     const router = useRouter();
@@ -227,7 +228,17 @@ export default function Index({usernames}) {
     return (
         <>
             <Head>
-                <title>{`${process.env.APP_NAME} - a space for tour content`}</title>
+                <title>{`${process.env.APP_NAME} - Showcase and Sell Your Digital Creations`}</title>
+                <meta name="description" content={`Discover, showcase, and sell your digital creations on ${process.env.APP_NAME}. 
+                    Join our community of creators today.`}
+                />
+                <meta property="og:title" content={`${process.env.APP_NAME} - Space for personal marketplaces for digital creations`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}`} />
+                <meta property="og:description" content={`Discover, showcase, and sell your digital creations on ${process.env.APP_NAME}. Join our community of creators today.`} />
+                <meta property="og:image" content={`${process.env.DOMAIN_URL}/rocket-launch.svg`} />
+                <meta name="robots" content="index, follow" />
+                <link rel="canonical" href={process.env.DOMAIN_URL} />
             </Head>
             <div className="w-screen min-h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>

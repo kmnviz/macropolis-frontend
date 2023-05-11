@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
 import itemTypesEnumerations from '../../../enumerations/itemTypes';
 import Button from "@/components/button";
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function User({username, item, items}) {
     const router = useRouter();
@@ -138,7 +139,20 @@ export default function User({username, item, items}) {
     return (
         <>
             <Head>
-                <title>{`${username} at ${process.env.APP_NAME}`}</title>
+                <title>{`${item.name} by ${username} on ${process.env.APP_NAME}`}</title>
+                <meta name="description" content={`Buy ${item.name} by ${username} on ${process.env.APP_NAME}. 
+                    ${item?.description && item.description ? item.description : ''}.
+                     Browse our marketplace for more digital creations by ${username} and other talented creators.`}
+                />
+                <meta property="og:title" content={`${item.name} by ${username} on ${process.env.APP_NAME}`} />
+                <meta property="og:type" content="product" />
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}/${item._id}`} />
+                <meta property="og:description" content={item?.description && item.description ? item.description : ''} />
+                <meta property="og:image" content={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                <meta property="product:price:amount" content={formatAmount(item.price)} />
+                <meta property="product:price:currency" content="USD" />
+                <meta name="robots" content="index, follow" />
+                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}/${item._id}`} />
             </Head>
             <div className="w-screen min-h-screen">
                 <div className="w-full flex justify-center">

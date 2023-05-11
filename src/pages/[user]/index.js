@@ -4,6 +4,7 @@ import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function User({username, profile, items, user}) {
     const router = useRouter();
@@ -70,7 +71,17 @@ export default function User({username, profile, items, user}) {
     return (
         <>
             <Head>
-                <title>{`${username} at ${process.env.APP_NAME}`}</title>
+                <title>{`${username}'s Profile on ${process.env.APP_NAME}`}</title>
+                <meta name="description" content={`Discover ${username}'s creations on ${process.env.APP_NAME}. 
+                    Showcase and sell your own digital creations on our platform.`}
+                />
+                <meta property="og:title" content={`${username}'s Profile on ${process.env.APP_NAME}`} />
+                <meta property="og:type" content="profile" />
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}`} />
+                <meta property="og:description" content={`Discover ${username}'s creations on ${process.env.APP_NAME}. Showcase and sell your own digital creations on our platform.`} />
+                <meta property="og:image" content={avatarImage} />
+                <meta name="robots" content="index, follow" />
+                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}`} />
             </Head>
             <div className="w-screen min-h-screen">
                 <audio id="audio" type="audio/mpeg" className="invisible"/>
