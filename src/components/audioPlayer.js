@@ -13,7 +13,7 @@ export default function AudioPlayer({audioSrc, imageSrc, title = '', artist = ''
     const toggleAudioState = () => {
         const audioElement = document.getElementById('audio');
 
-        if(!audioState) {
+        if (!audioState) {
             audioElement.play();
             setAudioState(true);
         } else {
@@ -55,14 +55,15 @@ export default function AudioPlayer({audioSrc, imageSrc, title = '', artist = ''
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: title,
-                artist: artist,
+                artist: artist + 'test',
+                album: title,
                 artwork: [
-                    { src: imageSrc, sizes: '96x96', type: 'image/png' },
-                    { src: imageSrc, sizes: '128x128', type: 'image/png' },
-                    { src: imageSrc, sizes: '192x192', type: 'image/png' },
-                    { src: imageSrc, sizes: '256x256', type: 'image/png' },
-                    { src: imageSrc, sizes: '384x384', type: 'image/png' },
-                    { src: imageSrc, sizes: '512x512', type: 'image/png' }
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '96x96', type: 'image/png' },
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '128x128', type: 'image/png' },
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '192x192', type: 'image/png' },
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '256x256', type: 'image/png' },
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '384x384', type: 'image/png' },
+                    { src: 'https://assets.codepen.io/4358584/1.300.jpg', sizes: '512x512', type: 'image/png' }
                 ]
             });
         }
