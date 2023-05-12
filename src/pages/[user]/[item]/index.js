@@ -6,113 +6,71 @@ import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
 import itemTypesEnumerations from '../../../enumerations/itemTypes';
 import Button from "@/components/button";
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function User({username, item, items}) {
     const router = useRouter();
 
     const [audioState, setAudioState] = useState(false);
     const [audioDuration, setAudioDuration] = useState(0);
-    const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
+    const [audioCurrentTime, setAudioCurrentTime] = useState(0);
 
     useEffect(() => {
-        // if (item.type === itemTypesEnumerations.AUDIO) {
-        //     const audioElement = document.getElementById('audio');
-        //     audioElement.addEventListener('canplaythrough', () => {
-        //         setAudioDuration(audioElement.duration);
-        //         handleAudioDraggable();
-        //     });
-        // }
+        handleAudioElement();
     }, []);
 
-    const handleAudioToggle = () => {
+    const toggleAudioState = () => {
         const audioElement = document.getElementById('audio');
+
+        if(!audioState) {
+            audioElement.play();
+            setAudioState(true);
+        } else {
+            setAudioState(false);
+            audioElement.pause();
+        }
+    }
+
+    const handleAudioElement = () => {
+        const audioElement = document.getElementById('audio');
+        const seekSliderElement = document.getElementById('seek-slider');
+        const seekSliderWrapperElement = document.getElementById('seek-slider-wrapper');
+
+        seekSliderElement.value = 0;
+        setAudioDuration(audioElement.duration);
         audioElement.addEventListener('timeupdate', () => {
-            setAudioElementCurrentTime(audioElement.currentTime);
+            setAudioCurrentTime(audioElement.currentTime);
+            seekSliderWrapperElement.style.setProperty('--seek-before-width', seekSliderElement.value / seekSliderElement.max * 100 + '%');
+            seekSliderElement.value = (audioElement.currentTime / audioElement.duration) * 100;
             if (audioElement.currentTime >= audioElement.duration - 0.1) {
                 setAudioState(false);
             }
         });
 
-        if (audioState) {
-            audioElement.pause();
-            setAudioElementCurrentTime(audioElement.currentTime);
-            setAudioState(false);
-        } else {
-            audioElement.currentTime = audioElementCurrentTime;
-            audioElement.play();
-            setAudioState(true);
+        seekSliderElement.addEventListener('change', () => {
+            audioElement.currentTime = (audioElement.duration / 100) * seekSliderElement.value;
+            setAudioCurrentTime(audioElement.currentTime);
+            seekSliderWrapperElement.style.setProperty('--seek-before-width', seekSliderElement.value / seekSliderElement.max * 100 + '%');
+        });
+
+        seekSliderElement.addEventListener('input', (e) => {
+            audioElement.currentTime = (audioElement.duration / 100) * seekSliderElement.value;
+            seekSliderWrapperElement.style.setProperty('--seek-before-width', seekSliderElement.value / seekSliderElement.max * 100 + '%');
+        });
+
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: item.name,
+                artist: username,
+                artwork: [
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '96x96', type: 'image/png' },
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '128x128', type: 'image/png' },
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '192x192', type: 'image/png' },
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '256x256', type: 'image/png' },
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '384x384', type: 'image/png' },
+                    { src: `${process.env.IMAGES_URL}/480_${item.image}`, sizes: '512x512', type: 'image/png' }
+                ]
+            });
         }
-    }
-
-    const changeDraggableCursorPosition = (newPosition) => {
-        const audioElement = document.getElementById('audio');
-        const draggableWrapper = document.getElementById('audio-draggable-wrapper');
-        const draggableCursor = document.getElementById('audio-draggable-cursor');
-        const draggableWrapperWidth = draggableWrapper.getBoundingClientRect().width;
-        const draggableCursorWidth = draggableCursor.getBoundingClientRect().width;
-
-        if (newPosition >= 0 && newPosition <= draggableWrapperWidth - draggableCursorWidth) {
-            draggableCursor.style.left = `${newPosition}px`;
-
-            let percentageOf = (newPosition / (draggableWrapperWidth - draggableCursorWidth)) * 100;
-            percentageOf = percentageOf < 1 ? Math.floor(percentageOf) : Math.ceil(percentageOf);
-
-            setAudioElementCurrentTime(Math.floor((audioElement.duration / 100) * percentageOf));
-            audioElement.currentTime = Math.floor((audioElement.duration / 100) * percentageOf);
-        }
-    }
-
-    const changeDraggableCursorPositionBasedOnCurrentTime = (audioElementCurrentTime) => {
-        const draggableWrapper = document.getElementById('audio-draggable-wrapper');
-        const draggableCursor = document.getElementById('audio-draggable-cursor');
-        const draggableWrapperWidth = draggableWrapper.getBoundingClientRect().width;
-        const draggableCursorWidth = draggableCursor.getBoundingClientRect().width;
-
-        let percentageOf = (audioElementCurrentTime / audioDuration) * 100;
-        percentageOf = percentageOf < 1 ? Math.floor(percentageOf) : Math.ceil(percentageOf);
-        const newPosition = Math.floor((draggableWrapperWidth / 100) * percentageOf);
-
-        if (newPosition > draggableCursorWidth / 2 && newPosition < draggableWrapperWidth - (draggableCursorWidth / 2)) {
-            draggableCursor.style.left = `${newPosition}px`;
-        }
-    }
-
-    const handleAudioDraggable = () => {
-        const audioElement = document.getElementById('audio');
-        const draggableWrapper = document.getElementById('audio-draggable-wrapper');
-        const draggableCursor = document.getElementById('audio-draggable-cursor');
-        const draggablePath = document.getElementById('audio-draggable-path');
-        const draggableWrapperWidth = draggableWrapper.getBoundingClientRect().width;
-        const draggableCursorWidth = draggableCursor.getBoundingClientRect().width;
-
-        let isDragging = false;
-
-        draggableCursor.addEventListener('mousedown', () => {
-            isDragging = true;
-            if (!audioState) {
-                audioElement.pause();
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            if (audioState) {
-                audioElement.play();
-            }
-        });
-
-        document.addEventListener('mousemove', (event) => {
-            if (isDragging) {
-                const newPosition = event.clientX - draggableWrapper.getBoundingClientRect().left;
-                changeDraggableCursorPosition(newPosition < 0 ? 0 : newPosition);
-            }
-        });
-
-        draggablePath.addEventListener('click', (event) => {
-            const newPosition = event.clientX - (draggablePath.getBoundingClientRect().left + (draggableCursorWidth / 2));
-            changeDraggableCursorPosition(newPosition < 0 ? 0 : (newPosition > draggableWrapperWidth - draggableCursorWidth ? draggableWrapperWidth - draggableCursorWidth : newPosition));
-        });
     }
 
     const formatAmount = (amount) => {
@@ -186,24 +144,17 @@ export default function User({username, item, items}) {
                     <div className="w-full max-w-screen-2xl px-8">
                         <div className="w-full flex flex-col lg:flex-row">
                             <div className="w-full lg:w-2/5">
-                                <div className="w-full p-0 lg:pr-8 rounded-lg relative">
+                                <div className="w-full m-0 lg:mr-8 rounded-lg relative">
                                     {
                                         item.type === itemTypesEnumerations.AUDIO && item?.audio_preview &&
                                         <>
-                                            <audio src={`${process.env.AUDIO_PREVIEWS_URL}/${item.audio_preview}`}
-                                                   id="audio" type="audio/mpeg" className="invisible"/>
                                             <img className="w-full rounded-lg z-0"
                                                  src={`${process.env.IMAGES_URL}/480_${item.image}`} alt={item.name}/>
-                                            <div
-                                                className="w-full h-full absolute top-0 right-4 z-10 flex justify-center items-center">
-                                                <div
-                                                    className="w-24 h-24 border-4 border-gray-300 rounded-full relative group hover:cursor-pointer"
-                                                    onClick={() => handleAudioToggle()}
-                                                >
-                                                    <div
-                                                        className="w-full h-full absolute top-0 rounded-full bg-black opacity-75 group-hover:opacity-95 duration-300"></div>
-                                                    <div
-                                                        className="w-full h-full absolute top-0 flex justify-center items-center">
+                                            <audio src={`${process.env.AUDIO_PREVIEWS_URL}/${item.audio_preview}`}
+                                                   id="audio" type="audio/mpeg" className="invisible" preload="metadata"/>
+                                            <div className="w-full h-16 absolute bottom-0 px-4 backdrop-blur rounded-b-lg">
+                                                <div className="w-full h-full flex justify-between items-center">
+                                                    <div onClick={() => toggleAudioState()}>
                                                         {
                                                             audioState
                                                                 ?
@@ -212,41 +163,21 @@ export default function User({username, item, items}) {
                                                                 <img src="/play.svg" className="w-12 h-12 invert"/>
                                                         }
                                                     </div>
+                                                    <div className="h-full ml-4 grow flex justify-between items-center">
+                                                        <div id="current-time" className="w-16 font-grotesk text-white text-lg">
+                                                            {formatTime(audioCurrentTime)}
+                                                        </div>
+                                                        <div className="h-full grow relative">
+                                                            <div id="seek-slider-wrapper" className="w-full h-full flex items-center">
+                                                                <input id="seek-slider" className="w-full" type="range" min="0" max="100"/>
+                                                            </div>
+                                                        </div>
+                                                        <div id="duration" className="w-16 font-grotesk text-white text-lg text-right">
+                                                            {formatTime(audioDuration)}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            {/*<div*/}
-                                            {/*    className="w-full h-16 absolute p-0 lg:pr-8 bottom-0 rounded-b-lg group z-20">*/}
-                                            {/*    <div className="w-full h-full relative">*/}
-                                            {/*        <div*/}
-                                            {/*            className="w-full h-full absolute top-0 rounded-b-lg bg-black opacity-75 z-20"></div>*/}
-                                            {/*        <div*/}
-                                            {/*            className="w-full h-full absolute top-0 rounded-b-lg z-30 px-4">*/}
-                                            {/*            <div*/}
-                                            {/*                className="w-full h-full flex justify-between items-center">*/}
-                                            {/*                <div*/}
-                                            {/*                    className="w-12 font-grotesk text-xl text-white select-none">*/}
-                                            {/*                    {formatTime(audioElementCurrentTime)}*/}
-                                            {/*                </div>*/}
-                                            {/*                <div*/}
-                                            {/*                    className="h-full flex-grow flex justify-center items-center">*/}
-                                            {/*                    <div id="audio-draggable-wrapper"*/}
-                                            {/*                         className="w-4/5 h-full relative">*/}
-                                            {/*                        <div id="audio-draggable-path"*/}
-                                            {/*                             className="w-full h-2 absolute top-7 rounded-sm bg-white hover:cursor-pointer"*/}
-                                            {/*                        ></div>*/}
-                                            {/*                        <div id="audio-draggable-cursor"*/}
-                                            {/*                             className={`w-4 h-4 absolute top-6 rounded-full bg-green-300 hover:cursor-pointer`}*/}
-                                            {/*                        ></div>*/}
-                                            {/*                    </div>*/}
-                                            {/*                </div>*/}
-                                            {/*                <div*/}
-                                            {/*                    className="w-12 font-grotesk text-xl text-white select-none">*/}
-                                            {/*                    {formatTime(audioDuration)}*/}
-                                            {/*                </div>*/}
-                                            {/*            </div>*/}
-                                            {/*        </div>*/}
-                                            {/*    </div>*/}
-                                            {/*</div>*/}
                                         </>
                                     }
                                     {

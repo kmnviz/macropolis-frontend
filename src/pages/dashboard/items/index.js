@@ -31,7 +31,7 @@ function DashboardItems({user, items}) {
                 </div>
             </div>
             <div className="h-24"></div>
-            <p className="font-grotesk text-xl text-right">[{itemsLocal.length}/{user.plan.items}]</p>
+            <p className="font-grotesk text-xl text-right">[{itemsLocal.length}/{user.plan.includes.items.limit}]</p>
             <div className="h-8"></div>
             <div className="w-full relative">
                 {
