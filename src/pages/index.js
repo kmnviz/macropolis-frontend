@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Header from '../components/header';
 import ImageBlob from '../components/imageBlob';
 
-export default function Index({usernames}) {
+export default function Index({usernames, item}) {
     const router = useRouter();
 
     const [inputUsername, setInputUsername] = useState('');
@@ -246,9 +246,14 @@ export default function Index({usernames}) {
                     <Header router={router} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12 relative">
-                            <div className="hidden xl:block w-384 h-384 absolute -top-8 right-8 rounded-md hover:cursor-pointer">
-                                <ImageBlob imageSrc={`${process.env.IMAGES_URL}/480_5e9d2604c074dcacc1c87696856d12f0dfa274ba376dd55d478e9dbf.jpeg`} />
-                            </div>
+                            {
+                                item &&
+                                <>
+                                    <div className="hidden xl:block w-384 h-384 absolute -top-8 right-8 rounded-md overflow-hidden object-cover object-center hover:cursor-pointer">
+                                        <ImageBlob imageSrc={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                    </div>
+                                </>
+                            }
                             <div>
                                 <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
                                 <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
@@ -330,6 +335,9 @@ export async function getServerSideProps(context) {
     try {
         const response = await axios.get(`${process.env.BACKEND_URL}/users/get-usernames`);
         props.usernames = response.data.data.usernames;
+
+        const itemResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?limit=1&sort=desc`)
+        props.item = itemResponse.data.data.items.length ? itemResponse.data.data.items[0] : null;
     } catch (error) {
         console.log('Failed to fetch usernames: ', error);
     }
