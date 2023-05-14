@@ -246,14 +246,14 @@ export default function Index({usernames}) {
                     <Header router={router} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12 relative">
-                            <div className="w-48 lg:w-64 h-48 lg:h-64 absolute -top-8 right-8 rounded-md hover:cursor-pointer">
+                            <div className="hidden xl:block w-384 h-384 absolute -top-8 right-8 rounded-md hover:cursor-pointer">
                                 <ImageBlob imageSrc={`${process.env.IMAGES_URL}/480_5e9d2604c074dcacc1c87696856d12f0dfa274ba376dd55d478e9dbf.jpeg`} />
                             </div>
-                            <div className="z-30 lg:z-10">
+                            <div>
                                 <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
                                 <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
                             </div>
-                            <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl">
+                            <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl z-30">
                                 <div id="input-main"
                                      className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
                                     <div id="platform-name-wrapper"
