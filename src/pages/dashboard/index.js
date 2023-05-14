@@ -46,7 +46,7 @@ const DashboardProfile = ({profile}) => {
             if (!hasInitialBackground) {
                 formData.append('background', backgroundInput ? backgroundInput : '');
             } else {
-                if (!initialAvatar) {
+                if (!initialBackground) {
                     formData.append('background', backgroundInput ? backgroundInput : '');
                 }
             }
