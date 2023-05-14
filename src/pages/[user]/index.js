@@ -125,7 +125,7 @@ export default function User({username, profile, items, user}) {
                 </div>
                 <div className="w-full flex justify-center mt-4">
                     <div className="w-full max-w-screen-2xl px-8">
-                        <h2 className="font-grotesk text-3xl">{profile.name}</h2>
+                        <h2 className="font-grotesk text-3xl">{profile?.name ? profile.name : ''}</h2>
                         <p className="font-grotesk mt-8">Items: {items.length}</p>
                         <div className="w-full h-px mt-1 bg-gray-300"></div>
                         <div
