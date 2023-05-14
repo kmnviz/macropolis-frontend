@@ -303,3 +303,53 @@ ul, ol {
     opacity: 0;
   }
 }
+
+.svgblob {
+  overflow: hidden;
+  max-width: 100%;
+  width: fit-content;
+}
+
+.svgblob svg {
+  display: block;
+  transform-origin: 50% 50%;
+  transition: transform .75s 0s;
+  overflow: hidden;
+}
+
+[id^="blobmask"] rect {
+  fill: #777;
+  width: 100%;
+  height: 100%
+}
+
+[id^="blobmask"] path {
+  fill: #000;
+}
+
+
+[id="blobmask-3"] rect {
+  fill: #fff;
+}
+
+.svgblob:hover svg {
+  transition-duration: 1s;
+  transform: scale(12);
+}
+
+.svgblob path {
+  animation: rotatepath 47s linear 0s infinite;
+}
+
+.svgblob img {
+  position: relative;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes rotatepath {
+  0% { transform: translate(50%, 50%) scale(2.4) rotateZ(360deg); }
+  100% { transform:  translate(50%, 50%) scale(2.4) rotateZ(0deg); }
+}

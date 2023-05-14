@@ -76,7 +76,7 @@ export default function AudioPlayer({audioSrc, imageSrc, title = '', artist = ''
                    id="audio" type="audio/mpeg" className="invisible" preload="metadata"/>
             <div className="w-full h-16 absolute bottom-0 px-4 backdrop-blur rounded-b-lg">
                 <div className="w-full h-full flex justify-between items-center">
-                    <div onClick={() => toggleAudioState()}>
+                    <div className="hover:cursor-pointer" onClick={() => toggleAudioState()}>
                         {
                             audioState
                                 ?

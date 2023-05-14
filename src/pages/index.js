@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Header from '../components/header';
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import ImageBlob from '../components/imageBlob';
 
 export default function Index({usernames}) {
     const router = useRouter();
@@ -230,7 +230,7 @@ export default function Index({usernames}) {
             <Head>
                 <title>{`${process.env.APP_NAME} - Showcase and Sell Your Digital Creations`}</title>
                 <meta name="description" content={`Discover, showcase, and sell your digital creations on ${process.env.APP_NAME}. 
-                    Join our community of creators today.`}
+                    Join our community of creators today. `}
                 />
                 <meta property="og:title" content={`${process.env.APP_NAME} - Space for personal marketplaces for digital creations`} />
                 <meta property="og:type" content="website" />
@@ -245,9 +245,14 @@ export default function Index({usernames}) {
                 <div className="w-full max-w-screen-2xl relative">
                     <Header router={router} />
                     <div className="w-full mt-16">
-                        <div className="w-full flex flex-col justify-center py-12">
-                            <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
-                            <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
+                        <div className="w-full flex flex-col justify-center py-12 relative">
+                            <div className="w-48 lg:w-64 h-48 lg:h-64 absolute -top-8 right-8 rounded-md hover:cursor-pointer">
+                                <ImageBlob imageSrc={`${process.env.IMAGES_URL}/480_5e9d2604c074dcacc1c87696856d12f0dfa274ba376dd55d478e9dbf.jpeg`} />
+                            </div>
+                            <div className="z-30 lg:z-10">
+                                <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
+                                <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
+                            </div>
                             <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl">
                                 <div id="input-main"
                                      className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
