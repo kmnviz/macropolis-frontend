@@ -6,8 +6,12 @@ import Button from '../../components/button';
 import {useState, useEffect} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
 import FormData from 'form-data';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../helpers/toggleNotification';
 
 function DashboardPlans({user, plans, paymentMethod}) {
+    const dispatch = useDispatch();
+
     const [stripeClient, setStripeClient] = useState(null);
     const [stripeElements, setStripeElements] = useState(null);
     const [stripeCardElement, setStripeCardElement] = useState(null);
@@ -73,16 +77,15 @@ function DashboardPlans({user, plans, paymentMethod}) {
             const formData = new FormData();
             formData.append('stripePaymentMethodId', paymentMethod.paymentMethod.id);
             try {
-                await axios.post(`${process.env.BACKEND_URL}/users/update`, formData, {withCredentials: true});
+                const response = await axios.post(`${process.env.BACKEND_URL}/users/update`, formData, {withCredentials: true});
+                toggleNotification(dispatch, response.data.message, 'success');
 
-                setTimeout(() => {
-                    hideAddPaymentMethod();
-                    setPaymentMethodLocal({last4: paymentMethod.paymentMethod.card.last4});
-                    setFormButtonDisabled(false);
-                    setFormButtonLoading(false);
-                }, 1000);
+                hideAddPaymentMethod();
+                setPaymentMethodLocal({last4: paymentMethod.paymentMethod.card.last4});
+                setFormButtonDisabled(false);
+                setFormButtonLoading(false);
             } catch (error) {
-                console.log('Failed to update user: ', error);
+                toggleNotification(dispatch, error.response.data.message, 'error');
             }
         }
     }
@@ -96,27 +99,27 @@ function DashboardPlans({user, plans, paymentMethod}) {
             if (selectedPlan.price > 0) {
                 const formData = new FormData();
                 formData.append('planId', selectedPlan._id);
-                subscriptionResponse = await axios.post(
+                const response = subscriptionResponse = await axios.post(
                     `${process.env.BACKEND_URL}/stripe/create-subscription`,
                     formData,
                     {withCredentials: true}
                 );
+                toggleNotification(dispatch, response.data.message, 'success');
             } else {
-                subscriptionResponse = await axios.post(
+                const response = subscriptionResponse = await axios.post(
                     `${process.env.BACKEND_URL}/stripe/cancel-subscription`,
                     {},
                     {withCredentials: true}
                 );
+                toggleNotification(dispatch, response.data.message, 'success');
             }
 
-            setTimeout(() => {
-                setUserCurrentPlan(subscriptionResponse.data.data.plan.name);
-                setSelectedPlan(null);
-                setFormButtonDisabled(false);
-                setFormButtonLoading(false);
-            }, 1000);
+            setUserCurrentPlan(subscriptionResponse.data.data.plan.name);
+            setSelectedPlan(null);
+            setFormButtonDisabled(false);
+            setFormButtonLoading(false);
         } catch (error) {
-            console.log('Failed to confirm subscription: ', error);
+            toggleNotification(dispatch, error.response.data.message, 'error');
         }
     }
 

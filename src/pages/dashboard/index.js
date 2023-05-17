@@ -7,8 +7,11 @@ import FormData from 'form-data';
 import DashboardLayout from './layout';
 import Button from '../../components/button';
 import validateImage from '../../helpers/validateImage';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../helpers/toggleNotification';
 
 const DashboardProfile = ({profile}) => {
+    const dispatch = useDispatch();
     const {register, handleSubmit, formState: {errors}, setError, setValue, clearErrors} = useForm();
     const [avatarTemp, setAvatarTemp] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
     const [initialAvatar, setInitialAvatar] = useState(profile?.avatar && profile.avatar !== '' ? `${process.env.IMAGES_URL}/240_${profile.avatar}` : '');
@@ -51,7 +54,7 @@ const DashboardProfile = ({profile}) => {
                 }
             }
 
-            await axios.post(`${process.env.BACKEND_URL}/profiles/update`, formData, {
+            const response = await axios.post(`${process.env.BACKEND_URL}/profiles/update`, formData, {
                 withCredentials: true,
                 headers: {
                     'Access-Control-Allow-Credentials': 'true',
@@ -61,13 +64,13 @@ const DashboardProfile = ({profile}) => {
                 }
             });
 
-            setTimeout(() => {
-                setFormButtonDisabled(false);
-                setFormButtonLoading(false);
-            }, 1000);
+            setFormButtonDisabled(false);
+            setFormButtonLoading(false);
+            toggleNotification(dispatch, response.data.message, 'success');
         } catch (error) {
             setFormButtonDisabled(false);
-            console.log('Failed to update profile: ', error);
+            setFormButtonLoading(false);
+            toggleNotification(dispatch, error.response.data.message, 'error');
         }
     }
 

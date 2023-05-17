@@ -12,9 +12,12 @@ import TextArea from '../../../components/textArea';
 import validateImage from '../../../helpers/validateImage';
 import validateAudio from '../../../helpers/validateAudio';
 import validateArchive from '../../../helpers/validateArchive';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../../helpers/toggleNotification';
 
 function DashboardItemsCreate({user}) {
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const itemTypesOptions = [
         { key: '.zip, .rar', value: 'archive' },
@@ -48,15 +51,13 @@ function DashboardItemsCreate({user}) {
             if (itemInput) formData.append('item', itemInput);
             if (data?.description && data.description) formData.append('description', data.description);
 
-            await axios.post(`${process.env.BACKEND_URL}/items/create`, formData, {withCredentials: true});
-
-            setTimeout(() => {
-                router.push('/dashboard/items');
-            }, 1000);
+            const response = await axios.post(`${process.env.BACKEND_URL}/items/create`, formData, {withCredentials: true});
+            toggleNotification(dispatch, response.data.message, 'success');
+            router.push('/dashboard/items');
         } catch (error) {
             setFormButtonDisabled(false);
             setFormButtonLoading(false);
-            console.log('Failed to create items: ', error);
+            toggleNotification(dispatch, error.response.data.message, 'error');
         }
     }
 

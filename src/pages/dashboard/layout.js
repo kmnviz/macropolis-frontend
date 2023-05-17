@@ -2,11 +2,12 @@ import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
 import Head from 'next/head';
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import {useSelector} from 'react-redux';
 
 export default function DashboardLayout({children, user}) {
     const router = useRouter();
 
+    const {notifications} = useSelector(state => state.notifications);
     const [menuVisible, setMenuVisible] = useState(false);
 
     useEffect(() => {
@@ -98,6 +99,29 @@ export default function DashboardLayout({children, user}) {
                     <div className="w-full h-1 bg-white rounded-sm absolute"></div>
                 </div>
             </div>
+            {
+                notifications.length > 0 &&
+                <div className="w-full fixed top-4 flex justify-center z-20">
+                    <div className="w-64 lg:w-384">
+                        {
+                            notifications.map((notification, index) => {
+                                return (
+                                    <div key={`notification-message-${index}`}
+                                         className={`p-4 rounded-md shadow-md 
+                                            ${notification.status === 'error' ? 'bg-red-300' : 'bg-green-300'} 
+                                            ${index < notifications.length - 1 ? 'mb-2' : ''}`
+                                    }
+                                    >
+                                        <p className={`font-grotesk`}>
+                                            {notification.message}
+                                        </p>
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
+                </div>
+            }
             <div className="w-screen min-h-screen relative">
                 <div id="page-overlay"
                      className={`h-full absolute z-0 bg-black ${'entry' in router.query ? 'w-full' : 'w-0'}`}

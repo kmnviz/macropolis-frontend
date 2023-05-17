@@ -3,14 +3,16 @@ import DashboardLayout from './layout';
 import axios from 'axios';
 import Decimal from 'decimal.js';
 import Button from '../../components/button';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import FormData from 'form-data';
 import Input from '../../components/input';
 import {useForm} from 'react-hook-form';
 import validateIban from '../../helpers/validateIban';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../helpers/toggleNotification';
 
 function DashboardWithdrawals({user, availableAmount, withdrawals}) {
-
+    const dispatch = useDispatch();
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
 
     const [requestedWithdrawal, setRequestedWithdrawal] = useState(false);
@@ -29,6 +31,7 @@ function DashboardWithdrawals({user, availableAmount, withdrawals}) {
 
             try {
                 const response = await axios.post(`${process.env.BACKEND_URL}/withdrawals/create`, formData, {withCredentials: true});
+                toggleNotification(dispatch, response.data.message, 'success');
 
                 setTimeout(() => {
                     setFormButtonDisabled(false);
@@ -36,7 +39,7 @@ function DashboardWithdrawals({user, availableAmount, withdrawals}) {
                     window.location.reload();
                 }, 1000);
             } catch (error) {
-                console.log('Failed to create withdrawal: ', error);
+                toggleNotification(dispatch, error.response.data.message, 'error');
             }
         }
     }

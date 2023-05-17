@@ -2,20 +2,24 @@ import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import DashboardLayout from '../layout';
-import itemTypesEnumerations from'../../../enumerations/itemTypes';
+import itemTypesEnumerations from '../../../enumerations/itemTypes';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../../helpers/toggleNotification';
 
 function DashboardItems({user, items}) {
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const [itemsLocal, setItemsLocal] = useState(items);
 
     const deleteItem = async (id) => {
         try {
-            await axios.delete(`${process.env.BACKEND_URL}/items/delete?id=${id}`, {withCredentials: true});
+            const response = await axios.delete(`${process.env.BACKEND_URL}/items/delete?id=${id}`, {withCredentials: true});
             const filteredItems = [...itemsLocal].filter((item) => item._id !== id);
             setItemsLocal(filteredItems);
+            toggleNotification(dispatch, response.data.message, 'success');
         } catch (error) {
-            console.log('Failed to delete item: ', error);
+            toggleNotification(dispatch, error.response.data.message, 'error');
         }
     }
 

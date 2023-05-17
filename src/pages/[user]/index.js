@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function User({username, profile, items, user}) {
     const router = useRouter();
