@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Header from '../components/header';
 import ImageBlob from '../components/imageBlob';
 
-export default function Index({usernames, item}) {
+export default function Index({usernames, item, isLoggedIn}) {
     const router = useRouter();
 
     const [inputUsername, setInputUsername] = useState('');
@@ -16,9 +16,11 @@ export default function Index({usernames, item}) {
     const [busyUsername, setBusyUsername] = useState('');
 
     useEffect(() => {
-        inputInitial();
-        inputCaretAnimation();
-        inputValidation();
+        if (!isLoggedIn) {
+            inputInitial();
+            inputCaretAnimation();
+            inputValidation();
+        }
     }, []);
 
     const inputInitial = () => {
@@ -243,7 +245,7 @@ export default function Index({usernames, item}) {
             <div className="w-screen min-h-screen relative flex justify-center">
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full max-w-screen-2xl relative">
-                    <Header router={router} />
+                    <Header router={router} isLoggedIn={isLoggedIn} />
                     <div className="w-full mt-16">
                         <div className="w-full flex flex-col justify-center py-12 relative">
                             {
@@ -262,52 +264,55 @@ export default function Index({usernames, item}) {
                                 <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
                                 <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
                             </div>
-                            <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl z-30">
-                                <div id="input-main"
-                                     className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
-                                    <div id="platform-name-wrapper"
-                                         className="px-4 md:px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
-                                        <h4 id="platform-name">{process.env.APP_NAME}/</h4>
+                            {
+                                !isLoggedIn &&
+                                <div className="w-full mt-8 p-1 md:p-2 text-base md:text-3xl lg:text-5xl z-30">
+                                    <div id="input-main"
+                                         className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
+                                        <div id="platform-name-wrapper"
+                                             className="px-4 md:px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
+                                            <h4 id="platform-name">{process.env.APP_NAME}/</h4>
+                                        </div>
+                                        <div id="input-username-wrapper"
+                                             className="h-full flex-grow relative hover:cursor-pointer truncate">
+                                            <input
+                                                id="input-username"
+                                                name="username"
+                                                className="w-full h-full rounded-r-md font-grotesk bg-transparent px-4 md:px-8 input-caret text-transparent absolute z-10"
+                                            />
+                                            <div id="fake-input"
+                                                 className="w-full h-full font-grotesk px-4 md:px-8 absolute z-0 top-0 left-0 flex items-center"></div>
+                                        </div>
                                     </div>
-                                    <div id="input-username-wrapper"
-                                         className="h-full flex-grow relative hover:cursor-pointer truncate">
-                                        <input
-                                            id="input-username"
-                                            name="username"
-                                            className="w-full h-full rounded-r-md font-grotesk bg-transparent px-4 md:px-8 input-caret text-transparent absolute z-10"
-                                        />
-                                        <div id="fake-input"
-                                             className="w-full h-full font-grotesk px-4 md:px-8 absolute z-0 top-0 left-0 flex items-center"></div>
-                                    </div>
-                                </div>
-                                <div id="button-main" className="w-full h-12 md:h-24 flex mt-4">
-                                    <div className="hidden md:block basis-48 md:basis-112 h-full"></div>
-                                    <div
-                                        id="button-wrapper"
-                                        className={`h-full flex-grow relative border md:border-2 border-black rounded-lg 
+                                    <div id="button-main" className="w-full h-12 md:h-24 flex mt-4">
+                                        <div className="hidden md:block basis-48 md:basis-112 h-full"></div>
+                                        <div
+                                            id="button-wrapper"
+                                            className={`h-full flex-grow relative border md:border-2 border-black rounded-lg 
                                         ${inputState ? 'bg-green-300 hover:cursor-pointer' : 'bg-gray-300 hover:cursor-not-allowed'}`}
-                                        onClick={nextStep}
-                                    >
-                                        <div id="button"
-                                             className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
-                                            {
-                                                busyUsername !== ''
-                                                    ?
-                                                    <>
-                                                        <a target="_blank" href={`/${busyUsername}`} className="block text-blue-300"><span className="text-blue-300 underline">{busyUsername}</span> <span className="text-black">{buttonMessage}</span></a>
-                                                    </>
-                                                    :
-                                                    buttonMessage
-                                            }
-                                        </div>
-                                        <div id="button-overlay"
-                                             className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
-                                            <h4 id="button-overlay-text"
-                                                className="h-full flex items-center text-white truncate"></h4>
+                                            onClick={nextStep}
+                                        >
+                                            <div id="button"
+                                                 className="w-full h-full flex justify-center items-center font-grotesk truncate z-0">
+                                                {
+                                                    busyUsername !== ''
+                                                        ?
+                                                        <>
+                                                            <a target="_blank" href={`/${busyUsername}`} className="block text-blue-300"><span className="text-blue-300 underline">{busyUsername}</span> <span className="text-black">{buttonMessage}</span></a>
+                                                        </>
+                                                        :
+                                                        buttonMessage
+                                                }
+                                            </div>
+                                            <div id="button-overlay"
+                                                 className="w-0 h-full absolute top-0 bg-black rounded-md z-10 flex justify-center items-center">
+                                                <h4 id="button-overlay-text"
+                                                    className="h-full flex items-center text-white truncate"></h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                     {/*<div className="w-full fixed left-0 bottom-0 z-30">*/}
@@ -332,8 +337,10 @@ export default function Index({usernames, item}) {
 
 export async function getServerSideProps(context) {
     const props = {};
+
+    props.isLoggedIn = false;
     if (context.req.cookies.token) {
-        return {redirect: {destination: '/dashboard', permanent: false}};
+        props.isLoggedIn = true;
     }
 
     try {
