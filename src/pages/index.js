@@ -272,7 +272,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                                          className="w-full h-12 md:h-24 relative flex border-2 border-black rounded-lg">
                                         <div id="platform-name-wrapper"
                                              className="px-4 md:px-16 h-full relative flex justify-center items-center bg-black font-grotesk text-white z-30">
-                                            <h4 id="platform-name">{process.env.APP_NAME}/</h4>
+                                            <h4 id="platform-name">macropolis.io/</h4>
                                         </div>
                                         <div id="input-username-wrapper"
                                              className="h-full flex-grow relative hover:cursor-pointer truncate">
