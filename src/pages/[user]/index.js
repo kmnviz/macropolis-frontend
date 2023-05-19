@@ -71,13 +71,14 @@ export default function User({username, profile, items, user}) {
         <>
             <Head>
                 <title>{`${username}'s Profile on ${process.env.APP_NAME}`}</title>
-                <meta name="description" content={`Discover ${username}'s creations on ${process.env.APP_NAME}. 
-                    Showcase and sell your own digital creations on our platform.`}
+                <meta name="description" content={`${process.env.APP_NAME}, a space where you can create your own space
+                    and take control of your digital items. Sell, mint, show, share, collaborate and more. Join our community of creators today.`}
                 />
-                <meta property="og:title" content={`${username}'s Profile on ${process.env.APP_NAME}`} />
+                <meta property="og:title" content={`${username}'s space in ${process.env.APP_NAME}`} />
                 <meta property="og:type" content="profile" />
                 <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}`} />
-                <meta property="og:description" content={`Discover ${username}'s creations on ${process.env.APP_NAME}. Showcase and sell your own digital creations on our platform.`} />
+                <meta property="og:description" content={`${process.env.APP_NAME}, a space where you can create your own space
+                    and take control of your digital items. Sell, mint, show, share, collaborate. Join our community of creators today.`} />
                 <meta property="og:image" content={avatarImage} />
                 <meta name="robots" content="index, follow" />
                 <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}`} />

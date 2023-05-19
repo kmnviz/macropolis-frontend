@@ -1,6 +1,6 @@
 FROM --platform=linux/amd64 node:18.15.0
 
-ENV APP_NAME=macropolis.io
+ENV APP_NAME=Macropolis
 ENV DOMAIN_NAME=macropolis.io
 ENV DOMAIN_URL=https://macropolis.io
 ENV BACKEND_URL=https://api.macropolis.io

@@ -230,14 +230,15 @@ export default function Index({usernames, item, isLoggedIn}) {
     return (
         <>
             <Head>
-                <title>{`${process.env.APP_NAME} - Showcase and Sell Your Digital Creations`}</title>
-                <meta name="description" content={`Discover, showcase, and sell your digital creations on ${process.env.APP_NAME}. 
-                    Join our community of creators today. `}
+                <title>{`${process.env.APP_NAME} - Space for netizens.`}</title>
+                <meta name="description" content={`${process.env.APP_NAME}, a space where you can create your own space
+                    and take control of your digital items. Sell, mint, show, share, collaborate. Join our community of creators today.`}
                 />
-                <meta property="og:title" content={`${process.env.APP_NAME} - Space for personal marketplaces for digital creations`} />
+                <meta property="og:title" content={`${process.env.APP_NAME} - Space for netizens`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={`${process.env.DOMAIN_URL}`} />
-                <meta property="og:description" content={`Discover, showcase, and sell your digital creations on ${process.env.APP_NAME}. Join our community of creators today.`} />
+                <meta property="og:description" content={`${process.env.APP_NAME}, a space where you can create your own space
+                    and take control of your digital items. Sell, mint, show, share and more, collaborate. Join our community of creators today.`} />
                 <meta property="og:image" content={`${process.env.DOMAIN_URL}/rocket-launch.svg`} />
                 <meta name="robots" content="index, follow" />
                 <link rel="canonical" href={process.env.DOMAIN_URL} />

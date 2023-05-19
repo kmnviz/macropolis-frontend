@@ -32,9 +32,9 @@ export default function User({username, item, items}) {
         <>
             <Head>
                 <title>{`${item.name} by ${username} on ${process.env.APP_NAME}`}</title>
-                <meta name="description" content={`Buy ${item.name} by ${username} on ${process.env.APP_NAME}. 
-                    ${item?.description && item.description ? item.description : ''}.
-                     Browse our marketplace for more digital creations by ${username} and other talented creators.`}
+                <meta name="description" content={`Explore ${item.name} by ${username} on ${process.env.APP_NAME}. 
+                    ${item?.description && item.description ? item.description : ''}. Macropolis is a space for netizens. 
+                    Sell, mint, show, share, collaborate and more. Join our community of creators today.`}
                 />
                 <meta property="og:title" content={`${item.name} by ${username} on ${process.env.APP_NAME}`} />
                 <meta property="og:type" content="product" />
