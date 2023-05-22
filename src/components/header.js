@@ -9,13 +9,13 @@ export default function Header({router, isLoggedIn}) {
                         ?
                         <div className="h-full flex items-center pl-1 pr-8 md:px-16 hover:cursor-pointer"
                              onClick={() => router.push('/')}>
-                            <p className="font-grotesk text-xl">{process.env.APP_NAME}</p>
-                            {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
+                            {/*<p className="font-grotesk text-xl">{process.env.APP_NAME}</p>*/}
+                            <img src="/macropolis-logo.svg" alt="logo" className="h-12"/>
                         </div>
                         :
                         <div className="h-full flex items-center pl-1 pr-8 md:px-16">
-                            <p className="font-grotesk text-xl">{process.env.APP_NAME}</p>
-                            {/*<img src="/next.svg" alt="logo" className="h-4 md:h-8"/>*/}
+                            {/*<p className="font-grotesk text-xl">{process.env.APP_NAME}</p>*/}
+                            <img src="/macropolis-logo.svg" alt="logo" className="h-12"/>
                         </div>
                 }
                 {
