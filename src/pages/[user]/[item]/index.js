@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 
 const AudioPlayer = dynamic(import('../../../components/audioPlayer'), { ssr: false });
 
-export default function User({username, item, items}) {
+export default function User({username, item, items, user}) {
     const router = useRouter();
 
     const formatAmount = (amount) => {
@@ -53,6 +53,19 @@ export default function User({username, item, items}) {
                             className="w-full h-16 py-4 lg:py-0 px-8 flex flex-row justify-between items-center">
                             <h6 className="font-grotesk text-xl select-none hover:cursor-pointer" onClick={() => router.push(`/${username}`)}>{username}</h6>
                             <div className="h-full flex items-center">
+                                {
+                                    user && user.username === username &&
+                                    <div
+                                        className="w-10 h-10 flex justify-center items-center relative hover:cursor-pointer group">
+                                        <div
+                                            className="w-full h-full absolute flex justify-center items-center z-0 group-hover:rounded-md
+                                        group-hover:shadow relative"
+                                            onClick={() => router.push('/dashboard')}
+                                        >
+                                            <img src="/home.svg" className="w-6 h-6"/>
+                                        </div>
+                                    </div>
+                                }
                                 <div
                                     className="w-10 h-10 flex justify-center items-center relative hover:cursor-pointer group">
                                     <div className="w-full h-full absolute flex justify-center items-center z-10"

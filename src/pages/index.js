@@ -238,7 +238,8 @@ export default function Index({usernames, item, isLoggedIn}) {
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={`${process.env.DOMAIN_URL}`} />
                 <meta property="og:description" content={`${process.env.APP_NAME}, a space where you can create your own space
-                    and take control of your digital items. Sell, mint, show, share and more, collaborate. Join our community of creators today.`} />
+                    and take control of your digital items. Sell, mint, show, share, collaborate and more. Join our community of creators today.`}
+                />
                 <meta property="og:image" content={`${process.env.DOMAIN_URL}/rocket-launch.svg`} />
                 <meta name="robots" content="index, follow" />
                 <link rel="canonical" href={process.env.DOMAIN_URL} />
