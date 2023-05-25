@@ -125,7 +125,7 @@ export default function User({username, profile, items, user, collections}) {
                                     return (
                                         <div key={`item-${item._id}`}
                                              className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
-                                             onClick={() => router.push(`/${username}/${item._id}`)}
+                                             onClick={() => router.push(`/${username}/item/${item._id}`)}
                                         >
                                             <div className="w-full h-64 relative overflow-hidden">
                                                 <img
@@ -154,7 +154,7 @@ export default function User({username, profile, items, user, collections}) {
                                     return (
                                         <div key={`collection-${collection._id}`}
                                              className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
-                                             onClick={() => router.push(`/${username}/${collection._id}`)}
+                                             onClick={() => router.push(`/${username}/collection/${collection._id}`)}
                                         >
                                             <div className="w-full h-64 relative overflow-hidden">
                                                 <img

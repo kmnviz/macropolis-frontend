@@ -4,11 +4,11 @@ import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
-import itemTypesEnumerations from '../../../enumerations/itemTypes';
-import Button from '../../../components/button';
+import itemTypesEnumerations from '../../../../enumerations/itemTypes';
+import Button from '../../../../components/button';
 import dynamic from 'next/dynamic';
 
-const AudioPlayer = dynamic(import('../../../components/audioPlayer'), { ssr: false });
+const AudioPlayer = dynamic(import('../../../../components/audioPlayer'), { ssr: false });
 
 export default function User({username, item, items, user}) {
     const router = useRouter();
@@ -38,13 +38,13 @@ export default function User({username, item, items, user}) {
                 />
                 <meta property="og:title" content={`${item.name} by ${username} on ${process.env.APP_NAME}`} />
                 <meta property="og:type" content="product" />
-                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}/${item._id}`} />
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`} />
                 <meta property="og:description" content={item?.description && item.description ? item.description : ''} />
                 <meta property="og:image" content={`${process.env.IMAGES_URL}/480_${item.image}`} />
                 <meta property="product:price:amount" content={formatAmount(item.price)} />
                 <meta property="product:price:currency" content="USD" />
                 <meta name="robots" content="index, follow" />
-                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}/${item._id}`} />
+                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`} />
             </Head>
             <div className="w-screen min-h-screen">
                 <div className="w-full flex justify-center">
@@ -149,7 +149,7 @@ export default function User({username, item, items, user}) {
                                         return (
                                             <div key={`item-${item._id}`}
                                                  className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
-                                                 onClick={() => router.push(`/${username}/${item._id}`)}
+                                                 onClick={() => router.push(`/${username}/item/${item._id}`)}
                                             >
                                                 <div className="w-full h-64 relative overflow-hidden">
                                                     <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
@@ -207,7 +207,7 @@ export async function getServerSideProps(context) {
             return {redirect: {destination: '/404', permanent: false}};
         }
     } catch (error) {
-        console.log('Failed to fetch profile: ', error);
+        console.log('Failed to fetch: ', error);
         return {redirect: {destination: '/500', permanent: false}};
     }
 
