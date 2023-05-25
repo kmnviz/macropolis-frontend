@@ -1,10 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import DashboardLayout from '../layout';
 import axios from 'axios';
 import {useRouter} from 'next/router';
+import {useDispatch} from 'react-redux';
+import toggleNotification from '../../../helpers/toggleNotification';
 
-function DashboardCollections({user, items}) {
+function DashboardCollections({user, items, collections}) {
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const [collectionsLocal, setCollectionsLocal] = useState(collections);
+
+    const deleteCollection = async (id) => {
+        try {
+            const response = await axios.delete(`${process.env.BACKEND_URL}/collections/delete?id=${id}`, {withCredentials: true});
+            const filteredCollections = [...collectionsLocal].filter((collection) => collection._id !== id);
+            setCollectionsLocal(filteredCollections);
+            toggleNotification(dispatch, response.data.message, 'success');
+        } catch (error) {
+            toggleNotification(dispatch, error.response.data.message, 'error');
+        }
+    }
 
     return (
         <div className="w-full">
@@ -22,6 +38,31 @@ function DashboardCollections({user, items}) {
             </div>
             <div className="h-24"></div>
             <div className="w-full relative">
+                {
+                    collectionsLocal.map((collection, index) => {
+                        return (
+                            <div key={`collection-${collection._id}`}>
+                                <div
+                                    className="w-full h-12 md:h-16 rounded-md border border-black p-2 flex justify-between">
+                                    <div className="flex items-center">
+                                        <div className="w-8 md:w-12 h-8 md:h-12 rounded-sm bg-center bg-cover"
+                                             style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${collection.image})`}}></div>
+                                        <p className="ml-4 text-black font-grotesk text-lg truncate">{collection.name}</p>
+                                    </div>
+                                    <div className="flex items-center"
+                                         onClick={() => deleteCollection(collection._id)}
+                                    >
+                                        <div
+                                            className="w-8 md:w-12 h-8 md:h-12 rounded-sm border border-gray-300 flex items-center justify-center hover:border-red-300 hover:cursor-pointer">
+                                            <img src="/trash.svg" className="w-4 md:w-6 h-4 md:h-6"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-4"></div>
+                            </div>
+                        )
+                    })
+                }
                 {
                     items.length
                         ?
@@ -84,6 +125,9 @@ export async function getServerSideProps(context) {
 
         const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${props.user.username}`, {withCredentials: true});
         props.items = itemsResponse.data.data.items;
+
+        const collectionsResponse = await axios.get(`${process.env.BACKEND_URL}/collections/get-many?username=${props.user.username}`, {withCredentials: true});
+        props.collections = collectionsResponse.data.data.collections;
     } catch (error) {
         console.log('Failed to fetch collections: ', error);
     }

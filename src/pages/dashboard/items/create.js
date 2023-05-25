@@ -116,6 +116,10 @@ function DashboardItemsCreate({user}) {
                 let decimalPart = value.slice(-2).padStart(2, '0');
                 value = integerPart + '.' + decimalPart;
                 event.target.value = value;
+
+                if (value && value !== '.00') {
+                    clearErrors('price');
+                }
             });
         }
     };

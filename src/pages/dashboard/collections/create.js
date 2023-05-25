@@ -27,6 +27,8 @@ function DashboardCollectionsCreate({user, items}) {
     const [imageInput, setImageInput] = useState(null);
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
     const [formButtonLoading, setFormButtonLoading] = useState(false);
+    const [itemsLocal, setItemsLocal] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
 
     useEffect(() => {
         defineCollectionTypesOptions();
@@ -35,10 +37,25 @@ function DashboardCollectionsCreate({user, items}) {
     useEffect(() => {
         if (selectedCollectionTypeOption) {
             handlePriceInput();
+            setItemsLocal(items.filter((item) => item.type === selectedCollectionTypeOption.value));
         }
     }, [selectedCollectionTypeOption]);
 
+    useEffect(() => {
+        if (selectedItems.length) {
+            clearErrors('items');
+        }
+    }, [selectedItems]);
+
     const submit = async (data) => {
+        if (!selectedItems.length) {
+            setError('items', {
+                type: 'custom',
+                message: 'You need to select at least on item to the collection'
+            });
+            return;
+        }
+
         setFormButtonDisabled(true);
         setFormButtonLoading(true);
 
@@ -47,6 +64,9 @@ function DashboardCollectionsCreate({user, items}) {
             formData.append('name', data.name);
             formData.append('price', data.price);
             formData.append('type', selectedCollectionTypeOption.value);
+            selectedItems.forEach((item) => {
+                formData.append('items[]', item);
+            });
             if (imageInput) formData.append('image', imageInput);
             if (data?.description && data.description) formData.append('description', data.description);
 
@@ -89,6 +109,10 @@ function DashboardCollectionsCreate({user, items}) {
                 let decimalPart = value.slice(-2).padStart(2, '0');
                 value = integerPart + '.' + decimalPart;
                 event.target.value = value;
+
+                if (value && value !== '.00') {
+                    clearErrors('price');
+                }
             });
         }
     };
@@ -103,16 +127,26 @@ function DashboardCollectionsCreate({user, items}) {
             options.push({ key: 'Audio collection', value: itemTypesEnumerations.AUDIO });
         }
         if (items.filter((item) => item.type === itemTypesEnumerations.ARCHIVE).length) {
-            options.push({ key: 'Archive collection', value: itemTypesEnumerations.AUDIO });
+            options.push({ key: 'Archive collection', value: itemTypesEnumerations.ARCHIVE });
         }
 
         setCollectionTypesOptions(options);
     }
 
+    const toggleSelectedItem = (itemId) => {
+        if (selectedItems.includes(itemId)) {
+            setSelectedItems(selectedItems.filter((item) => item !== itemId));
+        } else {
+            const localSelectedItems = [...selectedItems];
+            localSelectedItems.push(itemId);
+            setSelectedItems(localSelectedItems);
+        }
+    }
+
     return (
         <div className="w-full">
             <div className="w-full h-16 flex justify-between items-center">
-                <h4 className="font-grotesk font-bold text-4xl">Collections / Add</h4>
+                <h4 className="font-grotesk font-bold text-4xl truncate">Collections / Add</h4>
                 <div
                     className="w-16 h-16 flex justify-center items-center relative rounded-md bg-green-300 hover:cursor-pointer hover:bg-green-400"
                     onClick={() => router.push('/dashboard/collections')}>
@@ -211,6 +245,37 @@ function DashboardCollectionsCreate({user, items}) {
                                         }
                                     }}
                                 />
+                            </div>
+                            <div className="w-full mt-4">
+                                <div className="w-full relative">
+                                    <label htmlFor="items" className="text-sm font-grotesk">Select items</label>
+                                    <div className="h-1"></div>
+                                    {
+                                        itemsLocal.map((item, index) => {
+                                            return (
+                                                <div
+                                                    key={`item-option-${item._id}`}
+                                                    className={`block w-full h-6 md:h-8 px-1 md:px-2 border rounded-md border-black flex items-center
+                                                    hover:cursor-pointer ${index < itemsLocal.length - 1 ? 'mb-2' : ''}`}
+                                                    onClick={() => toggleSelectedItem(item._id)}
+                                                >
+                                                    <div className="h-4 w-4 mr-2">
+                                                        {
+                                                            selectedItems.includes(item._id) &&
+                                                            <img src="/check.svg" />
+                                                        }
+                                                    </div>
+                                                    <p className="font-grotesk text-sm">{item.name}</p>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                    <div className={`w-full mt-1 ${!errors?.items ? 'hidden' : 'block'}`}>
+                                        <p className="text-xs font-grotesk text-red-300 mt-1">
+                                            {`${errors?.items ? errors.items.message : ''}`}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div className="h-10"></div>
                             <Button
