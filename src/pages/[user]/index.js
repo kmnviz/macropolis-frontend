@@ -5,52 +5,12 @@ import Head from 'next/head';
 import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
 
-export default function User({username, profile, items, user}) {
+export default function User({username, profile, items, user, collections}) {
     const router = useRouter();
 
-    const [selectedAudio, setSelectedAudio] = useState(null);
-    const [selectedAudioState, setSelectedAudioState] = useState(false);
-    const [selectedAudioDuration, setSelectedAudioDuration] = useState(0);
-    const [audioElementCurrentTime, setAudioElementCurrentTime] = useState(0);
     const [avatarImage] = useState(profile && profile?.avatar ? `${process.env.IMAGES_URL}/1920_${profile.avatar}` : '');
     const [backgroundImage] = useState(profile && profile?.background ? `${process.env.IMAGES_URL}/1920_${profile.background}` : '');
-
-    const handleAudioChange = (src) => {
-        const audioElement = document.getElementById('audio');
-        audioElement.addEventListener('timeupdate', () => {
-            if (audioElement.currentTime >= audioElement.duration - 0.1) {
-                setSelectedAudioState(false);
-            }
-        });
-
-        if (!selectedAudio) {
-            setAudioElementCurrentTime(0);
-            setSelectedAudio(src);
-            audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
-            audioElement.play();
-            setSelectedAudioState(true);
-            setSelectedAudioDuration(audioElement.duration);
-        } else {
-            if (src === selectedAudio) {
-                if (selectedAudioState) {
-                    audioElement.pause();
-                    setAudioElementCurrentTime(audioElement.currentTime)
-                    setSelectedAudioState(false);
-                } else {
-                    audioElement.currentTime = audioElementCurrentTime;
-                    audioElement.play();
-                    setSelectedAudioState(true);
-                }
-            } else {
-                setAudioElementCurrentTime(0);
-                setSelectedAudio(src);
-                audioElement.src = `${process.env.AUDIO_PREVIEWS_URL}/${src}`;
-                audioElement.play();
-                setSelectedAudioState(true);
-                setSelectedAudioDuration(audioElement.duration);
-            }
-        }
-    }
+    const [selectedGroup, setSelectedGroup] = useState('items');
 
     const formatAmount = (amount) => {
         return Decimal(amount).div(100).toFixed(2);
@@ -74,17 +34,16 @@ export default function User({username, profile, items, user}) {
                 <meta name="description" content={`${process.env.APP_NAME}, a space where you can create your own space
                     and take control of your digital items. Sell, mint, show, share, collaborate and more. Join our community of creators today.`}
                 />
-                <meta property="og:title" content={`${username}'s space in ${process.env.APP_NAME}`} />
-                <meta property="og:type" content="profile" />
-                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}`} />
+                <meta property="og:title" content={`${username}'s space in ${process.env.APP_NAME}`}/>
+                <meta property="og:type" content="profile"/>
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}`}/>
                 <meta property="og:description" content={`${process.env.APP_NAME}, a space where you can create your own space
-                    and take control of your digital items. Sell, mint, show, share, collaborate. Join our community of creators today.`} />
-                <meta property="og:image" content={avatarImage} />
-                <meta name="robots" content="index, follow" />
-                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}`} />
+                    and take control of your digital items. Sell, mint, show, share, collaborate. Join our community of creators today.`}/>
+                <meta property="og:image" content={avatarImage}/>
+                <meta name="robots" content="index, follow"/>
+                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}`}/>
             </Head>
             <div className="w-screen min-h-screen">
-                <audio id="audio" type="audio/mpeg" className="invisible"/>
                 <div className="w-full flex justify-center">
                     <div className="w-full max-w-screen-2xl relative z-20">
                         <div
@@ -139,12 +98,29 @@ export default function User({username, profile, items, user}) {
                 <div className="w-full flex justify-center mt-4">
                     <div className="w-full max-w-screen-2xl px-8">
                         <h2 className="font-grotesk text-3xl">{profile?.name ? profile.name : ''}</h2>
-                        <p className="font-grotesk mt-8">Items: {items.length}</p>
+                        <div className="mt-8 flex overflow-scroll">
+                            <p className={`font-grotesk text-md mr-4 select-none hover:cursor-pointer 
+                                ${selectedGroup === 'items' ? 'text-blue-400 font-bold' : ''}`}
+                               onClick={() => setSelectedGroup('items')}
+                            >
+                                Items
+                            </p>
+                            {
+                                collections.length &&
+                                <p className={`font-grotesk text-md select-none hover:cursor-pointer 
+                                    ${selectedGroup === 'collections' ? 'text-blue-400 font-bold' : ''}`}
+                                   onClick={() => setSelectedGroup('collections')}
+                                >
+                                    Collections
+                                </p>
+                            }
+                        </div>
                         <div className="w-full h-px mt-1 bg-gray-300"></div>
                         <div
                             className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
                         >
                             {
+                                selectedGroup === 'items' &&
                                 items.map((item, index) => {
                                     return (
                                         <div key={`item-${item._id}`}
@@ -152,18 +128,50 @@ export default function User({username, profile, items, user}) {
                                              onClick={() => router.push(`/${username}/${item._id}`)}
                                         >
                                             <div className="w-full h-64 relative overflow-hidden">
-                                                <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                                <img
+                                                    className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300"
+                                                    src={`${process.env.IMAGES_URL}/480_${item.image}`}/>
                                             </div>
                                             <div className="w-full p-4">
                                                 <p className="font-grotesk truncate">{item.name}</p>
                                             </div>
-                                            <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
-                                                 onClick={(event) => {
-                                                     event.stopPropagation();
-                                                     router.push(`/checkout?itemId=${item._id}&username=${username}`);
-                                                 }}
+                                            <div
+                                                className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    router.push(`/checkout?itemId=${item._id}&username=${username}`);
+                                                }}
                                             >
                                                 {`Buy for $${formatAmount(item.price)}`}
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            {
+                                selectedGroup === 'collections' &&
+                                collections.map((collection, index) => {
+                                    return (
+                                        <div key={`collection-${collection._id}`}
+                                             className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden"
+                                             onClick={() => router.push(`/${username}/${collection._id}`)}
+                                        >
+                                            <div className="w-full h-64 relative overflow-hidden">
+                                                <img
+                                                    className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300"
+                                                    src={`${process.env.IMAGES_URL}/480_${collection.image}`}/>
+                                            </div>
+                                            <div className="w-full p-4">
+                                                <p className="font-grotesk truncate">{collection.name}</p>
+                                            </div>
+                                            <div
+                                                className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    router.push(`/checkout?collectionId=${collection._id}&username=${username}`);
+                                                }}
+                                            >
+                                                {`Buy for $${formatAmount(collection.price)}`}
                                             </div>
                                         </div>
                                     )
@@ -173,7 +181,9 @@ export default function User({username, profile, items, user}) {
                     </div>
                 </div>
                 <div className="w-full h-24 pb-2 flex justify-center items-end">
-                    <h6 className="font-grotesk text-base text-black">by <span className="font-bold hover:cursor-pointer" onClick={() => router.push('/')}>{process.env.APP_NAME}</span></h6>
+                    <h6 className="font-grotesk text-base text-black">by <span
+                        className="font-bold hover:cursor-pointer"
+                        onClick={() => router.push('/')}>{process.env.APP_NAME}</span></h6>
                 </div>
             </div>
         </>
@@ -190,17 +200,24 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const response = await axios.get(`${process.env.BACKEND_URL}/profiles/get?username=${username}`, {withCredentials: true});
-        props.profile = response.data.data.profile;
+        const profilesResponse = await axios.get(`${process.env.BACKEND_URL}/profiles/get?username=${username}`, {withCredentials: true});
+        props.profile = profilesResponse.data.data.profile;
     } catch (error) {
         console.log('Failed to fetch profile: ', error);
     }
 
     try {
-        const response = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${username}`, {withCredentials: true});
-        props.items = response.data.data.items;
+        const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${username}`, {withCredentials: true});
+        props.items = itemsResponse.data.data.items;
     } catch (error) {
         console.log('Failed to fetch items: ', error);
+    }
+
+    try {
+        const collectionsResponse = await axios.get(`${process.env.BACKEND_URL}/collections/get-many?username=${username}`, {withCredentials: true});
+        props.collections = collectionsResponse.data.data.collections;
+    } catch (error) {
+        console.log('Failed to fetch collections: ', error);
     }
 
     return {props};
