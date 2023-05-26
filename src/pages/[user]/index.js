@@ -142,7 +142,7 @@ export default function User({username, profile, items, user, collections}) {
                                                     router.push(`/checkout/item?id=${item._id}&username=${username}`);
                                                 }}
                                             >
-                                                {`Buy for $${formatAmount(item.price)}`}
+                                                {`Buy $${formatAmount(item.price)}`}
                                             </div>
                                         </div>
                                     )
@@ -171,7 +171,7 @@ export default function User({username, profile, items, user, collections}) {
                                                     router.push(`/checkout/collection?id=${collection._id}&username=${username}`);
                                                 }}
                                             >
-                                                {`Buy for $${formatAmount(collection.price)}`}
+                                                {`Buy $${formatAmount(collection.price)}`}
                                             </div>
                                         </div>
                                     )

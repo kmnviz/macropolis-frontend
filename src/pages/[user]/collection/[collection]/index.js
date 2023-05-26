@@ -115,7 +115,7 @@ export default function User({username, collection, items, user}) {
                                             <h6 className="font-grotesk text-base mt-4 max-w-xl text-white">{collection.description}</h6>
                                         }
                                     </div>
-                                    <div className="w-64 mt-8 shadow-md">
+                                    <div className="w-64 mt-8 shadow-md rounded-md">
                                         <Button
                                             disabled={false}
                                             submit={() => router.push(`/checkout/collection?id=${collection._id}&username=${username}`)}
