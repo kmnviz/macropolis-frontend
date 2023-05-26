@@ -54,7 +54,7 @@ export default function User({username, collection, items, user}) {
                          opacity: '0.75'
                     }}
                 ></div>
-                <div className="w-full flex justify-center relative bg-white">
+                <div className="w-full flex justify-center relative bg-white shadow-md">
                     <div className="w-full max-w-screen-2xl relative">
                         <div
                             className="w-full h-16 py-4 lg:py-0 px-8 flex flex-row justify-between items-center">
