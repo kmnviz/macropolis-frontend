@@ -8,7 +8,7 @@ import itemTypesEnumerations from '../../../../enumerations/itemTypes';
 import Button from '../../../../components/button';
 import dynamic from 'next/dynamic';
 
-const AudioPlayer = dynamic(import('../../../../components/audioPlayer'), { ssr: false });
+const AudioPlayer = dynamic(import('../../../../components/audioPlayer'), {ssr: false});
 
 export default function User({username, item, items, user}) {
     const router = useRouter();
@@ -36,22 +36,24 @@ export default function User({username, item, items, user}) {
                     ${item?.description && item.description ? item.description : ''}. Macropolis is a space for netizens. 
                     Sell, mint, show, share, collaborate and more. Join our community of creators today.`}
                 />
-                <meta property="og:title" content={`${item.name} by ${username} on ${process.env.APP_NAME}`} />
-                <meta property="og:type" content="product" />
-                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`} />
-                <meta property="og:description" content={item?.description && item.description ? item.description : ''} />
-                <meta property="og:image" content={`${process.env.IMAGES_URL}/480_${item.image}`} />
-                <meta property="product:price:amount" content={formatAmount(item.price)} />
-                <meta property="product:price:currency" content="USD" />
-                <meta name="robots" content="index, follow" />
-                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`} />
+                <meta property="og:title" content={`${item.name} by ${username} on ${process.env.APP_NAME}`}/>
+                <meta property="og:type" content="product"/>
+                <meta property="og:url" content={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`}/>
+                <meta property="og:description"
+                      content={item?.description && item.description ? item.description : ''}/>
+                <meta property="og:image" content={`${process.env.IMAGES_URL}/480_${item.image}`}/>
+                <meta property="product:price:amount" content={formatAmount(item.price)}/>
+                <meta property="product:price:currency" content="USD"/>
+                <meta name="robots" content="index, follow"/>
+                <link rel="canonical" href={`${process.env.DOMAIN_URL}/${username}/item/${item._id}`}/>
             </Head>
             <div className="w-screen min-h-screen">
                 <div className="w-full flex justify-center">
                     <div className="w-full max-w-screen-2xl relative z-20">
                         <div
                             className="w-full h-16 py-4 lg:py-0 px-8 flex flex-row justify-between items-center">
-                            <h6 className="font-grotesk text-xl select-none hover:cursor-pointer" onClick={() => router.push(`/${username}`)}>{username}</h6>
+                            <h6 className="font-grotesk text-xl select-none hover:cursor-pointer"
+                                onClick={() => router.push(`/${username}`)}>{username}</h6>
                             <div className="h-full flex items-center">
                                 {
                                     user && user.username === username &&
@@ -125,12 +127,13 @@ export default function User({username, item, items, user}) {
                                         item?.description && item.description &&
                                         <h6 className="font-grotesk text-base mt-4 max-w-xl">{item.description}</h6>
                                     }
-                                    <div className="w-64 mt-16">
+                                    <div className="w-64 mt-16 shadow-md">
                                         <Button
                                             disabled={false}
                                             submit={() => router.push(`/checkout/item?id=${item._id}&username=${username}`)}
-                                            text={`Buy for $${formatAmount(item.price)}`}
+                                            text={`Buy $${formatAmount(item.price)}`}
                                             color="blue"
+                                            textColor="text-white"
                                         />
                                     </div>
                                 </div>
@@ -143,7 +146,8 @@ export default function User({username, item, items, user}) {
                     <div className="w-full flex justify-center mt-24">
                         <div className="w-full max-w-screen-2xl px-8">
                             <h4 className="font-grotesk text-4xl">More from me</h4>
-                            <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                            <div
+                                className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                                 {
                                     items.map((item, index) => {
                                         return (
@@ -152,18 +156,22 @@ export default function User({username, item, items, user}) {
                                                  onClick={() => router.push(`/${username}/item/${item._id}`)}
                                             >
                                                 <div className="w-full h-64 relative overflow-hidden">
-                                                    <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
+                                                    <img
+                                                        className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300"
+                                                        src={`${process.env.IMAGES_URL}/480_${item.image}`}/>
                                                 </div>
                                                 <div className="w-full p-4">
                                                     <p className="font-grotesk truncate">{item.name}</p>
                                                 </div>
-                                                <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
-                                                     onClick={(event) => {
-                                                         event.stopPropagation();
-                                                         router.push(`/checkout/item?id=${item._id}&username=${username}`);
-                                                     }}
+                                                <div
+                                                    className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center
+                                                        font-grotesk text-white hover:bg-blue-400 tracking-widest"
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        router.push(`/checkout/item?id=${item._id}&username=${username}`);
+                                                    }}
                                                 >
-                                                    {`Buy for $${formatAmount(item.price)}`}
+                                                    {`Buy $${formatAmount(item.price)}`}
                                                 </div>
                                             </div>
                                         )

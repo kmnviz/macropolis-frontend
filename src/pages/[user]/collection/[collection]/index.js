@@ -55,7 +55,7 @@ export default function User({username, collection, items, user}) {
                     }}
                 ></div>
                 <div className="w-full flex justify-center">
-                    <div className="w-full max-w-screen-2xl relative">
+                    <div className="w-full max-w-screen-2xl relative bg-white shadow-md">
                         <div
                             className="w-full h-16 py-4 lg:py-0 px-8 flex flex-row justify-between items-center">
                             <h6 className="font-grotesk text-xl select-none hover:cursor-pointer" onClick={() => router.push(`/${username}`)}>{username}</h6>
@@ -108,18 +108,18 @@ export default function User({username, collection, items, user}) {
                                     <div className="flex">
                                         <p className="font-grotesk text-sm py-1 px-2 bg-green-300 rounded-md select-none">{collection.type}</p>
                                     </div>
-                                    <div className="rounded-md mt-8 p-4 bg-white shadow-md" style={{background: `rgba(255, 255, 255, 0.8)`}}>
-                                        <h1 className="font-grotesk text-3xl">{collection.name}</h1>
+                                    <div className="rounded-md mt-8">
+                                        <h1 className="font-grotesk text-3xl text-white">{collection.name}</h1>
                                         {
                                             collection?.description && collection.description &&
-                                            <h6 className="font-grotesk text-base mt-4 max-w-xl">{collection.description}</h6>
+                                            <h6 className="font-grotesk text-base mt-4 max-w-xl text-white">{collection.description}</h6>
                                         }
                                     </div>
                                     <div className="w-64 mt-8 shadow-md">
                                         <Button
                                             disabled={false}
                                             submit={() => router.push(`/checkout/collection?id=${collection._id}&username=${username}`)}
-                                            text={`BUY FOR $${formatAmount(collection.price)}`}
+                                            text={`Buy $${formatAmount(collection.price)}`}
                                             color="blue"
                                             textColor="text-white"
                                         />
@@ -154,7 +154,7 @@ export default function User({username, collection, items, user}) {
                                                          router.push(`/checkout/item?id=${item._id}&username=${username}`);
                                                      }}
                                                 >
-                                                    {`Buy for $${formatAmount(item.price)}`}
+                                                    {`Buy $${formatAmount(item.price)}`}
                                                 </div>
                                             </div>
                                         )
