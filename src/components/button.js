@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Button({disabled, submit, text, loading = false, color = 'green'}) {
+export default function Button({disabled, submit, text, loading = false, color = 'green', textColor = 'text-black'}) {
 
     const colors = {
         green: 'bg-green-300 hover:bg-green-400 hover:cursor-pointer',
@@ -13,6 +13,6 @@ export default function Button({disabled, submit, text, loading = false, color =
         `}
                  onClick={submit}
     >
-        {!loading ? <p className="text-black font-grotesk">{text}</p> : <span className="button-loader"></span>}
+        {!loading ? <p className={`text-black font-grotesk ${textColor} tracking-widest`}>{text}</p> : <span className="button-loader"></span>}
     </div>);
 }
