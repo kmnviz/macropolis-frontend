@@ -31,10 +31,10 @@ export default function Header({router, isLoggedIn}) {
                                 </div>
                                 :
                                 <div
-                                    className="h-8 md:h-16 pl-8 pr-1 md:px-8 flex items-center font-poppins truncate hover:cursor-pointer"
+                                    className="w-10 h-10 flex justify-center items-center font-poppins truncate hover:cursor-pointer hover:shadow-md hover:rounded-md"
                                     onClick={() => router.push('/dashboard')}
                                 >
-                                    Dashboard
+                                    <img src="/home.svg" className="w-6 h-6"/>
                                 </div>
                         }
 

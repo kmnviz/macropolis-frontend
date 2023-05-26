@@ -105,8 +105,8 @@ export async function getServerSideProps(context) {
         });
         props.user = userResponse.data.data.user;
 
-        const response = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${props.user.username}`, {withCredentials: true});
-        props.items = response.data.data.items;
+        const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${props.user.username}`, {withCredentials: true});
+        props.items = itemsResponse.data.data.items;
     } catch (error) {
         console.log('Failed to fetch items: ', error);
     }

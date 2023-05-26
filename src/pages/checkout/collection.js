@@ -1,15 +1,15 @@
 import axios from 'axios';
-import Input from '../components/input';
+import Input from '../../components/input';
 import {useForm} from 'react-hook-form';
 import React, {useState, useEffect} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
 import Head from 'next/head';
 import Decimal from 'decimal.js';
-import Button from '../components/button';
-import Header from '../components/header';
+import Button from '../../components/button';
+import Header from '../../components/header';
 import {useRouter} from 'next/router';
 
-export default function Checkout({item, paymentIntentId, emailAddress, username}) {
+export default function Checkout({collection, paymentIntentId, emailAddress, username}) {
     const router = useRouter();
 
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
@@ -31,8 +31,8 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
             setEnteredEmail(data.email);
 
             try {
-                const postData = {itemId: item._id, email: data.email};
-                const response = await axios.post(`${process.env.BACKEND_URL}/stripe/create-payment-intent`, postData, {withCredentials: true});
+                const postData = {collectionId: collection._id, email: data.email};
+                const response = await axios.post(`${process.env.BACKEND_URL}/stripe/create-payment-intent-collection`, postData, {withCredentials: true});
                 const stripe = await loadStripe(response.data.data.payment_intent.publishable_key);
                 const elements = stripe.elements({clientSecret: response.data.data.payment_intent.client_secret});
 
@@ -41,7 +41,7 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                 setStripeElements(elements);
                 setStage(1);
             } catch (error) {
-                console.log('Failed to create payment intent: ', error);
+                console.log('Failed to create payment intent collection: ', error);
             }
         } else if (stage === 1) {
             const response = stripeClient.confirmCardPayment(paymentIntent.client_secret, {
@@ -49,9 +49,9 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                     card: stripeCardElement,
                 },
             }).then((response) => {
-                router.push(`${process.env.DOMAIN_URL}/checkout?paymentIntentId=${response.paymentIntent.id}&itemId=${item._id}&emailAddress=${enteredEmail}&username=${username}`)
+                router.push(`${process.env.DOMAIN_URL}/checkout/collection?paymentIntentId=${response.paymentIntent.id}&id=${collection._id}&emailAddress=${enteredEmail}&username=${username}`)
             }).catch((error) => {
-                console.log(`Failed to confirm payment intent: ${response.error.message}`)
+                console.log(`Failed to confirm payment intent collection: ${response.error.message}`)
             })
         }
     }
@@ -105,24 +105,24 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
 
                             {
                                 !paymentIntentId
-                                ?
+                                    ?
                                     <div className="w-full max-w-8xl p-8 grid grid-cols-1 md:grid-cols-2 border border-gray-300 rounded-lg">
                                         <div className="w-full">
                                             <div className="w-full h-60 md:h-576 relative">
-                                                <div className="w-full h-full absolute bg-cover bg-center rounded-md" style={{backgroundImage: `url(${process.env.IMAGES_URL}/480_${item.image})`}}></div>
+                                                <div className="w-full h-full absolute bg-cover bg-center rounded-md" style={{backgroundImage: `url(${process.env.IMAGES_URL}/480_${collection.image})`}}></div>
                                                 <div className="w-full h-full absolute black-to-transparent-gradient rounded-md"></div>
                                                 <div className="w-full absolute bottom-8">
-                                                    <p className="font-grotesk text-2xl h-16 text-white text-center overflow-hidden overflow-ellipsis">{item.name}</p>
+                                                    <p className="font-grotesk text-2xl h-16 text-white text-center overflow-hidden overflow-ellipsis">{collection.name}</p>
                                                 </div>
                                             </div>
                                             <div className="h-8"></div>
                                             <div className="w-full h-auto flex justify-between items-center">
                                                 <div className="h-full">
-                                                    <p className="font-grotesk text-base">price: ${formatAmount(item.price)}</p>
-                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(item.price)}</p>
+                                                    <p className="font-grotesk text-base">price: ${formatAmount(collection.price)}</p>
+                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(collection.price)}</p>
                                                 </div>
                                                 <div className="h-full">
-                                                    <p className="h-full font-grotesk text-base md:text-xl">total: ${formatAmount(item.price)}</p>
+                                                    <p className="h-full font-grotesk text-base md:text-xl">total: ${formatAmount(collection.price)}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,7 +184,7 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                                             </div>
                                             <div className="h-10"></div>
                                             <p className="font-grotesk text-base sm:text-xl md:text-2xl text-center">You just bought
-                                                <span className="font-bold"> {item.name} </span>
+                                                <span className="font-bold"> {collection.name} </span>
                                                 by
                                                 <span className="font-bold"> {username}</span>
                                             </p>
@@ -217,16 +217,16 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
 export async function getServerSideProps(context) {
     const props = {};
 
-    if ((!context.query?.itemId || !context.query?.username) && !context.query?.paymentIntentId) {
+    if ((!context.query?.id || !context.query?.username) && !context.query?.paymentIntentId) {
         return {redirect: {destination: '/', permanent: false}};
     }
 
-    if (context.query.itemId) {
+    if (context.query.id) {
         try {
-            const response = await axios.get(`${process.env.BACKEND_URL}/items/get?id=${context.query.itemId}`);
-            props.item = response.data.data.item;
+            const response = await axios.get(`${process.env.BACKEND_URL}/collections/get?id=${context.query.id}`);
+            props.collection = response.data.data.collection;
         } catch (error) {
-            console.log('Failed to fetch item: ', error);
+            console.log('Failed to fetch collection: ', error);
         }
     }
 

@@ -26,10 +26,10 @@ function DashboardSales({user, sales}) {
                                     className="w-full h-16 rounded-md border border-black p-2 flex justify-between">
                                     <div className="flex items-center">
                                         <div className="w-12 h-12 rounded-sm bg-center bg-cover"
-                                             style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${sale.item.image})`}}></div>
+                                             style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${sale.image})`}}></div>
                                         <div className="">
-                                            <p className="ml-4 text-black font-grotesk text-sm truncate">{sale.item.name}</p>
-                                            <p className="ml-4 text-black font-grotesk text-sm truncate">${formatAmount(sale.item.price)}</p>
+                                            <p className="ml-4 text-black font-grotesk text-sm truncate">{sale.name}</p>
+                                            <p className="ml-4 text-black font-grotesk text-sm truncate">${formatAmount(sale.price)}</p>
                                         </div>
                                     </div>
                                     <div className="h-full flex flex-col justify-center overflow-hidden">
@@ -86,6 +86,9 @@ export async function getServerSideProps(context) {
 
         props.sales.forEach((sale) => {
             sale.created_at = formatDate(sale.created_at);
+            sale.image = sale.item_id ? sale.item[0].image : sale.collection[0].image;
+            sale.price = sale.item_id ? sale.item[0].price : sale.collection[0].price;
+            sale.name = sale.item_id ? sale.item[0].name : sale.collection[0].name;
         });
     } catch (error) {
         console.log('Failed to fetch sales: ', error);

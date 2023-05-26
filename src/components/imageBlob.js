@@ -37,7 +37,7 @@ M42.4,-69.5C54.5,-66.4,63.6,-54.2,59.1,-41.1C54.6,-28,36.6,-14,38.4,1C40.2,16.1,
                     <rect x="-1" y="-1" width="502" height="502"
                           mask="url('#blobmask-3')" fill="url('#blobgradient-3')"></rect>
                 </svg>
-                <img className="w-full h-full absolute top-0 rounded-md"
+                <img className="w-full h-full absolute top-0 rounded-full"
                      src={`${imageSrc}`}
                 />
             </div>
