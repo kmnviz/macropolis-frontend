@@ -4,7 +4,7 @@ export default function Button({disabled, submit, text, loading = false, color =
 
     const colors = {
         green: 'bg-green-300 hover:bg-green-400 hover:cursor-pointer',
-        blue: 'bg-blue-300 hover:bg-blue-400 hover:cursor-pointer',
+        blue: 'bg-blue-300 hover:bg-blue-800 hover:cursor-pointer',
     }
 
     return (<div className={`w-full h-12 md:h-16 rounded-md duration-100
