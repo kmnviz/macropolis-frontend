@@ -139,7 +139,7 @@ export default function User({username, profile, items, user, collections}) {
                                                 className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    router.push(`/checkout?itemId=${item._id}&username=${username}`);
+                                                    router.push(`/checkout/item?id=${item._id}&username=${username}`);
                                                 }}
                                             >
                                                 {`Buy for $${formatAmount(item.price)}`}
@@ -168,7 +168,7 @@ export default function User({username, profile, items, user, collections}) {
                                                 className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    router.push(`/checkout?collectionId=${collection._id}&username=${username}`);
+                                                    router.push(`/checkout/collection?id=${collection._id}&username=${username}`);
                                                 }}
                                             >
                                                 {`Buy for $${formatAmount(collection.price)}`}

@@ -128,7 +128,7 @@ export default function User({username, item, items, user}) {
                                     <div className="w-64 mt-16">
                                         <Button
                                             disabled={false}
-                                            submit={() => router.push(`/checkout?itemId=${item._id}&username=${username}`)}
+                                            submit={() => router.push(`/checkout/item?id=${item._id}&username=${username}`)}
                                             text={`Buy for $${formatAmount(item.price)}`}
                                             color="blue"
                                         />
@@ -160,7 +160,7 @@ export default function User({username, item, items, user}) {
                                                 <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
                                                      onClick={(event) => {
                                                          event.stopPropagation();
-                                                         router.push(`/checkout?itemId=${item._id}&username=${username}`);
+                                                         router.push(`/checkout/item?id=${item._id}&username=${username}`);
                                                      }}
                                                 >
                                                     {`Buy for $${formatAmount(item.price)}`}

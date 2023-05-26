@@ -256,7 +256,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                                     <div
                                         className="hidden xl:block w-384 h-384 absolute -top-6 right-8 rounded-md overflow-hidden
                                             object-cover object-center hover:cursor-pointer"
-                                        onClick={() => router.push(`/${item.username}/${item._id}`)}
+                                        onClick={() => router.push(`/${item.username}/item/${item._id}`)}
                                     >
                                         <ImageBlob imageSrc={`${process.env.IMAGES_URL}/480_${item.image}`} />
                                     </div>
