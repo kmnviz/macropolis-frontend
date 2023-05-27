@@ -137,31 +137,33 @@ export default function User({username, item, items, user}) {
                                         />
                                     </div>
                                     {
-                                        item?.collections && item.collections.length &&
-                                        <div className="mt-12 md:mt-8">
-                                            <h6 className="font-grotesk text-sm">In collections</h6>
-                                            {
-                                                item.collections.map((collection) => {
-                                                    return (
-                                                        <div
-                                                            key={`item-collection-${collection._id}`}
-                                                            className={`w-full md:w-64 h-12 mt-2 rounded-md shadow-md relative hover:cursor-pointer group`}
-                                                            onClick={() => router.push(`/${username}/collection/${collection._id}`)}
-                                                        >
+                                        (item?.collections && item.collections.length) &&
+                                        <>
+                                            <div className="mt-12 md:mt-8">
+                                                <h6 className="font-grotesk text-sm">In collections</h6>
+                                                {
+                                                    item.collections.map((collection) => {
+                                                        return (
                                                             <div
-                                                                className="absolute w-full h-full top-0 left-0 rounded-md bg-cover bg-center overflow-hidden grayscale z-0 group-hover:grayscale-0 duration-200"
-                                                                style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${collection.image})`}}
-                                                            ></div>
-                                                            <div className="absolute w-full h-full top-0 left-0 flex justify-between items-center px-4 z-20">
-                                                                <p className="font-grotesk text-base text-white truncate">{collection.name}</p>
-                                                                <p className="font-grotesk text-base text-white">${formatAmount(collection.price)}</p>
+                                                                key={`item-collection-${collection._id}`}
+                                                                className={`w-full md:w-64 h-12 mt-2 rounded-md shadow-md relative hover:cursor-pointer group`}
+                                                                onClick={() => router.push(`/${username}/collection/${collection._id}`)}
+                                                            >
+                                                                <div
+                                                                    className="absolute w-full h-full top-0 left-0 rounded-md bg-cover bg-center overflow-hidden grayscale z-0 group-hover:grayscale-0 duration-200"
+                                                                    style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${collection.image})`}}
+                                                                ></div>
+                                                                <div className="absolute w-full h-full top-0 left-0 flex justify-between items-center px-4 z-20">
+                                                                    <p className="font-grotesk text-base text-white truncate">{collection.name}</p>
+                                                                    <p className="font-grotesk text-base text-white">${formatAmount(collection.price)}</p>
+                                                                </div>
+                                                                <div className="absolute w-full h-full top-0 left-0 hidden bg-black opacity-50 group-hover:block z-10 rounded-md"></div>
                                                             </div>
-                                                            <div className="absolute w-full h-full top-0 left-0 hidden bg-black opacity-50 group-hover:block z-10 rounded-md"></div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </>
                                     }
                                 </div>
                             </div>
