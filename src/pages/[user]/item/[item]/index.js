@@ -127,7 +127,7 @@ export default function User({username, item, items, user}) {
                                         item?.description && item.description &&
                                         <h6 className="font-grotesk text-base mt-4 max-w-xl">{item.description}</h6>
                                     }
-                                    <div className="w-64 mt-16 shadow-md rounded-lg border-white border-2">
+                                    <div className="w-full md:w-64 mt-8 shadow-md rounded-lg border-white border-2">
                                         <Button
                                             disabled={false}
                                             submit={() => router.push(`/checkout/item?id=${item._id}&username=${username}`)}
@@ -136,6 +136,33 @@ export default function User({username, item, items, user}) {
                                             textColor="text-white"
                                         />
                                     </div>
+                                    {
+                                        item?.collections && item.collections.length &&
+                                        <div className="mt-12 md:mt-8">
+                                            <h6 className="font-grotesk text-sm">In collections</h6>
+                                            {
+                                                item.collections.map((collection) => {
+                                                    return (
+                                                        <div
+                                                            key={`item-collection-${collection._id}`}
+                                                            className={`w-full md:w-64 h-12 mt-2 rounded-md shadow-md relative hover:cursor-pointer group`}
+                                                            onClick={() => router.push(`/${username}/collection/${collection._id}`)}
+                                                        >
+                                                            <div
+                                                                className="absolute w-full h-full top-0 left-0 rounded-md bg-cover bg-center overflow-hidden grayscale z-0 group-hover:grayscale-0 duration-200"
+                                                                style={{backgroundImage: `url(${process.env.IMAGES_URL}/240_${collection.image})`}}
+                                                            ></div>
+                                                            <div className="absolute w-full h-full top-0 left-0 flex justify-between items-center px-4 z-20">
+                                                                <p className="font-grotesk text-base text-white truncate">{collection.name}</p>
+                                                                <p className="font-grotesk text-base text-white">${formatAmount(collection.price)}</p>
+                                                            </div>
+                                                            <div className="absolute w-full h-full top-0 left-0 hidden bg-black opacity-50 group-hover:block z-10 rounded-md"></div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -145,7 +172,7 @@ export default function User({username, item, items, user}) {
                     items.length > 0 &&
                     <div className="w-full flex justify-center mt-24">
                         <div className="w-full max-w-screen-2xl px-8">
-                            <h4 className="font-grotesk text-4xl">More from me</h4>
+                            <h4 className="font-grotesk text-4xl">More items</h4>
                             <div
                                 className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                                 {
@@ -205,7 +232,7 @@ export async function getServerSideProps(context) {
         const profileResponse = await axios.get(`${process.env.BACKEND_URL}/profiles/get?username=${username}`, {withCredentials: true});
         props.profile = profileResponse.data.data.profile;
 
-        const itemResponse = await axios.get(`${process.env.BACKEND_URL}/items/get?id=${itemId}`, {withCredentials: true});
+        const itemResponse = await axios.get(`${process.env.BACKEND_URL}/items/get?id=${itemId}&withCollections=true`, {withCredentials: true});
         props.item = itemResponse.data.data.item;
 
         const itemsResponse = await axios.get(`${process.env.BACKEND_URL}/items/get-many?username=${username}&limit=5`, {withCredentials: true});
