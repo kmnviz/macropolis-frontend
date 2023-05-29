@@ -24,7 +24,7 @@ export default function itemCard({ id, username, image, name, price, category = 
                             <div className="w-full h-full absolute bottom-0 bg-white z-0"></div>
                             <div className="w-full h-full absolute bottom-0 z-10 px-4 flex flex-col justify-center">
                                 <p className="font-grotesk text-gray-800 truncate">{name}</p>
-                                <p className="font-grotesk text-gray-800 truncate">${formatAmount(price)}</p>
+                                <p className="font-grotesk text-gray-800 truncate text-right">${formatAmount(price)}</p>
                             </div>
                             <div className="w-full h-full absolute -bottom-16 z-20 flex justify-center items-center bg-blue-400
                                  duration-300 group-hover:bottom-0 hover:bg-blue-800 rounded-b-md"
@@ -33,7 +33,7 @@ export default function itemCard({ id, username, image, name, price, category = 
                                      router.push(`/checkout/${category}?id=${id}&username=${username}`);
                                  }}
                             >
-                                <p className="font-grotesk text-white">Buy ${formatAmount(price)}</p>
+                                <p className="font-grotesk text-white">Buy now</p>
                             </div>
                         </div>
                     </div>
