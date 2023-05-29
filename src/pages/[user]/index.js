@@ -98,7 +98,7 @@ export default function User({username, profile, items, user, collections}) {
                 <div className="w-full flex justify-center mt-4">
                     <div className="w-full max-w-screen-2xl px-8">
                         <h2 className="font-grotesk text-3xl">{profile?.name ? profile.name : ''}</h2>
-                        <div className="mt-8 flex overflow-scroll">
+                        <div className="mt-8 flex">
                             <p className={`font-grotesk text-md mr-4 select-none hover:cursor-pointer 
                                 ${selectedGroup === 'items' ? 'text-blue-400 font-bold' : ''}`}
                                onClick={() => setSelectedGroup('items')}
