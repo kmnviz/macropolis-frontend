@@ -4,11 +4,9 @@ import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
-import itemTypesEnumerations from '../../../../enumerations/itemTypes';
 import Button from '../../../../components/button';
 import dynamic from 'next/dynamic';
-
-const AudioPlayer = dynamic(import('../../../../components/audioPlayer'), { ssr: false });
+import ItemCard from '../../../../components/itemCard';
 
 export default function User({username, collection, items, user}) {
     const router = useRouter();
@@ -138,25 +136,13 @@ export default function User({username, collection, items, user}) {
                                 {
                                     items.map((item, index) => {
                                         return (
-                                            <div key={`item-${item._id}`}
-                                                 className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden bg-white"
-                                                 onClick={() => router.push(`/${username}/item/${item._id}`)}
-                                            >
-                                                <div className="w-full h-64 relative overflow-hidden">
-                                                    <img className="w-full h-full absolute top-0 object-cover object-center rounded-t-md group-hover:scale-105 duration-300" src={`${process.env.IMAGES_URL}/480_${item.image}`} />
-                                                </div>
-                                                <div className="w-full p-4">
-                                                    <p className="font-grotesk truncate">{item.name}</p>
-                                                </div>
-                                                <div className="w-full h-12 bg-blue-300 rounded-b flex items-center justify-center text-white hover:bg-blue-400"
-                                                     onClick={(event) => {
-                                                         event.stopPropagation();
-                                                         router.push(`/checkout/item?id=${item._id}&username=${username}`);
-                                                     }}
-                                                >
-                                                    {`Buy $${formatAmount(item.price)}`}
-                                                </div>
-                                            </div>
+                                            <ItemCard
+                                                id={item._id}
+                                                username={username}
+                                                name={item.name}
+                                                price={item.price}
+                                                image={item.image}
+                                            />
                                         )
                                     })
                                 }
