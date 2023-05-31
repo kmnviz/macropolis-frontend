@@ -76,6 +76,7 @@ export default function DashboardLayout({children, user}) {
             '/dashboard/sales': ['/dashboard/sales'],
             '/dashboard/withdrawals': ['/dashboard/withdrawals'],
             '/dashboard/plans': ['/dashboard/plans'],
+            '/dashboard/nft': ['/dashboard/nft'],
         }
 
         return routesGroups[routePath].includes(router.pathname);
@@ -158,6 +159,10 @@ export default function DashboardLayout({children, user}) {
                             <div
                                 className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/withdrawals')}>Withdrawals
+                            </div>
+                            <div
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/nft') ? 'text-green-300' : 'text-white'}`}
+                                onClick={() => redirectTo('/dashboard/nft')}>NFT
                             </div>
                         </div>
                         <div className="w-full bg-black">

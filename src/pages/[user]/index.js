@@ -6,7 +6,7 @@ import Decimal from 'decimal.js';
 import jwt from 'jsonwebtoken';
 import ItemCard from '../../components/itemCard';
 
-export default function User({username, profile, items, user, collections}) {
+export default function User({username, profile, items, user, collections, nft}) {
     const router = useRouter();
 
     const [avatarImage] = useState(profile && profile?.avatar ? `${process.env.IMAGES_URL}/1920_${profile.avatar}` : '');
@@ -100,19 +100,28 @@ export default function User({username, profile, items, user, collections}) {
                     <div className="w-full max-w-screen-2xl px-8">
                         <h2 className="font-grotesk text-3xl">{profile?.name ? profile.name : ''}</h2>
                         <div className="mt-8 flex">
-                            <p className={`font-grotesk text-md mr-4 select-none hover:cursor-pointer 
+                            <p className={`font-grotesk text-md select-none hover:cursor-pointer 
                                 ${selectedGroup === 'items' ? 'text-blue-400 font-bold' : ''}`}
                                onClick={() => setSelectedGroup('items')}
                             >
                                 Items
                             </p>
                             {
-                                collections.length &&
-                                <p className={`font-grotesk text-md select-none hover:cursor-pointer 
+                                collections.length > 0 &&
+                                <p className={`ml-4 font-grotesk text-md select-none hover:cursor-pointer 
                                     ${selectedGroup === 'collections' ? 'text-blue-400 font-bold' : ''}`}
                                    onClick={() => setSelectedGroup('collections')}
                                 >
                                     Collections
+                                </p>
+                            }
+                            {
+                                (nft && nft?.ownedNfts && nft.ownedNfts.length > 0) &&
+                                <p className={`ml-4 font-grotesk text-md select-none hover:cursor-pointer 
+                                    ${selectedGroup === 'nft' ? 'text-blue-400 font-bold' : ''}`}
+                                   onClick={() => setSelectedGroup('nft')}
+                                >
+                                    NFT
                                 </p>
                             }
                         </div>
@@ -140,7 +149,7 @@ export default function User({username, profile, items, user, collections}) {
                                 collections.map((collection, index) => {
                                     return (
                                         <ItemCard
-                                            key={`item-${item._id}`}
+                                            key={`item-${collection._id}`}
                                             id={collection._id}
                                             username={username}
                                             name={collection.name}
@@ -148,6 +157,32 @@ export default function User({username, profile, items, user, collections}) {
                                             image={collection.image}
                                             category="collection"
                                         />
+                                    )
+                                })
+                            }
+                            {
+                                (selectedGroup === 'nft' && nft && nft?.ownedNfts && nft.ownedNfts.length > 0) &&
+                                nft.ownedNfts.map((ownedNft, index) => {
+                                    return (
+                                        <div key={`item-${ownedNft.contract.address}-${ownedNft.tokenId}`}
+                                             className="relative flex flex-col rounded-md shadow hover:shadow-lg cursor-pointer group overflow-hidden border-4 border-white"
+                                             onClick={() => router.push(`/${username}/nft/${ownedNft.contract.address}-${ownedNft.tokenId}`)}
+                                        >
+                                            <div className="w-full h-80 relative overflow-hidden relative">
+                                                <img
+                                                    className="w-full h-full absolute top-0 object-cover object-center rounded-md group-hover:scale-105 duration-300 border-2 border-white"
+                                                    src={`${ownedNft.media[0].thumbnail}`}/>
+                                                <div className="w-full h-16 absolute bottom-0">
+                                                    <div className="w-full h-full relative overflow-hidden">
+                                                        <div className="w-full h-full absolute bottom-0 bg-white z-0"></div>
+                                                        <div className="w-full h-full absolute bottom-0 z-10 px-4 flex flex-col justify-center">
+                                                            <p className="font-grotesk text-gray-800 truncate">{ownedNft.title}</p>
+                                                            <p className="font-grotesk text-gray-800 truncate">#{ownedNft.tokenId}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )
                                 })
                             }
@@ -192,6 +227,13 @@ export async function getServerSideProps(context) {
         props.collections = collectionsResponse.data.data.collections;
     } catch (error) {
         console.log('Failed to fetch collections: ', error);
+    }
+
+    try {
+        const nftResponse = await axios.get(`${process.env.BACKEND_URL}/nft/get?username=${props.user.username}&withOwnedNfts=true`, {withCredentials: true});
+        props.nft = nftResponse.data.data.nft;
+    } catch (error) {
+        console.log('Failed to fetch nft: ', error);
     }
 
     return {props};
