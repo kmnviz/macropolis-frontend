@@ -134,8 +134,8 @@ const DashboardProfile = ({profile}) => {
             <div className="w-full flex mt-4">
                 <div className="flex flex-col">
                     <div
-                        className={`w-32 h-32 relative rounded-md border border-black duration-100 
-                                  ${!initialAvatar && 'hover:cursor-pointer hover:border-gray-900 hover:border-2'}
+                        className={`w-32 h-32 relative rounded-md border-2 border-gray-300 shadow-md duration-100 
+                                  ${!initialAvatar && 'hover:cursor-pointer hover:border-gray-400 hover:border-2'}
                                   ${errors?.avatar && 'border-red-300'}`}
                         onClick={() => !initialAvatar && document.getElementById('avatar').click()}
                     >
@@ -195,7 +195,7 @@ const DashboardProfile = ({profile}) => {
                                 </div>
                                 :
                                 <div
-                                    className="w-full h-full absolute rounded-md z-10 bg-cover bg-center"
+                                    className="w-full h-full absolute rounded-sm z-10 bg-cover bg-center"
                                     style={{backgroundImage: `url(${backgroundTemp})`}}
                                 >
                                 </div>

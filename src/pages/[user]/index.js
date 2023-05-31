@@ -125,6 +125,7 @@ export default function User({username, profile, items, user, collections}) {
                                 items.map((item, index) => {
                                     return (
                                         <ItemCard
+                                            key={`item-${item._id}`}
                                             id={item._id}
                                             username={username}
                                             name={item.name}
@@ -139,6 +140,7 @@ export default function User({username, profile, items, user, collections}) {
                                 collections.map((collection, index) => {
                                     return (
                                         <ItemCard
+                                            key={`item-${item._id}`}
                                             id={collection._id}
                                             username={username}
                                             name={collection.name}
