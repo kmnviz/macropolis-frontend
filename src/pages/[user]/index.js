@@ -121,7 +121,7 @@ export default function User({username, profile, items, user, collections}) {
                             className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
                         >
                             {
-                                selectedGroup === 'items' &&
+                                (selectedGroup === 'items' && items.length > 0) &&
                                 items.map((item, index) => {
                                     return (
                                         <ItemCard
@@ -136,7 +136,7 @@ export default function User({username, profile, items, user, collections}) {
                                 })
                             }
                             {
-                                selectedGroup === 'collections' &&
+                                (selectedGroup === 'collections' && collections.length > 0) &&
                                 collections.map((collection, index) => {
                                     return (
                                         <ItemCard
