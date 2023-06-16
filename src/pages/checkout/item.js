@@ -119,7 +119,7 @@ export default function Checkout({item, paymentIntentId, emailAddress, username}
                                             <div className="w-full h-auto flex justify-between items-center">
                                                 <div className="h-full">
                                                     <p className="font-grotesk text-base">price: ${formatAmount(item.price)}</p>
-                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(item.price)}</p>
+                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(item.stripe_fee)}</p>
                                                 </div>
                                                 <div className="h-full">
                                                     <p className="h-full font-grotesk text-base md:text-xl">total: ${formatAmount(item.price)}</p>
@@ -223,7 +223,7 @@ export async function getServerSideProps(context) {
 
     if (context.query.id) {
         try {
-            const response = await axios.get(`${process.env.BACKEND_URL}/items/get?id=${context.query.id}`);
+            const response = await axios.get(`${process.env.BACKEND_URL}/items/get?id=${context.query.id}&withStripeFee=true`);
             props.item = response.data.data.item;
         } catch (error) {
             console.log('Failed to fetch item: ', error);

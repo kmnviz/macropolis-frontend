@@ -119,7 +119,7 @@ export default function Checkout({collection, paymentIntentId, emailAddress, use
                                             <div className="w-full h-auto flex justify-between items-center">
                                                 <div className="h-full">
                                                     <p className="font-grotesk text-base">price: ${formatAmount(collection.price)}</p>
-                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(collection.price)}</p>
+                                                    <p className="font-grotesk text-sm">stripe fee: ${formatAmount(collection.stripe_fee)}</p>
                                                 </div>
                                                 <div className="h-full">
                                                     <p className="h-full font-grotesk text-base md:text-xl">total: ${formatAmount(collection.price)}</p>
@@ -223,7 +223,7 @@ export async function getServerSideProps(context) {
 
     if (context.query.id) {
         try {
-            const response = await axios.get(`${process.env.BACKEND_URL}/collections/get?id=${context.query.id}`);
+            const response = await axios.get(`${process.env.BACKEND_URL}/collections/get?id=${context.query.id}&withStripeFee=true`);
             props.collection = response.data.data.collection;
         } catch (error) {
             console.log('Failed to fetch collection: ', error);
