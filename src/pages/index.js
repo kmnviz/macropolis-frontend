@@ -353,7 +353,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                             <img className="w-full h-full absolute top-0 left-0 rounded-lg z-10 scale-99 shadow-md object-cover object-center" src={`${process.env.PUBLIC_FILES_URL}/homepage1.jpeg`} alt="sell your digital art without commission"/>
                         </div>
                     </div>
-                    <div className="w-full pt-8 lg:pt-16 lg:pt-32 px-8 lg:pr-32 lg:pl-16 flex justify-center items-center">
+                    <div className="w-full pt-8 lg:pt-0 px-8 lg:pr-32 lg:pl-16 flex justify-center items-center">
                         <div>
                             <h1 className="font-grotesk text-2xl md:text-4xl font-bold text-white">Sell digital art with 0% commission</h1>
                             <div className="h-8"></div>
