@@ -16,6 +16,7 @@ module.exports = {
                 '384': '384px',
                 '432': '432px',
                 '576': '576px',
+                '768': '768px',
             },
             height: {
                 '320': '320px',
@@ -28,6 +29,13 @@ module.exports = {
             },
             spacing: {
                 '112': '28rem',
+            },
+            scale: {
+                '99': '0.99',
+            },
+            minHeight: {
+                '576': '576px',
+                '768': '768px',
             }
         },
         screens: {

@@ -230,7 +230,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const nftResponse = await axios.get(`${process.env.BACKEND_URL}/nft/get?username=${props.user.username}&withOwnedNfts=true`, {withCredentials: true});
+        const nftResponse = await axios.get(`${process.env.BACKEND_URL}/nft/get?username=${username}&withOwnedNfts=true`, {withCredentials: true});
         props.nft = nftResponse.data.data.nft;
     } catch (error) {
         console.log('Failed to fetch nft: ', error);

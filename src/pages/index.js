@@ -4,6 +4,7 @@ import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Header from '../components/header';
 import ImageBlob from '../components/imageBlob';
+import Button from '../components/button';
 
 export default function Index({usernames, item, isLoggedIn}) {
     const router = useRouter();
@@ -227,6 +228,11 @@ export default function Index({usernames, item, isLoggedIn}) {
         }, 3000);
     }
 
+    const seeWhy = () => {
+        const element = document.getElementById('see-why-section');
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+
     return (
         <>
             <Head>
@@ -248,7 +254,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                 <div id="page-overlay" className="w-0 h-full absolute right-0 z-0 bg-black"></div>
                 <div className="w-full max-w-screen-2xl relative">
                     <Header router={router} isLoggedIn={isLoggedIn} />
-                    <div className="w-full mt-16">
+                    <div className="w-full mt-32 md:mt-16">
                         <div className="w-full flex flex-col justify-center py-12 relative">
                             {
                                 item &&
@@ -263,8 +269,9 @@ export default function Index({usernames, item, isLoggedIn}) {
                                 </>
                             }
                             <div>
-                                <h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>
-                                <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>
+                                <h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">Claim an username</h1>
+                                {/*<h1 className="px-2 font-grotesk text-3xl md:text-7xl">DIGITAL SPACE <span className="text-3xl">FOR</span></h1>*/}
+                                {/*<h1 className="px-2 font-grotesk text-4xl md:text-8xl font-bold">DIGITAL CREATORS</h1>*/}
                             </div>
                             {
                                 !isLoggedIn &&
@@ -317,20 +324,144 @@ export default function Index({usernames, item, isLoggedIn}) {
                             }
                         </div>
                     </div>
-                    {/*<div className="w-full fixed left-0 bottom-0 z-30">*/}
-                    {/*    <div className="w-full relative">*/}
-                    {/*        <div className="w-full flex justify-center items-center">*/}
-                    {/*            <div className="py-2 px-16 bg-black rounded-t-2xl hover:cursor-pointer font-grotesk*/}
-                    {/*                text-white shadow-2xl flex justify-between items-center"*/}
-                    {/*            >*/}
-                    {/*                <img src="/arrow-up.svg" className="w-8 h-4 invert"/>*/}
-                    {/*                <p className="select-none">About</p>*/}
-                    {/*                <img src="/arrow-up.svg" className="w-8 h-4 invert"/>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className="w-screen min-h-screen bg-black"></div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className="w-full absolute left-0 bottom-0 z-30">
+                        <div className="w-full relative">
+                            <div className="w-full flex justify-center items-center">
+                                <div className="py-2 px-16 bg-black rounded-t-2xl hover:cursor-pointer font-grotesk
+                                    text-white shadow-2xl flex justify-between items-center relative"
+                                     onClick={() => seeWhy()}
+                                >
+                                    <img src="/arrow-down.svg" className="w-8 h-4 invert"/>
+                                    <h6 className="font-grotesk text-base md:text-2xl">See why</h6>
+                                    <img src="/arrow-down.svg" className="w-8 h-4 invert"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="see-why-section" className="w-screen min-h-screen relative bg-black">
+                <div className="h-16 lg:h-32"></div>
+                <div className="w-full flex flex-col lg:flex-row">
+                    <div className="w-full lg:pl-32 lg:pr-16 flex justify-center lg:justify-end items-center">
+                        <div className="w-80 lg:w-96 h-80 lg:h-96 relative">
+                            <div className="w-full h-full absolute top-0 left-0 z-0">
+                                <div className="w-full h-full relative overflow-hidden rounded-lg">
+                                    <div className="absolute top-0 left-0 rotate-background"></div>
+                                </div>
+                            </div>
+                            <img className="w-full h-full absolute top-0 left-0 rounded-lg z-10 scale-99 shadow-md object-cover object-center" src={`${process.env.PUBLIC_FILES_URL}/homepage1.jpeg`} alt="sell your digital art without commission"/>
+                        </div>
+                    </div>
+                    <div className="w-full pt-8 lg:pt-16 lg:pt-32 px-8 lg:pr-32 lg:pl-16 flex justify-center items-center">
+                        <div>
+                            <h1 className="font-grotesk text-2xl md:text-4xl font-bold text-white">Sell digital art with 0% commission</h1>
+                            <div className="h-8"></div>
+                            <p className="font-grotesk text-base md:text-2xl text-white">With Macropolis, we believe that your hard work deserves to be rewarded fully. Say goodbye to hefty commissions! Our subscription-based model ensures you keep 100% of your sales revenue.</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full flex flex-col-reverse lg:flex-row">
+                    <div className="w-full pt-8 lg:pt-32 px-8 lg:pl-32 lg:pr-16 flex justify-center items-center">
+                        <div>
+                            <h1 className="font-grotesk text-2xl md:text-4xl font-bold text-white lg:text-right">Unleash the NFT Era</h1>
+                            <div className="h-8"></div>
+                            <p className="font-grotesk text-base md:text-2xl text-white lg:text-right">Macropolis empowers you to embrace the world of NFTs. List your unique creations as NFTs and open up exciting new opportunities to engage with collectors and art enthusiasts worldwide.</p>
+                        </div>
+                    </div>
+                    <div className="w-full pt-16 lg:pt-32 lg:pr-32 lg:pl-16 flex justify-center lg:justify-start items-center">
+                        <div className="w-80 lg:w-96 h-80 lg:h-96 relative">
+                            <img className="w-full h-full absolute top-0 left-0 rounded-lg z-10 scale-99 shadow-md" src={`${process.env.PUBLIC_FILES_URL}/homepage2.gif`} alt="sell your digital art without commission"/>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full flex flex-col lg:flex-row">
+                    <div className="w-full pt-16 lg:pt-32 lg:pl-32 lg:pr-16 flex justify-center lg:justify-end items-center">
+                        <div className="w-80 lg:w-96 h-80 lg:h-96 relative">
+                            <div className="w-full h-full absolute top-0 left-0 z-0">
+                                <div className="w-full h-full relative overflow-hidden rounded-lg">
+                                    <div className="absolute top-0 left-0 rotate-background"></div>
+                                </div>
+                            </div>
+                            <img className="w-full h-full absolute top-0 left-0 rounded-lg z-10 scale-99 shadow-md object-cover object-center" src={`${process.env.PUBLIC_FILES_URL}/homepage3.webp`} alt="sell your digital art without commission"/>
+                        </div>
+                    </div>
+                    <div className="w-full pt-8 lg:pt-16 lg:pt-32 px-8 lg:pr-32 lg:pl-16 flex justify-center items-center">
+                        <div>
+                            <h1 className="font-grotesk text-2xl md:text-4xl font-bold text-white">Customize and Shine</h1>
+                            <div className="h-8"></div>
+                            <p className="font-grotesk text-base md:text-2xl text-white">Your Macropolis page is your digital canvas. Personalize it, showcase your portfolio, and captivate your audience with a seamless blend of artistry and technology. It's your platform, your style!</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="h-16 lg:h-32"></div>
+            </div>
+            <div className="w-screen relative">
+                <h1 className="mt-16 font-grotesk text-3xl md:text-6xl font-bold text-center">Choose your plan</h1>
+                <div className="w-full hidden lg:flex justify-center items-center">
+                    <div className="w-768 min-h-576">
+                        <div className="w-full relative mt-16">
+                            <div className="floating-container w-96 p-8 rounded-md absolute shadow-md bg-white z-0 border-blue-300 border-2 left-2">
+                                <h6 className="font-grotesk text-xl text-center font-bold">Free</h6>
+                                <div className="flex justify-center items-center flex-col mt-8">
+                                    <p className="w-full text-left font-grotesk">&middot; Up to 10 items for sale</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Up to 1GB of space</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Page customization</p>
+                                    <p className="w-full text-left font-grotesk font-bold mt-8 text-center">$0 / month</p>
+                                </div>
+                                <div className="w-full mt-2">
+                                    <Button color="blue" text="Join now" textColor="text-white" submit={() => router.push('/sign-up')} />
+                                </div>
+                            </div>
+                            <div className="floating-container w-96 p-8 rounded-md absolute right-0 shadow-md bg-white z-10 border-green-300 border-2 right-2">
+                                <h6 className="font-grotesk text-xl text-center font-bold">Enhanced</h6>
+                                <div className="flex justify-center items-center flex-col mt-8">
+                                    <p className="w-full text-left font-grotesk">&middot; Unlimited number of items</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Up to 10GB of space</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Create collections</p>
+                                    <p className="w-full text-left font-grotesk">&middot; List NFT</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Mint NFT (soon)</p>
+                                    <p className="w-full text-left font-grotesk">&middot; Receive donations (soon)</p>
+                                    <p className="w-full text-left font-grotesk font-bold mt-8 text-center">$9 / month</p>
+                                </div>
+                                <div className="w-full mt-2">
+                                    <Button text="Join now" textColor="text-white" submit={() => router.push('/sign-up')} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full flex lg:hidden flex-col justify-center items-center">
+                    <div className="w-96 p-8 mt-16 rounded-md shadow-md bg-white border-blue-300 border-2">
+                        <h6 className="font-grotesk text-xl text-center font-bold">Free</h6>
+                        <div className="flex justify-center items-center flex-col mt-8">
+                            <p className="w-full text-left font-grotesk">&middot; Up to 10 items for sale</p>
+                            <p className="w-full text-left font-grotesk">&middot; Up to 1GB of space</p>
+                            <p className="w-full text-left font-grotesk">&middot; Page customization</p>
+                            <p className="w-full text-left font-grotesk font-bold mt-8 text-center">$0 / month</p>
+                        </div>
+                        <div className="w-full mt-2">
+                            <Button color="blue" text="Join now" textColor="text-white" submit={() => router.push('/sign-up')} />
+                        </div>
+                    </div>
+                    <div className="w-96 p-8 mt-16 rounded-md shadow-md bg-white border-green-300 border-2">
+                        <h6 className="font-grotesk text-xl text-center font-bold">Enhanced</h6>
+                        <div className="flex justify-center items-center flex-col mt-8">
+                            <p className="w-full text-left font-grotesk">&middot; Unlimited number of items</p>
+                            <p className="w-full text-left font-grotesk">&middot; Up to 10GB of space</p>
+                            <p className="w-full text-left font-grotesk">&middot; Create collections</p>
+                            <p className="w-full text-left font-grotesk">&middot; List NFT</p>
+                            <p className="w-full text-left font-grotesk">&middot; Mint NFT (soon)</p>
+                            <p className="w-full text-left font-grotesk">&middot; Receive donations (soon)</p>
+                            <p className="w-full text-left font-grotesk font-bold mt-8 text-center">$9 / month</p>
+                        </div>
+                        <div className="w-full mt-2">
+                            <Button text="Join now" textColor="text-white" submit={() => router.push('/sign-up')} />
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full mt-16 lg:mt-0">
+                    <h6 className="w-full text-center font-grotesk py-2 text-base">crafted by <span className="font-bold select-none">kmnviz</span></h6>
                 </div>
             </div>
         </>
@@ -339,11 +470,7 @@ export default function Index({usernames, item, isLoggedIn}) {
 
 export async function getServerSideProps(context) {
     const props = {};
-
-    props.isLoggedIn = false;
-    if (context.req.cookies.token) {
-        props.isLoggedIn = true;
-    }
+    props.isLoggedIn = !!context.req.cookies.token;
 
     try {
         const response = await axios.get(`${process.env.BACKEND_URL}/users/get-usernames`);

@@ -10,8 +10,8 @@ export default function ImageBlob({ imageSrc }) {
 
                     <defs>
                         <linearGradient id="blobgradient-3">
-                            <stop offset="0%" stop-color="#fff"></stop>
-                            <stop offset="100%" stop-color="#fff"></stop>
+                            <stop offset="0%" stopColor="#fff"></stop>
+                            <stop offset="100%" stopColor="#fff"></stop>
                         </linearGradient>
                     </defs>
 

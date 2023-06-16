@@ -7,6 +7,7 @@ ENV BACKEND_URL=https://api.macropolis.io
 ENV GCP_STORAGE_URL=https://storage.googleapis.com
 ENV GCP_STORAGE_IMAGES_BUCKET=macropolis-images-dev
 ENV GCP_STORAGE_AUDIO_PREVIEWS_BUCKET=macropolis-audio-preview-dev
+ENV GCP_STORAGE_PUBLIC_FILES=macropolis-public-files
 ENV STRIPE_PUBLISHABLE_KEY=pk_test_tJtcQqBrRirhhiwzIAr1brzT000LqQs92t
 
 WORKDIR /app
