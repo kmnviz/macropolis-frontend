@@ -340,7 +340,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                     </div>
                 </div>
             </div>
-            <div id="see-why-section" className="w-screen min-h-screen relative bg-black">
+            <div id="see-why-section" className="w-screen min-h-screen relative bg-black shadow-xl">
                 <div className="h-16 lg:h-32"></div>
                 <div className="w-full flex flex-col lg:flex-row">
                     <div className="w-full lg:pl-32 lg:pr-16 flex justify-center lg:justify-end items-center">
