@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
-import DashboardLayout from './layout';
+import React, {useState, useEffect} from 'react';
+import {useRouter} from 'next/router';
+import DashboardLayout from '../layout';
 import axios from 'axios';
-import Input from '../../components/input';
-import Button from '../../components/button';
+import Input from '../../../components/input';
+import Button from '../../../components/button';
 import {useForm} from 'react-hook-form';
 import {useDispatch} from 'react-redux';
-import toggleNotification from '../../helpers/toggleNotification';
-import validateEthereumAddress from '../../helpers/validateEthereumAddress';
-import NftAddressesTypesEnumerations from '../../enumerations/nftAddressesTypes';
+import toggleNotification from '../../../helpers/toggleNotification';
+import validateEthereumAddress from '../../../helpers/validateEthereumAddress';
+import NftAddressesTypesEnumerations from '../../../enumerations/nftAddressesTypes';
 
 function DashboardNft({user, nft}) {
+    const router = useRouter();
     const dispatch = useDispatch();
     const {register, handleSubmit, formState: {errors}, setError, reset} = useForm();
 
@@ -18,6 +20,7 @@ function DashboardNft({user, nft}) {
     const [formButtonDisabled, setFormButtonDisabled] = useState(false);
     const [formButtonLoading, setFormButtonLoading] = useState(false);
     const [addressType, setAddressType] = useState('');
+    const [metamaskAccount, setMetamaskAccount] = useState('');
 
     const hideForm = () => {
         setShowAddOwnerAddress(false);
@@ -64,10 +67,49 @@ function DashboardNft({user, nft}) {
         }
     }
 
+    useEffect(() => {
+        getMetamaskAccount();
+        trackAccountsChangedEvent();
+    }, []);
+
+    const isMetamaskUnlocked = async () => {
+        return 'ethereum' in window && await window.ethereum._metamask.isUnlocked();
+    }
+
+    const isMetamaskInstalled = () => {
+        return typeof window.ethereum !== 'undefined';
+    }
+
+    const getMetamaskAccount = async () => {
+        if (isMetamaskInstalled() && await isMetamaskUnlocked()) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            setMetamaskAccount(accounts[0]);
+        }
+    }
+
+    const trackAccountsChangedEvent = async () => {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (!accounts.length) {
+                setMetamaskAccount('');
+            } else {
+                setMetamaskAccount(accounts[0]);
+            }
+        });
+    }
+
     return (
         <div className="w-full">
             <div className="w-full h-16 flex justify-between items-center">
                 <h4 className="font-grotesk font-bold text-4xl">NFT</h4>
+                {
+                    metamaskAccount &&
+                    <div
+                        className="w-16 h-16 flex justify-center items-center relative rounded-md bg-green-300 hover:cursor-pointer hover:bg-green-400 font-grotesk font-bold"
+                        onClick={() => router.push('/dashboard/nft/mint')}
+                    >
+                        MINT
+                    </div>
+                }
             </div>
             <div className="h-24"></div>
             <div className="w-full">
@@ -90,7 +132,7 @@ function DashboardNft({user, nft}) {
                                     ?
                                     nft.owner.map((address) => {
                                         return (
-                                            <div className="p-2 rounded-md border border-black">
+                                            <div key={`owner-address-${address}`} className="p-2 rounded-md border border-black">
                                                 <p className="font-grotesk">{address}</p>
                                             </div>
                                         );
@@ -114,7 +156,7 @@ function DashboardNft({user, nft}) {
                                     ?
                                     nft.collection.map((address) => {
                                         return (
-                                            <div className="p-2 rounded-md border border-black">
+                                            <div key={`collection-address-${address}`} className="p-2 rounded-md border border-black">
                                                 <p className="font-grotesk">{address}</p>
                                             </div>
                                         );

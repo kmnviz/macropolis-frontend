@@ -9,6 +9,7 @@ export default function DashboardLayout({children, user}) {
 
     const {notifications} = useSelector(state => state.notifications);
     const [menuVisible, setMenuVisible] = useState(false);
+    const [metamaskAccount, setMetamaskAccount] = useState('');
 
     useEffect(() => {
         if ('entry' in router.query) {
@@ -85,6 +86,43 @@ export default function DashboardLayout({children, user}) {
     const redirectTo = (route) => {
         showMenu();
         router.push(route);
+    }
+
+    useEffect(() => {
+        getMetamaskAccount();
+        trackAccountsChangedEvent();
+    }, []);
+
+    const getMetamaskAccount = async () => {
+        if (isMetamaskInstalled() && await isMetamaskUnlocked()) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            setMetamaskAccount(accounts[0]);
+        }
+    }
+
+    const isMetamaskUnlocked = async () => {
+        return 'ethereum' in window && await window.ethereum._metamask.isUnlocked();
+    }
+
+    const isMetamaskInstalled = () => {
+        return typeof window.ethereum !== 'undefined';
+    }
+
+    const connectToMetamask = async () => {
+        if (isMetamaskInstalled() && !(await isMetamaskUnlocked())) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            setMetamaskAccount(accounts[0]);
+        }
+    }
+
+    const trackAccountsChangedEvent = async () => {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (!accounts.length) {
+                setMetamaskAccount('');
+            } else {
+                setMetamaskAccount(accounts[0]);
+            }
+        });
     }
 
     return (
@@ -166,6 +204,10 @@ export default function DashboardLayout({children, user}) {
                             </div>
                         </div>
                         <div className="w-full bg-black">
+                            <div
+                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300 text-white`}
+                                onClick={() => connectToMetamask()}><p className="truncate">{metamaskAccount ? metamaskAccount : 'Connect to Metamask'}</p>
+                            </div>
                             <div
                                 className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/plans') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo(`/dashboard/plans`)}>Plans

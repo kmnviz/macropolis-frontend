@@ -451,7 +451,7 @@ export default function Index({usernames, item, isLoggedIn}) {
                             <p className="w-full text-left font-grotesk">&middot; Up to 10GB of space</p>
                             <p className="w-full text-left font-grotesk">&middot; Create collections</p>
                             <p className="w-full text-left font-grotesk">&middot; List NFT</p>
-                            <p className="w-full text-left font-grotesk">&middot; Mint NFT (soon)</p>
+                            <p className="w-full text-left font-grotesk">&middot; Mint NFT</p>
                             <p className="w-full text-left font-grotesk">&middot; Receive donations (soon)</p>
                             <p className="w-full text-left font-grotesk font-bold mt-8 text-center">$9 / month</p>
                         </div>
