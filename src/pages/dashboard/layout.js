@@ -173,51 +173,51 @@ export default function DashboardLayout({children, user}) {
                             <div
                                 className="w-full h-12 p-4 flex text-white text-2xl font-grotesk select-none"
                             >
-                                <img src="/macropolis-logo.svg" alt="logo" className="h-12 invert"/>
+                                <img src="/macropolis-logo.svg" alt="logo" className="h-10 invert"/>
                                 <p className="text-sm">{user?.plan ? user.plan.name : ''}</p>
                             </div>
                             <div
                                 className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"></div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300 ${isCurrentRoute('/dashboard') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300 ${isCurrentRoute('/dashboard') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard')}>Profile
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/items') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/items') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/items')}>Items
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/collections') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/collections') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/collections')}>Collections
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/sales') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/sales') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/sales')}>Sales
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/withdrawals') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/withdrawals')}>Withdrawals
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/nft') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/nft') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo('/dashboard/nft')}>NFT
                             </div>
                         </div>
                         <div className="w-full bg-black">
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300 text-white`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300 text-white`}
                                 onClick={() => connectToMetamask()}><p className="truncate">{metamaskAccount ? metamaskAccount : 'Connect to Metamask'}</p>
                             </div>
                             <div
-                                className={`w-full h-12 p-4 flex items-center text-2xl font-grotesk hover:cursor-pointer hover:text-green-300  ${isCurrentRoute('/dashboard/plans') ? 'text-green-300' : 'text-white'}`}
+                                className={`w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300 ${isCurrentRoute('/dashboard/plans') ? 'text-green-300' : 'text-white'}`}
                                 onClick={() => redirectTo(`/dashboard/plans`)}>Plans
                             </div>
                             <div
-                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                className="w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300 text-white"
                                 onClick={() => redirectTo(`/${user.username}`)}>My page
                             </div>
                             <div
-                                className="w-full h-12 p-4 flex items-center text-white text-2xl font-grotesk hover:cursor-pointer hover:text-green-300"
+                                className="w-full pt-1 pb-1 pl-4 flex items-center text-md font-grotesk hover:cursor-pointer hover:text-green-300 text-white"
                                 onClick={logout}>Logout
                             </div>
                         </div>
