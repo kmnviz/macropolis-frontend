@@ -28,6 +28,16 @@ export default function User({username, profile, items, user, collections, nft})
             });
     }
 
+    const findThumbnail = (ownedNft) => {
+        if (ownedNft.media.length && 'thumbnail' in ownedNft.media[0]) {
+            return ownedNft.media[0].thumbnail;
+        } else if ('media' in ownedNft.rawMetadata && 'thumbnail' in ownedNft.rawMetadata.media) {
+            return ownedNft.rawMetadata.media.thumbnail;
+        }
+
+        return '';
+    }
+
     return (
         <>
             <Head>
@@ -171,7 +181,7 @@ export default function User({username, profile, items, user, collections, nft})
                                             <div className="w-full h-80 relative overflow-hidden relative">
                                                 <img
                                                     className="w-full h-full absolute top-0 object-cover object-center rounded-md group-hover:scale-105 duration-300 border-2 border-white"
-                                                    src={`${ownedNft.media[0].thumbnail}`}/>
+                                                    src={`${findThumbnail(ownedNft)}`}/>
                                                 <div className="w-full h-16 absolute bottom-0">
                                                     <div className="w-full h-full relative overflow-hidden">
                                                         <div className="w-full h-full absolute bottom-0 bg-white z-0"></div>

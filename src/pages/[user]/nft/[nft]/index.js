@@ -18,6 +18,16 @@ export default function User({username, user, nftMetadata}) {
             });
     }
 
+    const findImage = () => {
+        if ('media' in nftMetadata && nftMetadata.media.length && 'gateway' in nftMetadata.media[0]) {
+            return nftMetadata.media[0].gateway;
+        } else if ('media' in nftMetadata && 'image' in nftMetadata.media) {
+            return nftMetadata.media.image;
+        }
+
+        return '';
+    }
+
     return (
         <>
             <Head>
@@ -84,7 +94,7 @@ export default function User({username, user, nftMetadata}) {
                         <div className="w-full flex flex-col lg:flex-row">
                             <div className="w-full lg:w-2/5">
                                 <div className="w-full m-0 lg:mr-8 rounded-lg relative">
-                                    <img className="w-full rounded-lg z-0" src={`${nftMetadata.media[0].gateway}`} alt={nftMetadata.title}/>
+                                    <img className="w-full rounded-lg z-0" src={findImage()} alt={nftMetadata.title}/>
                                 </div>
                             </div>
                             <div className="w-full lg:w-3/5 mt-8 lg:mt-0">
